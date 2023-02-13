@@ -3,6 +3,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.security.Timestamp;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -18,11 +19,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static javafx.application.Application.launch;
+import javafx.scene.text.Font;
 
 class ReceiverThread implements Runnable {
 
@@ -33,27 +36,7 @@ class ReceiverThread implements Runnable {
         this.dis = dis;
         this.messages = messages;
     }
-        public String prenom(String id) {
-                    Connection connection;
-                    connection = Database.getInstance().getCon();
-                    String query = "SELECT prenom FROM user WHERE id_user = ?";
-                                        PreparedStatement statement;
-                                        String user_id = "not set";
-                                                            try {
-                        statement = connection.prepareStatement(query);
-                        statement.setString(1, id);
-
-                        ResultSet resultSet = statement.executeQuery();
-                        
-                        while (resultSet.next()) {
-                            user_id = resultSet.getString(1); //"zadaz";
-                        }
-       
-                    } catch (SQLException ex) {
-                        Logger.getLogger(Chat_Server.ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-        return user_id;
-        }
+sql_things testt= new sql_things();;
     @Override
     public void run() {
         while (true) {
@@ -64,7 +47,7 @@ class ReceiverThread implements Runnable {
                 String senderID = receivedData[0];
                 String receiverID = receivedData[1];
                 String text = receivedData[2];
-                Platform.runLater(() -> messages.appendText(prenom(senderID) + " To " + prenom(receiverID) + " : " + text + "\n"));
+                Platform.runLater(() -> messages.appendText(testt.prenom(senderID) + " To " + testt.prenom(receiverID) + " : " + text + "\n"));
             } catch (IOException e) {
                 System.out.println("Server disconnected");
                 break;
@@ -81,6 +64,8 @@ public class User_Chat2 extends Application {
     private Button send = new Button("Send");
     private String clientID = "2";
     private String receiverID = "1";
+    sql_things testt = new sql_things();
+
 
     @Override
     public void start(Stage Stage) {
@@ -89,6 +74,7 @@ public class User_Chat2 extends Application {
 
         messages.setPrefHeight(300);
         messages.setEditable(false);
+        messages.setFont(Font.font("Arial", 15));
 
         HBox inputArea = new HBox(10);
         inputArea.getChildren().addAll(input, send);
@@ -106,6 +92,7 @@ public class User_Chat2 extends Application {
         });
 
         try {
+            testt.retrieveMessagesFromDB(receiverID,clientID,messages);
             Socket socket = new Socket("localhost", 9999);
             dis = new DataInputStream(socket.getInputStream());
             dos = new DataOutputStream(socket.getOutputStream());
