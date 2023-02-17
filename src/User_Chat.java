@@ -1,4 +1,5 @@
 
+import Functions.sql_things;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -44,7 +45,7 @@ sql_things testt = new sql_things();
                 String senderID = receivedData[0];
                 String receiverID = receivedData[1];
                 String text = receivedData[2];
-                Platform.runLater(() -> messages.appendText(testt.prenom(senderID) + " To " + testt.prenom(receiverID)+ " : " + text + "\n"));
+                Platform.runLater(() -> messages.appendText(testt.prenom(senderID) + " To " + receiverID + " : " + text + "\n"));
             } catch (IOException e) {
                 System.out.println("Server disconnected");
                 break;

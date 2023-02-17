@@ -1,4 +1,5 @@
 
+import Functions.sql_things;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -25,6 +26,12 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static javafx.application.Application.launch;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
 
 class ReceiverThread implements Runnable {
@@ -65,10 +72,17 @@ public class User_Chat2 extends Application {
     private String clientID = "2";
     private String receiverID = "1";
     sql_things testt = new sql_things();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("Chat Inbox.fxml"));
+    GuiController controller = loader.getController();
 
 
     @Override
-    public void start(Stage Stage) {
+    public void start(Stage Stage) throws IOException {
+
+    System.out.println("test");
+   // controller.initialize(receiverID,clientID);
+       // Parent root = loader.load();
+       // Parent root = FXMLLoader.load(getClass().getResource("Chat Inbox.fxml"));
         VBox root = new VBox(10);
         root.setPadding(new Insets(10));
 
@@ -92,6 +106,7 @@ public class User_Chat2 extends Application {
         });
 
         try {
+            
             testt.retrieveMessagesFromDB(receiverID,clientID,messages);
             Socket socket = new Socket("localhost", 9999);
             dis = new DataInputStream(socket.getInputStream());
@@ -104,9 +119,12 @@ public class User_Chat2 extends Application {
             e.printStackTrace();
         }
 
-        Scene scene = new Scene(root, 400, 400);
+        Scene scene = new Scene(root);
         Stage.setScene(scene);
         Stage.show();
+        
+                
+
     }
 
     public static void main(String[] args) {
