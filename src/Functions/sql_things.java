@@ -92,7 +92,7 @@ public class sql_things {
 
 
    public void retrieveMessagesFromDB(String clientID, ListView<Message> messages, int id_conv) {
-                messages.getChildren().clear();
+               // messages.getChildren().clear();
 
         Connection connection;
         connection = Database.getInstance().getCon();
@@ -131,7 +131,7 @@ public class sql_things {
                     messageText.setFill(javafx.scene.paint.Color.BLACK);
                     messageText.setTextAlignment(TextAlignment.LEFT);
                 }
-                messages.getChildren().add(messageBox);
+            //    messages.getChildren().add(messageBox);
                 // messages.appendText(prenom(from) + " To " + prenom(to) + " : " + message + "\n");
             }
         } catch (SQLException e) {
