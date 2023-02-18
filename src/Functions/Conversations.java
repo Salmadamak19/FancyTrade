@@ -39,6 +39,7 @@ public class Conversations {
     Connection connection;
     Statement ste;
     sql_things testt = new sql_things();
+    
 
     public Conversations() {
 
@@ -66,7 +67,7 @@ public class Conversations {
                 label.setText(conv.toString());
                 //label.setAlignment(Pos.CENTER);
                 label.setFont(new Font(20));
-                label.setStyle("-fx-background-color: #007bff; -fx-background-radius: 50px;");
+                label.setStyle("-fx-background-color: #808080; -fx-background-radius: 50px;");
                 label.setPadding(new Insets(20, 25, 20, 25));
 
                 listView.getChildren().add(label);

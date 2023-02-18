@@ -24,6 +24,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -50,7 +51,7 @@ public class ChatInboxController implements Initializable {
     @FXML
     private VBox inbox_list;
     @FXML
-    private ListView<Message> message_box;
+    private VBox message_box;
 
     /**
      * Initializes the controller class.
@@ -93,10 +94,17 @@ public class ChatInboxController implements Initializable {
 
     @FXML
     private void switch_conversation(MouseEvent event) {
+        int index = 0;
         Node target = (Node) event.getTarget();
         if (target instanceof Label) {
             // Cast the target node to a Label
+            while (index < inbox_list.getChildren().size()) {
+    Node node = inbox_list.getChildren().get(index);
+    node.setStyle("-fx-background-color: #808080; -fx-background-radius: 50px;");
+    index++;
+}
             Label clickedLabel = (Label) target;
+            clickedLabel.setStyle("-fx-background-color: #007bff; -fx-background-radius: 50px;");
             Conversation conv;
             conv = (Conversation) clickedLabel.getUserData();
             int id_conv = conv.getId();
