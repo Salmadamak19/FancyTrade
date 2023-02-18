@@ -35,23 +35,6 @@ sql_things testt = new sql_things();
         this.dis = dis;
         this.messages = messages;
     }
-    @Override
-    public void run() {
-        while (true) {
-            try {
-                String message = dis.readUTF();
-                String[] receivedData = message.split(";;");
-
-                String senderID = receivedData[0];
-                String receiverID = receivedData[1];
-                String text = receivedData[2];
-                Platform.runLater(() -> messages.appendText(testt.prenom(senderID) + " To " + receiverID + " : " + text + "\n"));
-            } catch (IOException e) {
-                System.out.println("Server disconnected");
-                break;
-            }
-        }
-    }
 }
 
 public class User_Chat extends Application {

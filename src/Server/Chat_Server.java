@@ -62,17 +62,17 @@ public class Chat_Server {
                     Connection connection;
                     connection = Database.getInstance().getCon();
                     String query = "SELECT prenom FROM user WHERE id_user = ?";
-                    String query2 = "INSERT INTO message(from_user,to_conv,message_text) VALUES(?,?,?)";
-                    PreparedStatement statement2;
+                   // String query2 = "INSERT INTO message(from_user,to_conv,message_text) VALUES(?,?,?)";
+                  //  PreparedStatement statement2;
                     PreparedStatement statement;
                     try {
                         statement = connection.prepareStatement(query);
-                        statement2 = connection.prepareStatement(query2);
+                     //   statement2 = connection.prepareStatement(query2);
                         statement.setString(1, receivedData[0]);
-                        statement2.setString(1, receivedData[0]);
+                      /*  statement2.setString(1, receivedData[0]);
                         statement2.setString(2, receivedData[1]);
                         statement2.setString(3, receivedData[2]);
-                        statement2.executeUpdate();
+                        statement2.executeUpdate();*/
 
                         ResultSet resultSet = statement.executeQuery();
                         String user_id = "not set";
@@ -82,6 +82,7 @@ public class Chat_Server {
                         String client_id = testt.GetReceiver(receivedData[0], receivedData[1]);
                         String messageee = receivedData[2];
                       //  dos.writeUTF(user_id + ";;" + receiver_id + ";;" + messageee);
+                       // sendMessageToClient(receivedData[0], message);
                         sendMessageToClient(client_id, message);
                     } catch (SQLException ex) {
                         Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -108,6 +109,7 @@ public class Chat_Server {
             if (socket != null) {
                 try {
                     new ClientHandler(socket, clientID).sendMessage(message);
+                    System.out.println("messenge sent to " + clientID);
                 } catch (IOException ex) {
                     Logger.getLogger(Chat_Server.class.getName()).log(Level.SEVERE, null, ex);
                 }

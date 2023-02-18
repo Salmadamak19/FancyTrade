@@ -1,21 +1,28 @@
 package Functions;
 
 import DB.Database;
+import Entity.Message;
+import com.mysql.cj.xdevapi.Statement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.geometry.BoundingBox;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextBoundsType;
 import javafx.scene.text.TextFlow;
 
 /*
@@ -105,38 +112,39 @@ public class sql_things {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
+                String id = resultSet.getString("id_message");
                 String from = resultSet.getString("from_user");
                 String message = resultSet.getString("message_text");
-                Text messageText = new Text(message + "");
-                messageText.setFont(Font.font("Arial", 14));
-
+                
                 HBox messageContainer = new HBox();
+                messageContainer.setId(id);
                 if (clientID.equals(from)) {
                     //messages.setTextAlignment(TextAlignment.RIGHT);
                     Text clientMessage = new Text(message);
                     clientMessage.setFill(Color.WHITE); // set the text color to white
                     clientMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
                     //clientMessage.setWrappingWidth(100);
-                  //  clientMessage.setStyle("-fx-background-color: #2196F3; -fx-padding: 10px;");
-                //  double textWidth = clientMessage.getBoundsInLocal().getWidth();
-                  
+                    //  clientMessage.setStyle("-fx-background-color: #2196F3; -fx-padding: 10px;");
+                    //  double textWidth = clientMessage.getBoundsInLocal().getWidth();
+
                     messageContainer.setAlignment(Pos.CENTER_RIGHT);
                     messageContainer.setStyle("-fx-background-color: #007bff; -fx-background-radius: 0px;");
-                    messageContainer.setPrefWidth(1);
-                   // messageContainer.setPadding(new Insets(1, -50, 1, -5));
+                    // messageContainer.setPrefWidth(1);
+                    messageContainer.setPadding(new Insets(0, 20, 0, 0));
                     messageContainer.getChildren().add(clientMessage);
 
                 } else {
-                    Text senderMessage = new Text(prenom(from)+" : "+message);
+                    Text senderMessage = new Text(prenom(from) + " : " + message);
                     senderMessage.setFill(Color.WHITE); // set the text color to white
                     senderMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15)); // set the font
-                   // senderMessage.setStyle("-fx-background-color: #808080; -fx-background-radius: 0px;");
+                    // senderMessage.setStyle("-fx-background-color: #808080; -fx-background-radius: 0px;");
+                    messageContainer.setPadding(new Insets(0, 0, 0, 10));
                     messageContainer.setStyle("-fx-background-color: #808080; -fx-background-radius: 0px;");
-                   // senderMessage.setStyle("-fx-background-color: #FFFFFF; -fx-padding: 10px;");
+                    // senderMessage.setStyle("-fx-background-color: #FFFFFF; -fx-padding: 10px;");
                     messageContainer.getChildren().add(senderMessage);
 
                 }
-                
+
                 messages.getChildren().add(messageContainer);
                 //    messages.getChildren().add(messageBox);
                 // messages.appendText(prenom(from) + " To " + prenom(to) + " : " + message + "\n");
@@ -146,20 +154,72 @@ public class sql_things {
         }
     }
 
-    public void sendmessage(String message, TextFlow messages) {
-        Text messageText = new Text(message + "");
-        messageText.setFont(Font.font("Arial", 14));
-        HBox messageBox = new HBox();
-        messageBox.getChildren().add(messageText);
-        messageBox.setSpacing(10);
-        //messages.setTextAlignment(TextAlignment.RIGHT);
-        // messages.appendText("You : " + message + "\n");
-        messageBox.setStyle("-fx-background-color: blue; -fx-padding: 5px;");
-        messageBox.setAlignment(javafx.geometry.Pos.TOP_RIGHT);
-        messageText.setFill(javafx.scene.paint.Color.WHITE);
-        messageText.setTextAlignment(TextAlignment.RIGHT);
-        messages.getChildren().add(messageBox);
+    public void sendmessage(String message, String clientid, String conv, VBox messages) {
+        Connection connection;
+        connection = Database.getInstance().getCon();
+        String query2 = "INSERT INTO message(from_user,to_conv,message_text) VALUES(?,?,?)";
+        PreparedStatement statement2;
+        int id_message = -1;
+        try {
+            statement2 = connection.prepareStatement(query2, PreparedStatement.RETURN_GENERATED_KEYS);
+            statement2.setString(1, clientid);
+
+            statement2.setString(2, conv);
+            statement2.setString(3, message);
+            int affectedRows = statement2.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Creating record failed, no rows affected.");
+            }
+            try ( ResultSet rs = statement2.getGeneratedKeys()) {
+                if (rs.next()) {
+                    id_message = rs.getInt(1);
+                    // Use the last inserted ID here
+                } else {
+                    throw new SQLException("Creating record failed, no ID obtained.");
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(sql_things.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        HBox messageContainer = new HBox();
+       // StackPane stackPane = new StackPane();
+        messageContainer.setId(Integer.toString(id_message));
+        Text clientMessage = new Text(message);
+        clientMessage.setFill(Color.WHITE); // set the text color to white
+        clientMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+       // clientMessage.setBoundsType(TextBoundsType.VISUAL);
+
+      //  clientMessage.setPickOnBounds(false);;
+        messageContainer.setPadding(new Insets(0, 20, 0, 0));
+        //clientMessage.setWrappingWidth(100);
+        //  clientMessage.setStyle("-fx-background-color: #2196F3; -fx-padding: 10px;");
+        //  double textWidth = clientMessage.getBoundsInLocal().getWidth();
+
+        messageContainer.setAlignment(Pos.CENTER_RIGHT);
+        messageContainer.setStyle("-fx-background-color: #007bff; -fx-background-radius: 0px;");
+        // messageContainer.setPrefWidth(1);
+        // messageContainer.setPadding(new Insets(1, -50, 1, -5));
+        messageContainer.getChildren().add(clientMessage);
+        messages.getChildren().add(messageContainer);
         // messages.appendText(prenom(from) + " To " + prenom(to) + " : " + message + "\n");
+    }
+
+    public void deletemessage(String id) {
+        Connection connection;
+        connection = Database.getInstance().getCon();
+        String query2 = "DELETE FROM message WHERE id_message = ?";
+        PreparedStatement statement2;
+        try {
+            statement2 = connection.prepareStatement(query2);
+            statement2.setString(1, id);
+            statement2.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(sql_things.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
 }

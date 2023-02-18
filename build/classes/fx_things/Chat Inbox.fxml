@@ -20,9 +20,9 @@
                <children>
                   <Button fx:id="send_button" layoutX="306.0" layoutY="309.0" mnemonicParsing="false" onAction="#Send_message" text="Send" />
                   <TextField fx:id="message_input" layoutX="95.0" layoutY="309.0" />
-                  <ScrollPane prefHeight="289.0" prefWidth="392.0">
+                  <ScrollPane hbarPolicy="NEVER" prefHeight="289.0" prefWidth="392.0">
                      <content>
-                        <VBox fx:id="message_box" prefHeight="287.0" prefWidth="390.0" />
+                        <VBox fx:id="message_box" onMouseClicked="#message_option" prefHeight="287.0" prefWidth="390.0" />
                      </content>
                   </ScrollPane>
                </children>
