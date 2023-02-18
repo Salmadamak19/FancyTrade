@@ -3,6 +3,7 @@ package Functions;
 
 import DB.Database;
 import Entity.Conversation;
+import Entity.Message;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -90,18 +91,16 @@ public class sql_things {
     }
 
 
-   public void retrieveMessagesFromDB(String clientID, TextFlow messages, ListView<Conversation> listView) {
+   public void retrieveMessagesFromDB(String clientID, ListView<Message> messages, int id_conv) {
                 messages.getChildren().clear();
 
         Connection connection;
         connection = Database.getInstance().getCon();
-        Conversation Current_conv = listView.getSelectionModel().getSelectedItem();
-        int Current_conv_id = Current_conv.getId();
         //listView.getItems().get(0)
         //  messagess.setSpacing(10);
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM message where to_conv = ? ORDER BY date_time");
-            preparedStatement.setString(1, Integer.toString(Current_conv_id));
+            preparedStatement.setString(1, Integer.toString(id_conv));
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {

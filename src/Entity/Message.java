@@ -20,6 +20,13 @@ public class Message {
     public Message() {
     }
 
+    public Message(int id_message, int from_user, int to_conv, String text) {
+        this.id_message = id_message;
+        this.from_user = from_user;
+        this.to_conv = to_conv;
+        this.text = text;
+    }
+
     public Message(int id_message, int from_user, int to_conv, String text, DateTime date_time) {
         this.id_message = id_message;
         this.from_user = from_user;

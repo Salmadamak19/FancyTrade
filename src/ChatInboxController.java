@@ -9,6 +9,7 @@
 import Functions.Conversations;
 import Functions.sql_things;
 import Entity.Conversation;
+import Entity.Message;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -20,10 +21,19 @@ import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 /**
@@ -46,15 +56,23 @@ public class ChatInboxController implements Initializable {
     Conversations convv= new Conversations();
     Conversation Current_conv = new Conversation();
     @FXML
-    private ListView<Conversation> inbox_list;
+    private VBox inbox_list;
     @FXML
-    private TextFlow message_box;
+    private ListView<Message> message_box;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        inbox_list.setPadding(new Insets(10));
+        inbox_list.setSpacing(10);
+       // inbox_list.setStyle("-fx-background-color: #f2f2f2;");
+
+       // inbox_list.setAlignment(Pos.TOP_CENTER);
+
                          convv.GetConversations(clientID,inbox_list);
+                        // inbox_list.getChildren().
                     
         // convid = inbox_list.getSelectionModel().getSelectedItem();
         try {
@@ -81,10 +99,22 @@ public class ChatInboxController implements Initializable {
         }
         
     }
-
     @FXML
     private void switch_conversation(MouseEvent event) {
-        testt.retrieveMessagesFromDB(clientID,message_box,inbox_list);
+        Node target = (Node) event.getTarget();
+                if (target instanceof Label) {
+            // Cast the target node to a Label
+            Label clickedLabel = (Label) target;
+            Conversation conv;
+             conv = (Conversation) clickedLabel.getUserData();
+            int id_conv = conv.getId();
+            
+            // Do something with the clicked label
+           // System.out.println("Clicked on label: " + conv.getId())
+                    testt.retrieveMessagesFromDB(clientID,message_box,id_conv);
+        }
     }
+    
+
     
 }
