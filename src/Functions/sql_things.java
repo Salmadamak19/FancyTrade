@@ -115,7 +115,7 @@ public class sql_things {
                 String id = resultSet.getString("id_message");
                 String from = resultSet.getString("from_user");
                 String message = resultSet.getString("message_text");
-                
+
                 HBox messageContainer = new HBox();
                 messageContainer.setId(id);
                 if (clientID.equals(from)) {
@@ -185,14 +185,14 @@ public class sql_things {
         }
 
         HBox messageContainer = new HBox();
-       // StackPane stackPane = new StackPane();
+        // StackPane stackPane = new StackPane();
         messageContainer.setId(Integer.toString(id_message));
         Text clientMessage = new Text(message);
         clientMessage.setFill(Color.WHITE); // set the text color to white
         clientMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
-       // clientMessage.setBoundsType(TextBoundsType.VISUAL);
+        // clientMessage.setBoundsType(TextBoundsType.VISUAL);
 
-      //  clientMessage.setPickOnBounds(false);;
+        //  clientMessage.setPickOnBounds(false);;
         messageContainer.setPadding(new Insets(0, 20, 0, 0));
         //clientMessage.setWrappingWidth(100);
         //  clientMessage.setStyle("-fx-background-color: #2196F3; -fx-padding: 10px;");
@@ -205,6 +205,25 @@ public class sql_things {
         messageContainer.getChildren().add(clientMessage);
         messages.getChildren().add(messageContainer);
         // messages.appendText(prenom(from) + " To " + prenom(to) + " : " + message + "\n");
+    }
+
+    public String messageowner(String id) {
+        Connection connection;
+        connection = Database.getInstance().getCon();
+        String from="";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT from_user FROM message where id_message = ? ");
+            preparedStatement.setString(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                 from = resultSet.getString("from_user");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(sql_things.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return from;
+
     }
 
     public void deletemessage(String id) {
@@ -221,7 +240,8 @@ public class sql_things {
         }
 
     }
-        public void updatemessage(String id,String message) {
+
+    public void updatemessage(String id, String message) {
         Connection connection;
         connection = Database.getInstance().getCon();
         String query2 = "UPDATE message SET message_text = ? WHERE id_message = ?";
@@ -229,7 +249,7 @@ public class sql_things {
         try {
             statement2 = connection.prepareStatement(query2);
             statement2.setString(2, id);
-            statement2.setString(1, message+" (modifié)");
+            statement2.setString(1, message + " (modifié)");
             statement2.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(sql_things.class.getName()).log(Level.SEVERE, null, ex);

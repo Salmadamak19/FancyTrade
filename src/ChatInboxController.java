@@ -163,6 +163,7 @@ public class ChatInboxController implements Initializable {
         if (target instanceof HBox) {
 
             if (event.getButton() == MouseButton.SECONDARY) {
+
                 ContextMenu contextMenu = new ContextMenu();
                 MenuItem option1 = new MenuItem("Supprimer pour tout le monde");
                 MenuItem option2 = new MenuItem("Supprimer");
@@ -193,17 +194,23 @@ public class ChatInboxController implements Initializable {
                         return null;
                     });
                     dialog.showAndWait();
-                    if(!dialog.getResult().trim().isEmpty() && dialog.getResult() != null){
-                    testt.updatemessage(target.getId(), dialog.getResult());
-                    HBox hbox = (HBox) target;
-                    Text text = (Text) hbox.getChildren().get(0);
-                    text.setText(dialog.getResult()+" (modifié)");
-                    System.out.println("text : "+dialog.getResult());
+                    if (!dialog.getResult().trim().isEmpty() && dialog.getResult() != null) {
+                        testt.updatemessage(target.getId(), dialog.getResult());
+                        HBox hbox = (HBox) target;
+                        Text text = (Text) hbox.getChildren().get(0);
+                        text.setText(dialog.getResult() + " (modifié)");
+                        System.out.println("text : " + dialog.getResult());
                     }
                     // target.getChildren().get(0).setText(dialog.getResult);
                 });
-                contextMenu.getItems().addAll(option1, option2, option3);
-                contextMenu.show(target, Side.BOTTOM, 0, 0);
+                if (!testt.messageowner(target.getId()).equals(clientID)) {
+                    contextMenu.getItems().addAll(option2);
+                  //  System.out.println("t id : " + testt.messageowner(target.getId()));
+                    contextMenu.show(target, Side.BOTTOM, 0, 0);
+                } else {
+                    contextMenu.getItems().addAll(option1, option2, option3);
+                    contextMenu.show(target, Side.BOTTOM, 0, 0);
+                }
 
             }
 
@@ -240,15 +247,22 @@ public class ChatInboxController implements Initializable {
                         return null;
                     });
                     dialog.showAndWait();
-                    if(!dialog.getResult().trim().isEmpty() && dialog.getResult() != null){
-                    testt.updatemessage(targett.getId(), dialog.getResult());
-                    Text text = (Text) target;
-                    text.setText(dialog.getResult()+" (modifié)");
+                    if (!dialog.getResult().trim().isEmpty() && dialog.getResult() != null) {
+                        testt.updatemessage(targett.getId(), dialog.getResult());
+                        Text text = (Text) target;
+                        text.setText(dialog.getResult() + " (modifié)");
                     }
                     // target.getChildren().get(0).setText(dialog.getResult);
                 });
-                contextMenu.getItems().addAll(option1, option2, option3);
-                contextMenu.show(targett, Side.BOTTOM, 0, 0);
+                if (!testt.messageowner(targett.getId()).equals(clientID)) {
+                    contextMenu.getItems().addAll(option2);
+contextMenu.show(target, Side.BOTTOM, 0, 0);
+                } else {
+                    contextMenu.getItems().addAll(option1, option2, option3);
+                    contextMenu.show(target, Side.BOTTOM, 0, 0);
+
+                }
+                
 
             }
         }
