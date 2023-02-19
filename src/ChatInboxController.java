@@ -8,6 +8,7 @@ import Functions.Conversations;
 import Functions.sql_things;
 import Entity.Conversation;
 import Entity.Message;
+import com.sun.javafx.scene.control.LabeledText;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -23,8 +24,11 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Side;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
@@ -150,6 +154,7 @@ public class ChatInboxController implements Initializable {
             // System.out.println("Clicked on label: " + conv.getId())
             testt.retrieveMessagesFromDB(clientID, message_box, id_conv);
         }
+
     }
 
     @FXML
@@ -161,18 +166,91 @@ public class ChatInboxController implements Initializable {
                 ContextMenu contextMenu = new ContextMenu();
                 MenuItem option1 = new MenuItem("Supprimer pour tout le monde");
                 MenuItem option2 = new MenuItem("Supprimer");
+                MenuItem option3 = new MenuItem("Modifier");
                 option1.setOnAction(e -> {
                     testt.deletemessage(target.getId());
                     message_box.getChildren().remove(target);
                 });
-                                option2.setOnAction(e -> {
+                option2.setOnAction(e -> {
                     message_box.getChildren().remove(target);
                 });
-                contextMenu.getItems().addAll(option1,option2);
+                option3.setOnAction(e -> {
+                    Dialog<String> dialog = new Dialog<>();
+                    dialog.setTitle("Input Dialog");
+                    dialog.setHeaderText("Enter a text");
+
+                    // Create a label and a text field
+                    Label label = new Label("Text:");
+                    TextField textField = new TextField();
+                    VBox content = new VBox(label, textField);
+                    dialog.getDialogPane().setContent(content);
+                    dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+                    //  message_box.getChildren().remove(target);
+                    dialog.setResultConverter(button -> {
+                        if (button == ButtonType.OK) {
+                            return textField.getText();
+                        }
+                        return null;
+                    });
+                    dialog.showAndWait();
+                    if(!dialog.getResult().trim().isEmpty() && dialog.getResult() != null){
+                    testt.updatemessage(target.getId(), dialog.getResult());
+                    HBox hbox = (HBox) target;
+                    Text text = (Text) hbox.getChildren().get(0);
+                    text.setText(dialog.getResult()+" (modifié)");
+                    System.out.println("text : "+dialog.getResult());
+                    }
+                    // target.getChildren().get(0).setText(dialog.getResult);
+                });
+                contextMenu.getItems().addAll(option1, option2, option3);
                 contextMenu.show(target, Side.BOTTOM, 0, 0);
-              
+
             }
 
+        } else if (target instanceof Text) {
+            Node targett = target.getParent();
+            if (event.getButton() == MouseButton.SECONDARY) {
+                ContextMenu contextMenu = new ContextMenu();
+                MenuItem option1 = new MenuItem("Supprimer pour tout le monde");
+                MenuItem option2 = new MenuItem("Supprimer");
+                MenuItem option3 = new MenuItem("Modifier");
+                option1.setOnAction(e -> {
+                    testt.deletemessage(targett.getId());
+                    message_box.getChildren().remove(targett);
+                });
+                option2.setOnAction(e -> {
+                    message_box.getChildren().remove(targett);
+                });
+                option3.setOnAction(e -> {
+                    Dialog<String> dialog = new Dialog<>();
+                    dialog.setTitle("Input Dialog");
+                    dialog.setHeaderText("Enter a text");
+
+                    // Create a label and a text field
+                    Label label = new Label("Text:");
+                    TextField textField = new TextField();
+                    VBox content = new VBox(label, textField);
+                    dialog.getDialogPane().setContent(content);
+                    dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+                    //  message_box.getChildren().remove(target);
+                    dialog.setResultConverter(button -> {
+                        if (button == ButtonType.OK) {
+                            return textField.getText();
+                        }
+                        return null;
+                    });
+                    dialog.showAndWait();
+                    if(!dialog.getResult().trim().isEmpty() && dialog.getResult() != null){
+                    testt.updatemessage(targett.getId(), dialog.getResult());
+                    Text text = (Text) target;
+                    text.setText(dialog.getResult()+" (modifié)");
+                    }
+                    // target.getChildren().get(0).setText(dialog.getResult);
+                });
+                contextMenu.getItems().addAll(option1, option2, option3);
+                contextMenu.show(targett, Side.BOTTOM, 0, 0);
+
+            }
         }
 
     }

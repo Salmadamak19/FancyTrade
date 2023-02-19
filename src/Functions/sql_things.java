@@ -221,5 +221,20 @@ public class sql_things {
         }
 
     }
+        public void updatemessage(String id,String message) {
+        Connection connection;
+        connection = Database.getInstance().getCon();
+        String query2 = "UPDATE message SET message_text = ? WHERE id_message = ?";
+        PreparedStatement statement2;
+        try {
+            statement2 = connection.prepareStatement(query2);
+            statement2.setString(2, id);
+            statement2.setString(1, message+" (modifié)");
+            statement2.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(sql_things.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
 
 }
