@@ -1,8 +1,7 @@
 package Server;
 
-
 import DB.Database;
-import Functions.sql_things;
+import Services.ServiceMessage;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -37,7 +36,7 @@ public class Chat_Server {
         }
     }
 
-   static class ClientHandler implements Runnable {
+    static class ClientHandler implements Runnable {
 
         private Socket client;
         private String clientID;
@@ -55,21 +54,21 @@ public class Chat_Server {
         public void run() {
             while (true) {
                 try {
-                    sql_things testt = new sql_things();
+                    ServiceMessage testt = new ServiceMessage();
                     String message = dis.readUTF();
                     System.out.println("Message from client: " + message);
                     String[] receivedData = message.split(";;");
                     Connection connection;
                     connection = Database.getInstance().getCon();
                     String query = "SELECT prenom FROM user WHERE id_user = ?";
-                   // String query2 = "INSERT INTO message(from_user,to_conv,message_text) VALUES(?,?,?)";
-                  //  PreparedStatement statement2;
+                    // String query2 = "INSERT INTO message(from_user,to_conv,message_text) VALUES(?,?,?)";
+                    //  PreparedStatement statement2;
                     PreparedStatement statement;
                     try {
                         statement = connection.prepareStatement(query);
-                     //   statement2 = connection.prepareStatement(query2);
+                        //   statement2 = connection.prepareStatement(query2);
                         statement.setString(1, receivedData[0]);
-                      /*  statement2.setString(1, receivedData[0]);
+                        /*  statement2.setString(1, receivedData[0]);
                         statement2.setString(2, receivedData[1]);
                         statement2.setString(3, receivedData[2]);
                         statement2.executeUpdate();*/
@@ -81,8 +80,8 @@ public class Chat_Server {
                         };
                         String client_id = testt.GetReceiver(receivedData[0], receivedData[1]);
                         String messageee = receivedData[2];
-                      //  dos.writeUTF(user_id + ";;" + receiver_id + ";;" + messageee);
-                       // sendMessageToClient(receivedData[0], message);
+                        //  dos.writeUTF(user_id + ";;" + receiver_id + ";;" + messageee);
+                        // sendMessageToClient(receivedData[0], message);
                         sendMessageToClient(client_id, message);
                     } catch (SQLException ex) {
                         Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);

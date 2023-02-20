@@ -4,11 +4,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
  */
-import Functions.Conversations;
-import Functions.sql_things;
-import Entity.Conversation;
-import Entity.Message;
-import com.sun.javafx.scene.control.LabeledText;
+import Services.ServiceConversation;
+import Services.ServiceMessage;
+import Entities.Conversation;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -17,22 +15,18 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Side;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -50,6 +44,7 @@ import javafx.scene.text.Text;
  */
 public class ChatInboxController implements Initializable {
 
+    private int id;
     @FXML
     private Button send_button;
     @FXML
@@ -58,13 +53,15 @@ public class ChatInboxController implements Initializable {
     private DataOutputStream dos;
     private String clientID = "1";
     private int convid;
-    sql_things testt = new sql_things();
-    Conversations convv = new Conversations();
+    ServiceMessage testt = new ServiceMessage();
+    ServiceConversation convv = new ServiceConversation();
     Conversation Current_conv = new Conversation();
     @FXML
     private VBox inbox_list;
     @FXML
     private VBox message_box;
+    @FXML
+    private Label alertlabel;
 
     /**
      * Initializes the controller class.
@@ -73,6 +70,7 @@ public class ChatInboxController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         inbox_list.setPadding(new Insets(10));
         inbox_list.setSpacing(10);
+        alertlabel.setVisible(false);
         // inbox_list.setStyle("-fx-background-color: #f2f2f2;");
 
         // inbox_list.setAlignment(Pos.TOP_CENTER);
@@ -119,40 +117,61 @@ public class ChatInboxController implements Initializable {
     }
 
     @FXML
-    private void Send_message(ActionEvent event) {
-        try {
-            dos.writeUTF(clientID + ";;" + convid + ";;" + message_input.getText());
-            String conv = Integer.toString(convid);
-            testt.sendmessage(message_input.getText(), clientID, conv, message_box);
-            //   messages_box.appendText("You: " + message_input.getText() + "\n");
-            message_input.clear();
-        } catch (IOException ex) {
-            Logger.getLogger(ChatInboxController.class.getName()).log(Level.SEVERE, null, ex);
+    private void Send_message(ActionEvent event) throws IOException {
+        if (!testt.checkInput(message_input, alertlabel)) {
+            try {
+                dos.writeUTF(clientID + ";;" + convid + ";;" + message_input.getText());
+                String conv = Integer.toString(convid);
+                testt.sendmessage(message_input.getText(), clientID, conv, message_box);
+                //   messages_box.appendText("You: " + message_input.getText() + "\n");
+                message_input.clear();
+                alertlabel.setVisible(false);
+            } catch (IOException ex) {
+                Logger.getLogger(ChatInboxController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
     }
 
     @FXML
     private void switch_conversation(MouseEvent event) {
+        alertlabel.setVisible(false);
         int index = 0;
         Node target = (Node) event.getTarget();
-        if (target instanceof Label) {
-            // Cast the target node to a Label
+        if (target instanceof Text) {
             while (index < inbox_list.getChildren().size()) {
                 Node node = inbox_list.getChildren().get(index);
                 node.setStyle("-fx-background-color: #808080; -fx-background-radius: 50px;");
                 index++;
             }
-            Label clickedLabel = (Label) target;
-            clickedLabel.setStyle("-fx-background-color: #007bff; -fx-background-radius: 50px;");
+            HBox clickedHbox = (HBox) target.getParent();
+            clickedHbox.setStyle("-fx-background-color: #007bff; -fx-background-radius: 50px;");
             Conversation conv;
-            conv = (Conversation) clickedLabel.getUserData();
+            Text text = (Text) target;
+            conv = (Conversation) text.getUserData();
             int id_conv = conv.getId();
             convid = id_conv;
-
-            // Do something with the clicked label
-            // System.out.println("Clicked on label: " + conv.getId())
             testt.retrieveMessagesFromDB(clientID, message_box, id_conv);
+        } else if (target instanceof HBox) {
+            while (index < inbox_list.getChildren().size()) {
+                Node node = inbox_list.getChildren().get(index);
+                node.setStyle("-fx-background-color: #808080; -fx-background-radius: 50px;");
+                index++;
+            }
+            HBox clickedHbox = (HBox) target;
+            clickedHbox.setStyle("-fx-background-color: #007bff; -fx-background-radius: 50px;");
+            Conversation conv;
+            Text text = new Text();
+            for (Node child : ((HBox) target).getChildren()) {
+                if (child instanceof Text) {
+                    text = (Text) child;
+                }
+            }
+            conv = (Conversation) text.getUserData();
+            int id_conv = conv.getId();
+            convid = id_conv;
+            testt.retrieveMessagesFromDB(clientID, message_box, id_conv);
+
         }
 
     }
@@ -204,10 +223,16 @@ public class ChatInboxController implements Initializable {
                     // target.getChildren().get(0).setText(dialog.getResult);
                 });
                 if (!testt.messageowner(target.getId()).equals(clientID)) {
+                    if (contextMenu.isShowing()) {
+                        contextMenu.hide();
+                    }
                     contextMenu.getItems().addAll(option2);
-                  //  System.out.println("t id : " + testt.messageowner(target.getId()));
+                    //  System.out.println("t id : " + testt.messageowner(target.getId()));
                     contextMenu.show(target, Side.BOTTOM, 0, 0);
                 } else {
+                    if (contextMenu.isShowing()) {
+                        contextMenu.hide();
+                    }
                     contextMenu.getItems().addAll(option1, option2, option3);
                     contextMenu.show(target, Side.BOTTOM, 0, 0);
                 }
@@ -255,14 +280,19 @@ public class ChatInboxController implements Initializable {
                     // target.getChildren().get(0).setText(dialog.getResult);
                 });
                 if (!testt.messageowner(targett.getId()).equals(clientID)) {
+                    if (contextMenu.isShowing()) {
+                        contextMenu.hide();
+                    }
                     contextMenu.getItems().addAll(option2);
-contextMenu.show(target, Side.BOTTOM, 0, 0);
+                    contextMenu.show(target, Side.BOTTOM, 0, 0);
                 } else {
+                    if (contextMenu.isShowing()) {
+                        contextMenu.hide();
+                    }
                     contextMenu.getItems().addAll(option1, option2, option3);
                     contextMenu.show(target, Side.BOTTOM, 0, 0);
 
                 }
-                
 
             }
         }
