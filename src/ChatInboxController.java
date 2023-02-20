@@ -226,8 +226,7 @@ public class ChatInboxController implements Initializable {
                     if (contextMenu.isShowing()) {
                         contextMenu.hide();
                     }
-                    contextMenu.getItems().addAll(option2);
-                    //  System.out.println("t id : " + testt.messageowner(target.getId()));
+                    contextMenu.getItems().add(option2);
                     contextMenu.show(target, Side.BOTTOM, 0, 0);
                 } else {
                     if (contextMenu.isShowing()) {
@@ -283,7 +282,7 @@ public class ChatInboxController implements Initializable {
                     if (contextMenu.isShowing()) {
                         contextMenu.hide();
                     }
-                    contextMenu.getItems().addAll(option2);
+                    contextMenu.getItems().add(option2);
                     contextMenu.show(target, Side.BOTTOM, 0, 0);
                 } else {
                     if (contextMenu.isShowing()) {

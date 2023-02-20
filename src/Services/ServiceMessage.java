@@ -258,7 +258,7 @@ public class ServiceMessage {
     }
     public Set<String> badwordslist() throws FileNotFoundException, IOException{
             Set<String> set = new HashSet<>();
-        String fileName = "C:/Users/ousso/Documents/NetBeansProjects/Fancy_Trade_Messagerie/src/Functions/badwords.txt"; // Replace with the name of your file
+        String fileName = "C:/Users/ousso/Documents/NetBeansProjects/Fancy_Trade_Messagerie/src/Services/badwords.txt"; // Replace with the name of your file
 
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
