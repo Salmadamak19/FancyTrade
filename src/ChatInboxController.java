@@ -4,17 +4,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
  */
+import DB.Database;
 import Services.ServiceConversation;
 import Services.ServiceMessage;
 import Entities.Conversation;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import static java.lang.System.in;
 import java.net.Socket;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -51,7 +58,7 @@ public class ChatInboxController implements Initializable {
     private TextField message_input;
     private DataInputStream dis;
     private DataOutputStream dos;
-    private String clientID = "1";
+    private String clientID = "3";
     private int convid;
     ServiceMessage testt = new ServiceMessage();
     ServiceConversation convv = new ServiceConversation();
@@ -86,35 +93,57 @@ public class ChatInboxController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(ChatInboxController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    public void run() {
-        while (true) {
+        Thread readerThread = new Thread(() -> {
             try {
-                String message = dis.readUTF();
-                String[] receivedData = message.split(";;");
-                System.out.println("hello");
-                String senderID = receivedData[0];
-                String receiverID = receivedData[1];
-                String text = receivedData[2];
-                if (convid == Integer.parseInt(receiverID)) {
-                    HBox messageContainer = new HBox();
-                    // messageContainer.setId(senderID);
-                    Text senderMessage = new Text(testt.prenom(senderID) + " : " + text);
-                    senderMessage.setFill(Color.WHITE); // set the text color to white
-                    senderMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15)); // set the font
-                    // senderMessage.setStyle("-fx-background-color: #808080; -fx-background-radius: 0px;");
-                    messageContainer.setStyle("-fx-background-color: #808080; -fx-background-radius: 0px;");
-                    // senderMessage.setStyle("-fx-background-color: #FFFFFF; -fx-padding: 10px;");
-                    messageContainer.getChildren().add(senderMessage);
-                    message_box.getChildren().add(messageContainer);
+                while (dis.readUTF() != null) {
+                    String message = dis.readUTF();
+                    Platform.runLater(() -> {
+                        
+                        String[] receivedData = message.split(";;");
+                        System.out.println("hello");
+                        String senderID = receivedData[0];
+                        String receiverID = receivedData[1];
+                        String text = receivedData[2];
+                        if (convid == Integer.parseInt(receiverID)) {
+                            Connection connection;
+                            connection = Database.getInstance().getCon();
+                            String query = "SELECT id_message FROM message WHERE from_user = ? AND to_conv = ? AND message_text = ?";
+                            PreparedStatement statement;
+                            String msg_id = "-1";
+                            try {
+                                statement = connection.prepareStatement(query);
+                                statement.setString(1, senderID);
+                                statement.setString(2, receiverID);
+                                statement.setString(3, text);
+                                ResultSet resultSet = statement.executeQuery();
+                                while (resultSet.next()) {
+                                    msg_id = resultSet.getString(1); //"zadaz";
+                                }
+
+                            } catch (SQLException ex) {
+
+                            }
+                            HBox messageContainer = new HBox();
+                            messageContainer.setId(msg_id);
+                            Text senderMessage = new Text(testt.prenom(senderID) + " : " + text);
+                            senderMessage.setFill(Color.WHITE);
+                            senderMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+                            messageContainer.setPadding(new Insets(0, 0, 0, 10));
+                            messageContainer.setStyle("-fx-background-color: #808080; -fx-background-radius: 0px;");
+                            messageContainer.getChildren().add(senderMessage);
+                            message_box.getChildren().add(messageContainer);
+                        }
+                    });
                 }
             } catch (IOException e) {
-                System.out.println("Server disconnected");
-                break;
+                e.printStackTrace();
             }
-        }
+        });
+        readerThread.setDaemon(true);
+        readerThread.start();
     }
+
+
 
     @FXML
     private void Send_message(ActionEvent event) throws IOException {

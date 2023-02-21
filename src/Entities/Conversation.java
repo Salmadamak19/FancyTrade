@@ -57,5 +57,11 @@ public class Conversation {
         String Receiver = testt.GetReceiver(Client_id, Integer.toString(id));
         return testt.prenom(Receiver);
     }
+        public String showidreceiver(String Client_id) {
+        // return "Conversation{" + "id=" + id + ", idconv_user=" + idconv_user + ", idconv_user2=" + idconv_user2 + '}';
+        ServiceMessage testt = new ServiceMessage();
+        String Receiver = testt.GetReceiver(Client_id, Integer.toString(id));
+        return testt.prenom(Receiver);
+    }
 
 }

@@ -61,7 +61,7 @@ public class ServiceConversation {
                 HBox conversationContainer = new HBox();
                 conversationContainer.setPadding(new Insets(20, 25, 20, 25));
                 conversationContainer.setStyle("-fx-background-color: #808080; -fx-background-radius: 50px;");
-                Text clientConversations = new Text(conv.toString());
+                Text clientConversations = new Text(conv.showidreceiver(id));
                 clientConversations.setUserData(conv);
                 clientConversations.setFill(Color.WHITE); // set the text color to white
                 clientConversations.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
