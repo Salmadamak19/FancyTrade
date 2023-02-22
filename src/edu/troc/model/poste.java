@@ -112,7 +112,7 @@ public class poste {
 
     @Override
     public String toString() {
-        return "poste{" + "id_poste=" + id_poste + ", date_publication=" + date_publication + ", photo=" + photo + ", region=" + region + ", categorie=" + categorie + ", description=" + description + ", valeur=" + valeur + ", titre=" + titre + '}';
+        return  "id_poste=" + id_poste + ", date_publication=" + date_publication + ", photo=" + photo + ", region=" + region + ", categorie=" + categorie + ", description=" + description + ", valeur=" + valeur + ", titre=" + titre + '}';
     }
    
    

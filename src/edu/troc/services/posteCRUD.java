@@ -41,7 +41,7 @@ public class posteCRUD implements InterfaceCRUD{
             String req = "UPDATE `poste` SET `date_publication` = '" + p.getDate_publication()+ "', `photos` = '" + p.getPhoto()+"',`region` = '" + p.getRegion()+ "',`categorie` = '" + p.getCategorie()+ "',`description` = '" + p.getDescription()+ "',`valeur` = '" + p.getValeur()+ "',`titre` = '" + p.getTitre()+ "' WHERE `id_poste` = " + p.getId_poste();
             Statement st = conn.createStatement();
             st.executeUpdate(req);
-            System.out.println("voiture updated !");
+            System.out.println("poste updated !");
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
@@ -55,7 +55,7 @@ public class posteCRUD implements InterfaceCRUD{
             String req = "DELETE FROM `poste` WHERE id_poste = " + id;
             Statement st = conn.createStatement();
             st.executeUpdate(req);
-            System.out.println("voiture deleted !");
+            System.out.println("poste deleted !");
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }

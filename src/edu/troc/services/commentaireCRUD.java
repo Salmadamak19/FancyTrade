@@ -5,7 +5,8 @@
  */
 package edu.troc.services;
 
-import edu.troc.interfaces.InterfaceCRUD;
+import edu.troc.interfaces.IcommentaireCRUD;
+import edu.troc.model.commentaire;
 import edu.troc.model.poste;
 import edu.troc.utils.MyConnection;
 import java.sql.Connection;
@@ -15,16 +16,18 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
+
+
+/**
  *
  * @author Nguira Azyz
  */
-public class commentaireCRUD implements InterfaceCRUD{
+public class commentaireCRUD implements IcommentaireCRUD{
     Statement ste;
     Connection conn = MyConnection.getInstance().getConn();
     
     @Override
-    public void ajoutercom(commentaire c) {
+    public void ajoutercommentaire(commentaire c) {
         try {
             String req = "INSERT INTO `comments_poste`(`com`) VALUES ('"+c.getCom()+"')";
             ste = conn.createStatement();
@@ -34,56 +37,23 @@ public class commentaireCRUD implements InterfaceCRUD{
             System.out.println("commentaire non ajouté");
                       }
  }
- 
-    @Override
-    public void modifierposte(poste p ) {
-        try {
-            String req = "UPDATE `poste` SET `date_publication` = '" + p.getDate_publication()+ "', `photos` = '" + p.getPhoto()+"',`region` = '" + p.getRegion()+ "',`categorie` = '" + p.getCategorie()+ "',`description` = '" + p.getDescription()+ "',`valeur` = '" + p.getValeur()+ "',`titre` = '" + p.getTitre()+ "' WHERE `id_poste` = " + p.getId_poste();
-            Statement st = conn.createStatement();
-            st.executeUpdate(req);
-            System.out.println("voiture updated !");
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
-        }
     
-    
-   
-    @Override
-    public void supprimerposte(int id) {
+    public List<commentaire> affichercommentaire() {
+       List<commentaire> list = new ArrayList<>();
         try {
-            String req = "DELETE FROM `poste` WHERE id_poste = " + id;
-            Statement st = conn.createStatement();
-            st.executeUpdate(req);
-            System.out.println("voiture deleted !");
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-    
-
-    @Override
-    public List<poste> afficherposte() {
-       List<poste> list = new ArrayList<>();
-        try {
-            String req = "Select * from poste";
+            String req = "Select * from comments_poste";
             Statement st = conn.createStatement();
            
             ResultSet RS= st.executeQuery(req);
             while(RS.next()){
-             poste p = new poste();
-             p.setId_poste(RS.getInt(1));
-                p.setDate_publication(RS.getString(2));
-                p.setPhoto(RS.getString(3));
-                p.setRegion(RS.getString(4));    
-                p.setCategorie(RS.getString(5));
-                 p.setDescription(RS.getString(6));
-                  p.setValeur(RS.getInt(7));
-                    p.setTitre(RS.getString(8));
+             commentaire c = new commentaire();
+             c.setId_com(RS.getInt(1));
+                c.setCom(RS.getString(2));
+               
                         
                 
              
-             list.add(p);
+             list.add(c);
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -91,6 +61,26 @@ public class commentaireCRUD implements InterfaceCRUD{
 
         return list;
     }
-    
-    
+        @Override
+    public void supprimercommentaire(int id) {
+        try {
+            String req = "DELETE FROM `comments_poste` WHERE id_com = " + id;
+            Statement st = conn.createStatement();
+            st.executeUpdate(req);
+            System.out.println("commentaire deleted !");
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+        @Override
+    public void modifiercommentaire(commentaire c ) {
+        try {
+            String req = "UPDATE `comments_poste` SET `com` = '" + c.getCom()+ "' WHERE `id_com` = " + c.getId_com();
+            Statement st = conn.createStatement();
+            st.executeUpdate(req);
+            System.out.println("commentaire updated !");
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        }
 }

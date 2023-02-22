@@ -62,6 +62,47 @@ public class Ajouter_posteController implements Initializable {
         
          poste p = new poste(date_publication, photo, region, categorie, description, valeur, titre);
         posteCRUD post = new posteCRUD();
+        if (region.isEmpty())
+        { 
+            Alert alert = new Alert(AlertType.INFORMATION);
+
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText(null);
+        alert.setContentText("region vide!");
+        alert.show();
+        }else if ( titre.isEmpty())
+        { 
+            Alert alert = new Alert(AlertType.INFORMATION);
+
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText(null);
+        alert.setContentText("titre vide!");
+        alert.show();
+        }else if(description.isEmpty())
+        { 
+            Alert alert = new Alert(AlertType.INFORMATION);
+
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText(null);
+        alert.setContentText("description vide!");
+        alert.show();
+        }else if(categorie.isEmpty())
+        { 
+            Alert alert = new Alert(AlertType.INFORMATION);
+
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText(null);
+        alert.setContentText("categorie vide!");
+        alert.show();
+        }else if(valeur<0){
+            Alert alert = new Alert(AlertType.INFORMATION);
+
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText(null);
+        alert.setContentText("valeur negatif!");
+        alert.show();
+        }
+        else{
         post.ajouterposte(p);
         Alert alert = new Alert(AlertType.INFORMATION);
 
@@ -70,6 +111,7 @@ public class Ajouter_posteController implements Initializable {
         alert.setContentText("poste insérée avec succés!");
         alert.show();
         
+        }
 
     
     }

@@ -26,7 +26,7 @@ public class interface_principale extends Application {
     public void start(Stage primaryStage) {
          Parent root;
         try {
-            root=FXMLLoader.load(getClass().getResource("ajouter_poste.fxml"));
+            root=FXMLLoader.load(getClass().getResource("ajouter_commentaire.fxml"));
              Scene scene = new Scene(root);
         
         primaryStage.setTitle("trippie");

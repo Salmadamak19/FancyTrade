@@ -5,9 +5,9 @@
  */
 package edu.troc.gui;
 
-import edu.troc.interfaces.InterfaceCRUD;
-import edu.troc.model.poste;
-import edu.troc.services.posteCRUD;
+import edu.troc.interfaces.IcommentaireCRUD;
+import edu.troc.model.commentaire;
+import edu.troc.services.commentaireCRUD;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -22,47 +22,41 @@ import javafx.scene.control.ListView;
  *
  * @author Nguira Azyz
  */
-public class Afficher_postController implements Initializable {
+public class Afficher_commentaireController implements Initializable {
 
     @FXML
-    private ListView<poste> afficherpost;
+    private ListView<commentaire> afficher_com;
     @FXML
-    private Button supprimer;
-
+    private Button supprimer_com;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        ListView<poste> list1 = afficherpost;
-        InterfaceCRUD inter = new posteCRUD();
-        List<poste> list2 = inter.afficherposte();
+        ListView<commentaire> list1 = afficher_com;
+        IcommentaireCRUD inter = new commentaireCRUD();
+        List<commentaire> list2 = inter.affichercommentaire();
         for (int i = 0; i < list2.size(); i++) {
-            poste p = list2.get(i);
-            list1.getItems().add(p);
+            commentaire c = list2.get(i);
+            list1.getItems().add(c);
 
-    }   
- } 
-
-    private void supprimer_voiture(ActionEvent event) {
-        
-
-    }
-
+    } 
+    }    
     @FXML
     private void supprimer_commentaire(ActionEvent event) {
-                 ListView<poste> list = afficherpost;
-        InterfaceCRUD inter = new posteCRUD();
+             
+         ListView<commentaire> list = afficher_com;
+         
+        IcommentaireCRUD inter = new commentaireCRUD();
         int selectedIndex = list.getSelectionModel().getSelectedIndex();
         if (selectedIndex >= 0) {
-            poste p = list.getSelectionModel().getSelectedItem();
-            System.out.println(p.getId_poste());
-            inter.supprimerposte(p.getId_poste());
+            commentaire c = list.getSelectionModel().getSelectedItem();
+            System.out.println(c.getId_com());
+            inter.supprimercommentaire(c.getId_com());
             list.getItems().remove(selectedIndex);
         } else {
-            System.out.println("Veuillez sélectionner une voiture à supprimer.");
-        }   
+            System.out.println("Veuillez sélectionner un commentaire à supprimer.");
+        }
     }
  } 
-    
 
