@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  *
- * @author aziz
+ * @author salma
  */
 public class CommentaireService {
      Connection connexion;
@@ -37,8 +37,8 @@ public class CommentaireService {
             pst.setString(2,p.getDescriptionc());
             pst.setString(3,p.getImage_c());
             pst.setInt(4,p.getPost());
-
-
+            
+                      
             
             
 

@@ -6,6 +6,7 @@
 package Etsports;
 
 import edu.entities.Post;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
@@ -26,7 +27,7 @@ import javafx.stage.Stage;
 /**
  * FXML Controller class
  *
- * @author aziz
+ * @author salma
  */
 public class PostcardController implements Initializable {
 
@@ -66,7 +67,11 @@ public class PostcardController implements Initializable {
     tfcommunaute.setText(communaute);
 //    Image imgp = new Image(getClass().getResourceAsStream("/ressources/"+ image +""));
 //    imagepost.setImage(imgp);
-    labelimage.setText(image);
+File file = new File("C:/Users/DELL/Desktop/ProjetPi/Esports-Application/blog/src/Images/"+image);
+        Image img=new Image(file.toURI().toString());
+        imagepost.setImage(img);
+
+    //labelimage.setText(image);
 tfdatepost.setText(String.valueOf(date_p));
     tfnbr_jaime.setText(String.valueOf(nbr_jaime));
         idpostlabel.setText(String.valueOf(id));

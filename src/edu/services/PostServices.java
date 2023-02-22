@@ -19,7 +19,7 @@ import java.util.List;
 
 /**
  *
- * @author aziz
+ * @author salma
  */
 public class PostServices implements Iservice<Post> {
  Connection connexion;

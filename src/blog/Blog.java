@@ -14,7 +14,7 @@ import edu.services.ReplyService;
 import java.sql.SQLException;
 /**
  *
- * @author aziz
+ * @author salma
  */
 public class Blog {
 
@@ -26,7 +26,7 @@ public class Blog {
  // Post p,p1;
    //     Reply c ;
      //   c = new Reply();
-        //        c = new Reply( 14,"mooooooo",  "aziz", 79);
+        //        c = new Reply( 14,"mooooooo",  "salma", 79);
 
         //ReplyService sp = new ReplyService();
         
@@ -34,7 +34,7 @@ public class Blog {
         
         
             //System.out.println(sp.afficher());
-       // p1 = new Post(59,"looooool","bbkbonbon","fifffffa","aziz","2022-02-24 22:59:17","IMAGE.jpg",0);
+       // p1 = new Post(59,"looooool","bbkbonbon","fifffffa","salma","2022-02-24 22:59:17","IMAGE.jpg",0);
         //sp.modifier(p1);
         
     }

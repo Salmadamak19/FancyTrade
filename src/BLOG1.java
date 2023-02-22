@@ -6,7 +6,7 @@
 
 /**
  *
- * @author aziz
+ * @author salma
  */
 public class BLOG1 {
 

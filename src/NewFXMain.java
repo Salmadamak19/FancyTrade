@@ -19,7 +19,7 @@ import javafx.stage.StageStyle;
 
 /**
  *
- * @author aziz
+ * @author salma
  */
 public class NewFXMain extends Application {
     

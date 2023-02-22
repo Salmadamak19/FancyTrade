@@ -13,7 +13,7 @@ import java.sql.SQLException;
 
 /**
  *
- * @author aziz
+ * @author salma
  */
 public class bdd {
      final String url ="jdbc:mysql://localhost:3306/fancytrade";

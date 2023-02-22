@@ -30,7 +30,7 @@ import javafx.scene.input.MouseEvent;
 /**
  * FXML Controller class
  *
- * @author aziz
+ * @author salma
  */
 public class CommentViewController implements Initializable {
 

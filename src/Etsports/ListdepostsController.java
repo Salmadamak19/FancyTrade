@@ -31,7 +31,8 @@ import javafx.scene.layout.Region;
 /**
  * FXML Controller class
  *
- * @author aziz
+ * @author salma
+ * 
  */
 public class ListdepostsController implements Initializable {
 

@@ -9,7 +9,7 @@ import java.sql.Date;
 
 /**
  *
- * @author aziz
+ * @author salma
  */
 
 public class Post {

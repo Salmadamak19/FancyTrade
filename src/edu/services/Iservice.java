@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  *
- * @author aziz
+ * @author salma
  */
 public interface Iservice<T> {
     

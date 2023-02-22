@@ -42,7 +42,7 @@ import javafx.stage.FileChooser;
 /**
  * FXML Controller class
  *
- * @author aziz
+ * @author salma
  */
 public class BackcommentsController implements Initializable {
 
@@ -241,7 +241,7 @@ public String controlSaisie(){
 
         if (f != null) {
             imageFile = f.getAbsolutePath();
-            String newfile = imageFile.replace("C:\\Users\\aziz\\Desktop\\blog\\src\\Images", "");
+            String newfile = imageFile.replace("C:\\Users\\DELL\\Desktop\\ProjetPi\\Esports-Application\\blog\\src\\Images", "");
             tfimagep.setText(newfile);
         }
     }
