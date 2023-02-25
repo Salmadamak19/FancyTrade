@@ -1,6 +1,8 @@
 package Services;
 
 import DB.Database;
+import Entities.Conversation;
+import Entities.Message;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -99,7 +101,7 @@ public class ServiceMessage {
         return user_id;
     }
 
-    public void retrieveMessagesFromDB(String clientID, VBox messages, int id_conv) {
+    public void retrieveMessagesFromDB(String clientID, VBox messages, Conversation conv) {
         messages.getChildren().clear();
         Connection connection;
         connection = Database.getInstance().getCon();
@@ -107,34 +109,26 @@ public class ServiceMessage {
         //  messagess.setSpacing(10);
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM message where to_conv = ? ORDER BY date_time");
-            preparedStatement.setString(1, Integer.toString(id_conv));
+            preparedStatement.setString(1, Integer.toString(conv.getId()));
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                String id = resultSet.getString("id_message");
-                String from = resultSet.getString("from_user");
-                String message = resultSet.getString("message_text");
+                Message m = new Message(resultSet.getInt("id_message"), resultSet.getInt("from_user"), resultSet.getString("message_text"));
 
                 HBox messageContainer = new HBox();
-                messageContainer.setId(id);
-                if (clientID.equals(from)) {
-                    //messages.setTextAlignment(TextAlignment.RIGHT);
-                    Text clientMessage = new Text(message);
-                 //   clientMessage.setWrappingWidth(200);
-                    clientMessage.setFill(Color.WHITE); // set the text color to white
+                messageContainer.setId(Integer.toString(m.getId_message()));
+                if (clientID.equals(m.getFrom_user())) {
+                    Text clientMessage = new Text(m.getText());
+                    clientMessage.setFill(Color.WHITE);
                     clientMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
-                    //clientMessage.setWrappingWidth(100);
-                    //  clientMessage.setStyle("-fx-background-color: #2196F3; -fx-padding: 10px;");
-                    //  double textWidth = clientMessage.getBoundsInLocal().getWidth();
 
                     messageContainer.setAlignment(Pos.CENTER_RIGHT);
                     messageContainer.setStyle("-fx-background-color: #007bff; -fx-background-radius: 0px;");
-                    // messageContainer.setPrefWidth(1);
                     messageContainer.setPadding(new Insets(0, 20, 0, 0));
                     messageContainer.getChildren().add(clientMessage);
 
                 } else {
-                    Text senderMessage = new Text(prenom(from) + " : " + message);
+                    Text senderMessage = new Text(prenom(Integer.toString(m.getFrom_user())) + " : " + m.getText());
                     senderMessage.setFill(Color.WHITE); // set the text color to white
                     senderMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15)); // set the font
                     // senderMessage.setStyle("-fx-background-color: #808080; -fx-background-radius: 0px;");
@@ -154,7 +148,7 @@ public class ServiceMessage {
         }
     }
 
-    public void sendmessage(String message, String clientid, String conv, VBox messages) {
+    public void sendmessage(Message m, VBox messages) {
         Connection connection;
         connection = Database.getInstance().getCon();
         String query2 = "INSERT INTO message(from_user,to_conv,message_text) VALUES(?,?,?)";
@@ -162,10 +156,10 @@ public class ServiceMessage {
         int id_message = -1;
         try {
             statement2 = connection.prepareStatement(query2, PreparedStatement.RETURN_GENERATED_KEYS);
-            statement2.setString(1, clientid);
+            statement2.setInt(1, m.getFrom_user());
 
-            statement2.setString(2, conv);
-            statement2.setString(3, message);
+            statement2.setInt(2, m.getTo_conv().getId());
+            statement2.setString(3, m.getText());
             int affectedRows = statement2.executeUpdate();
 
             if (affectedRows == 0) {
@@ -187,7 +181,7 @@ public class ServiceMessage {
         HBox messageContainer = new HBox();
         // StackPane stackPane = new StackPane();
         messageContainer.setId(Integer.toString(id_message));
-        Text clientMessage = new Text(message);
+        Text clientMessage = new Text(m.getText());
         clientMessage.setFill(Color.WHITE); // set the text color to white
         clientMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
         // clientMessage.setBoundsType(TextBoundsType.VISUAL);
@@ -205,6 +199,36 @@ public class ServiceMessage {
         messageContainer.getChildren().add(clientMessage);
         messages.getChildren().add(messageContainer);
         // messages.appendText(prenom(from) + " To " + prenom(to) + " : " + message + "\n");
+    }
+
+    public Message readmessagefromserver(String message,Conversation Current_conv) {
+        Message m = null;
+        String[] receivedData = message.split(";;");
+        System.out.println("hello");
+        String senderID = receivedData[0];
+        String receiverID = receivedData[1];
+        String text = receivedData[2];
+        if (Current_conv.getId() == Integer.parseInt(receiverID)) {
+        Connection connection;
+        connection = Database.getInstance().getCon();
+        String query = "SELECT * FROM message WHERE from_user = ? AND to_conv = ? AND message_text = ?";
+        PreparedStatement statement;
+        try {
+            statement = connection.prepareStatement(query);
+            statement.setString(1, senderID);
+            statement.setString(2, receiverID);
+            statement.setString(3, text);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Conversation c = new Conversation(resultSet.getInt(3));
+                m = new Message(resultSet.getInt(1),resultSet.getInt(2),c,resultSet.getString(4));
+            }
+        return m;
+        } catch (SQLException ex) {
+return null;
+        }
+        }
+return null;
     }
 
     public String messageowner(String id) {
@@ -256,11 +280,12 @@ public class ServiceMessage {
         }
 
     }
-    public Set<String> badwordslist() throws FileNotFoundException, IOException{
-            Set<String> set = new HashSet<>();
+
+    public Set<String> badwordslist() throws FileNotFoundException, IOException {
+        Set<String> set = new HashSet<>();
         String fileName = "C:/Users/ousso/Documents/NetBeansProjects/Fancy_Trade_Messagerie/src/Services/badwords.txt"; // Replace with the name of your file
 
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+        try ( BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = br.readLine()) != null) {
                 set.add(line.trim());
@@ -268,8 +293,9 @@ public class ServiceMessage {
         }
         return set;
     }
-    public boolean checkInput(TextField input,Label alertlabel) throws IOException {
-            String inputt = input.getText().toLowerCase();
+
+    public boolean checkInput(TextField input, Label alertlabel) throws IOException {
+        String inputt = input.getText().toLowerCase();
         boolean containsBadWord = badwordslist().stream().anyMatch(inputt::contains);
         if (containsBadWord || input.getText().length() > 25) {
             input.clear();
@@ -284,7 +310,7 @@ public class ServiceMessage {
         } else {
             return false;
         }
-        
+
     }
 
 }

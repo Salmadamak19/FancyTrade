@@ -39,7 +39,6 @@ public class ServiceConversation {
         try {
 
             connection = Database.getInstance().getCon();
-            //       Statement stmt = connection.getCon().createStatement();
             String query = "SELECT id,idconv_user,idconv_user2 FROM conv WHERE idconv_user = ? OR idconv_user2 = ?";
             PreparedStatement statement;
             statement = connection.prepareStatement(query);
@@ -49,25 +48,16 @@ public class ServiceConversation {
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
-                // String id_receiver = testt.GetReceiver(id, rs.getString("id"));
                 Conversation conv = new Conversation(rs.getInt("id"), rs.getInt("idconv_user"), rs.getInt("idconv_user2"));
-                /*   Label label = new Label();
-                label.setUserData(conv);
-                label.setText(conv.toString());
-                //label.setAlignment(Pos.CENTER);
-                label.setFont(new Font(20));
-                label.setStyle("-fx-background-color: #808080; -fx-background-radius: 50px;");
-                label.setPadding(new Insets(20, 25, 20, 25));*/
                 HBox conversationContainer = new HBox();
                 conversationContainer.setPadding(new Insets(20, 25, 20, 25));
                 conversationContainer.setStyle("-fx-background-color: #808080; -fx-background-radius: 50px;");
                 Text clientConversations = new Text(conv.showidreceiver(id));
                 clientConversations.setUserData(conv);
-                clientConversations.setFill(Color.WHITE); // set the text color to white
+                clientConversations.setFill(Color.WHITE);
                 clientConversations.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
                 conversationContainer.getChildren().add(clientConversations);
                 listView.getChildren().add(conversationContainer);
-                // listView.setStyle("-fx-text-fill: transparent; -fx-background-color: transparent;");
 
             }
 

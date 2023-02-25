@@ -23,7 +23,7 @@ public class ChatInbox extends Application {
     public void start(Stage primaryStage) {
 
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("Chat Inbox.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("Chatt Inbox.fxml"));
             Scene scene = new Scene(root);
 
             primaryStage.setTitle("Chat Inbox");

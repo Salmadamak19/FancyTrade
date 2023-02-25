@@ -19,6 +19,10 @@ public class Conversation {
     public Conversation() {
     }
 
+    public Conversation(int id) {
+        this.id = id;
+    }
+
     public Conversation(int id, int idconv_user, int idconv_user2) {
         this.id = id;
         this.idconv_user = idconv_user;

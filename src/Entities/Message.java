@@ -14,21 +14,34 @@ public class Message {
 
     int id_message;
     int from_user;
-    int to_conv;
+    Conversation to_conv;
     String text;
     DateTime date_time;
 
     public Message() {
     }
 
-    public Message(int id_message, int from_user, int to_conv, String text) {
+    public Message(int id_message, int from_user, String text) {
+        this.id_message = id_message;
+        this.from_user = from_user;
+        this.text = text;
+    }
+    
+
+    public Message(int from_user, Conversation to_conv, String text) {
+        this.from_user = from_user;
+        this.to_conv = to_conv;
+        this.text = text;
+    }
+
+    public Message(int id_message, int from_user, Conversation to_conv, String text) {
         this.id_message = id_message;
         this.from_user = from_user;
         this.to_conv = to_conv;
         this.text = text;
     }
 
-    public Message(int id_message, int from_user, int to_conv, String text, DateTime date_time) {
+    public Message(int id_message, int from_user, Conversation to_conv, String text, DateTime date_time) {
         this.id_message = id_message;
         this.from_user = from_user;
         this.to_conv = to_conv;
@@ -52,11 +65,11 @@ public class Message {
         this.from_user = from_user;
     }
 
-    public int getTo_conv() {
+    public Conversation getTo_conv() {
         return to_conv;
     }
 
-    public void setTo_conv(int to_conv) {
+    public void setTo_conv(Conversation to_conv) {
         this.to_conv = to_conv;
     }
 

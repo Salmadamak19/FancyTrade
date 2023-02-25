@@ -1,23 +1,17 @@
 
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
  */
-import DB.Database;
 import Services.ServiceConversation;
 import Services.ServiceMessage;
 import Entities.Conversation;
+import Entities.Message;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import static java.lang.System.in;
 import java.net.Socket;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -58,8 +52,7 @@ public class ChatInboxController implements Initializable {
     private TextField message_input;
     private DataInputStream dis;
     private DataOutputStream dos;
-    private String clientID = "3";
-    private int convid;
+    private String clientID = "1";
     ServiceMessage testt = new ServiceMessage();
     ServiceConversation convv = new ServiceConversation();
     Conversation Current_conv = new Conversation();
@@ -78,13 +71,7 @@ public class ChatInboxController implements Initializable {
         inbox_list.setPadding(new Insets(10));
         inbox_list.setSpacing(10);
         alertlabel.setVisible(false);
-        // inbox_list.setStyle("-fx-background-color: #f2f2f2;");
-
-        // inbox_list.setAlignment(Pos.TOP_CENTER);
         convv.GetConversations(clientID, inbox_list);
-        // inbox_list.getChildren().
-
-        // convid = inbox_list.getSelectionModel().getSelectedItem();
         try {
             Socket socket = new Socket("localhost", 9999);
             dis = new DataInputStream(socket.getInputStream());
@@ -93,66 +80,43 @@ public class ChatInboxController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(ChatInboxController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Thread readerThread = new Thread(() -> {
-            try {
-                while (dis.readUTF() != null) {
-                    String message = dis.readUTF();
-                    Platform.runLater(() -> {
-                        
-                        String[] receivedData = message.split(";;");
-                        System.out.println("hello");
-                        String senderID = receivedData[0];
-                        String receiverID = receivedData[1];
-                        String text = receivedData[2];
-                        if (convid == Integer.parseInt(receiverID)) {
-                            Connection connection;
-                            connection = Database.getInstance().getCon();
-                            String query = "SELECT id_message FROM message WHERE from_user = ? AND to_conv = ? AND message_text = ?";
-                            PreparedStatement statement;
-                            String msg_id = "-1";
-                            try {
-                                statement = connection.prepareStatement(query);
-                                statement.setString(1, senderID);
-                                statement.setString(2, receiverID);
-                                statement.setString(3, text);
-                                ResultSet resultSet = statement.executeQuery();
-                                while (resultSet.next()) {
-                                    msg_id = resultSet.getString(1); //"zadaz";
-                                }
-
-                            } catch (SQLException ex) {
-
-                            }
-                            HBox messageContainer = new HBox();
-                            messageContainer.setId(msg_id);
-                            Text senderMessage = new Text(testt.prenom(senderID) + " : " + text);
-                            senderMessage.setFill(Color.WHITE);
-                            senderMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
-                            messageContainer.setPadding(new Insets(0, 0, 0, 10));
-                            messageContainer.setStyle("-fx-background-color: #808080; -fx-background-radius: 0px;");
-                            messageContainer.getChildren().add(senderMessage);
-                            message_box.getChildren().add(messageContainer);
-                        }
-                    });
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+Thread thread = new Thread(() -> {
+    while (true) {
+        try {
+            String readutf = dis.readUTF();
+            if (readutf != null) {
+                Platform.runLater(() -> {
+                    Message messagee = testt.readmessagefromserver(readutf, Current_conv);
+                    System.out.println("hello");
+                    if (messagee != null) {
+                        HBox messageContainer = new HBox();
+                        messageContainer.setId(Integer.toString(messagee.getId_message()));
+                        Text senderMessage = new Text(testt.prenom(Integer.toString(messagee.getFrom_user())) + " : " + messagee.getText());
+                        senderMessage.setFill(Color.WHITE);
+                        senderMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+                        messageContainer.setPadding(new Insets(0, 0, 0, 10));
+                        messageContainer.setStyle("-fx-background-color: #808080; -fx-background-radius: 0px;");
+                        messageContainer.getChildren().add(senderMessage);
+                        message_box.getChildren().add(messageContainer);
+                    }
+                });
             }
-        });
-        readerThread.setDaemon(true);
-        readerThread.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-
-
+});
+thread.setDaemon(true);
+thread.start();
+    }
 
     @FXML
     private void Send_message(ActionEvent event) throws IOException {
         if (!testt.checkInput(message_input, alertlabel)) {
             try {
-                dos.writeUTF(clientID + ";;" + convid + ";;" + message_input.getText());
-                String conv = Integer.toString(convid);
-                testt.sendmessage(message_input.getText(), clientID, conv, message_box);
-                //   messages_box.appendText("You: " + message_input.getText() + "\n");
+                dos.writeUTF(clientID + ";;" + Current_conv.getId() + ";;" + message_input.getText());
+                Message m = new Message(Integer.parseInt(clientID), Current_conv, message_input.getText());
+                testt.sendmessage(m, message_box);
                 message_input.clear();
                 alertlabel.setVisible(false);
             } catch (IOException ex) {
@@ -175,12 +139,10 @@ public class ChatInboxController implements Initializable {
             }
             HBox clickedHbox = (HBox) target.getParent();
             clickedHbox.setStyle("-fx-background-color: #007bff; -fx-background-radius: 50px;");
-            Conversation conv;
+
             Text text = (Text) target;
-            conv = (Conversation) text.getUserData();
-            int id_conv = conv.getId();
-            convid = id_conv;
-            testt.retrieveMessagesFromDB(clientID, message_box, id_conv);
+            Current_conv = (Conversation) text.getUserData();
+            testt.retrieveMessagesFromDB(clientID, message_box, Current_conv);
         } else if (target instanceof HBox) {
             while (index < inbox_list.getChildren().size()) {
                 Node node = inbox_list.getChildren().get(index);
@@ -197,9 +159,8 @@ public class ChatInboxController implements Initializable {
                 }
             }
             conv = (Conversation) text.getUserData();
-            int id_conv = conv.getId();
-            convid = id_conv;
-            testt.retrieveMessagesFromDB(clientID, message_box, id_conv);
+            Current_conv = (Conversation) text.getUserData();
+            testt.retrieveMessagesFromDB(clientID, message_box, Current_conv);
 
         }
 
