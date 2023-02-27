@@ -45,7 +45,7 @@ public class PostcardController implements Initializable {
     private Label tfnbr_jaime;
     @FXML
     private Label idpostlabel;
-    Post po = new  Post();
+    Post po = new Post();
     @FXML
     private Label tfcommunaute;
     @FXML
@@ -57,41 +57,41 @@ public class PostcardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
-    
-    void setData(int id, String sujet, String description, String communaute,String nom_user,Date date_p,String image,int nbr_jaime) {
-   
+    }
+
+    void setData(int id, String sujet, String description, String communaute, String nom_user, Date date_p, String image, int nbr_jaime) {
+
         tfsujet.setText(sujet);
-    tfdescription.setText(description);
-    tfnom_user.setText(nom_user);
-    tfcommunaute.setText(communaute);
+        tfdescription.setText(description);
+        tfnom_user.setText(nom_user);
+        labelimage.setVisible(false);
+        tfcommunaute.setText(communaute);
 //    Image imgp = new Image(getClass().getResourceAsStream("/ressources/"+ image +""));
 //    imagepost.setImage(imgp);
-File file = new File("C:/Users/DELL/Desktop/ProjetPi/Esports-Application/blog/src/Images/"+image);
-        Image img=new Image(file.toURI().toString());
+        File file = new File("C:/Users/DELL/Desktop/ProjetPi/Esports-Application/blog/src/Images/" + image);
+        Image img = new Image(file.toURI().toString());
         imagepost.setImage(img);
 
-    //labelimage.setText(image);
-tfdatepost.setText(String.valueOf(date_p));
-    tfnbr_jaime.setText(String.valueOf(nbr_jaime));
+        //labelimage.setText(image);
+        tfdatepost.setText(String.valueOf(date_p));
+        tfnbr_jaime.setText(String.valueOf(nbr_jaime));
         idpostlabel.setText(String.valueOf(id));
 
-                                  
     }
 
     @FXML
     private void comentpostbtn(ActionEvent event) {
         po.setTest(Integer.parseInt(idpostlabel.getText()));
-                   try {
-              Parent root = FXMLLoader.load(getClass().getResource("commentView.fxml"));
-          Stage stage = new Stage();
-     
-          stage.setTitle("comentaire");
-                    stage.setScene(new Scene(root)); 
-                    stage.show();
-     
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("commentView.fxml"));
+            Stage stage = new Stage();
+            stage.setUserData(po.getIdPost());
+            stage.setTitle("comentaire");
+            stage.setScene(new Scene(root));
+            stage.show();
+
         } catch (IOException ex) {
-               System.out.println("can't load comrnt window");
+            System.out.println("can't load comrnt window");
         }
     }
 

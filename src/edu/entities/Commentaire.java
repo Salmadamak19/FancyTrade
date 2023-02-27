@@ -5,7 +5,7 @@
  */
 package edu.entities;
 import edu.entities.Post;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  *
