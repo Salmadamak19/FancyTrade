@@ -7,9 +7,13 @@ import Services.ServiceConversation;
 import Services.ServiceMessage;
 import Entities.Conversation;
 import Entities.Message;
+import Server.ServerMessage;
+import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -52,7 +56,10 @@ public class ChatInboxController implements Initializable {
     private TextField message_input;
     private DataInputStream dis;
     private DataOutputStream dos;
-    private String clientID = "1";
+    private ObjectInputStream in;
+    private ObjectOutputStream out;
+
+    private String clientID = "2";
     ServiceMessage testt = new ServiceMessage();
     ServiceConversation convv = new ServiceConversation();
     Conversation Current_conv = new Conversation();
@@ -77,44 +84,74 @@ public class ChatInboxController implements Initializable {
             dis = new DataInputStream(socket.getInputStream());
             dos = new DataOutputStream(socket.getOutputStream());
             dos.writeUTF(clientID);
+            System.out.println("clientid sent to server");
         } catch (IOException ex) {
             Logger.getLogger(ChatInboxController.class.getName()).log(Level.SEVERE, null, ex);
         }
-Thread thread = new Thread(() -> {
-    while (true) {
-        try {
-            String readutf = dis.readUTF();
-            if (readutf != null) {
-                Platform.runLater(() -> {
-                    Message messagee = testt.readmessagefromserver(readutf, Current_conv);
-                    System.out.println("hello");
-                    if (messagee != null) {
-                        HBox messageContainer = new HBox();
-                        messageContainer.setId(Integer.toString(messagee.getId_message()));
-                        Text senderMessage = new Text(testt.prenom(Integer.toString(messagee.getFrom_user())) + " : " + messagee.getText());
-                        senderMessage.setFill(Color.WHITE);
-                        senderMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
-                        messageContainer.setPadding(new Insets(0, 0, 0, 10));
-                        messageContainer.setStyle("-fx-background-color: #808080; -fx-background-radius: 0px;");
-                        messageContainer.getChildren().add(senderMessage);
-                        message_box.getChildren().add(messageContainer);
+        Thread thread = new Thread(() -> {
+            while (true) {
+                try {
+                    String readutf = dis.readUTF();
+
+                    if (readutf != null) {
+                        Platform.runLater(() -> {
+                            String[] receivedData = readutf.split(";;");
+                            String type = receivedData[0];
+                            String senderID = receivedData[1];
+                            String receiverID = receivedData[2];
+                            String text = receivedData[3];
+                            if (type.equals("0")) {
+                                Message messagee = testt.messagefromserver(readutf, Current_conv);
+                                System.out.println("hello");
+                                if (messagee != null) {
+                                    HBox messageContainer = new HBox();
+                                    messageContainer.setId(Integer.toString(messagee.getId_message()));
+                                    Text senderMessage = new Text(testt.prenom(Integer.toString(messagee.getFrom_user())) + " : " + messagee.getText());
+                                    senderMessage.setFill(Color.WHITE);
+                                    senderMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+                                    messageContainer.setPadding(new Insets(0, 0, 0, 10));
+                                    messageContainer.setStyle("-fx-background-color: #808080; -fx-background-radius: 0px;");
+                                    messageContainer.getChildren().add(senderMessage);
+                                    message_box.getChildren().add(messageContainer);
+                                }
+                            } else if (type.equals("1")) {
+                                for (Node child : message_box.getChildren()) {
+                                    if (child.getId() != null && child.getId().equals(text)) {
+                                        message_box.getChildren().remove(child);
+                                        break;
+                                    }
+                                }
+                            } else if (type.equals("2")) {
+                                String[] contenu = text.split("--");
+                                String idhbox = contenu[0];
+                                String modifiedtext = contenu[1];
+                                for (Node child : message_box.getChildren()) {
+                                    if (child.getId() != null && child.getId().equals(idhbox)) {
+                                        HBox hbox1 = (HBox) child;
+                                        Text text1 = (Text) hbox1.getChildren().get(0);
+                                        text1.setText(modifiedtext + " (modifié)");
+                                        break;
+                                    }
+                                }
+
+                            }
+
+                        });
                     }
-                });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-});
-thread.setDaemon(true);
-thread.start();
+        });
+        thread.setDaemon(true);
+        thread.start();
     }
 
     @FXML
     private void Send_message(ActionEvent event) throws IOException {
         if (!testt.checkInput(message_input, alertlabel)) {
             try {
-                dos.writeUTF(clientID + ";;" + Current_conv.getId() + ";;" + message_input.getText());
+                dos.writeUTF("0" + ";;" + clientID + ";;" + Current_conv.getId() + ";;" + message_input.getText());
                 Message m = new Message(Integer.parseInt(clientID), Current_conv, message_input.getText());
                 testt.sendmessage(m, message_box);
                 message_input.clear();
@@ -180,6 +217,11 @@ thread.start();
                 option1.setOnAction(e -> {
                     testt.deletemessage(target.getId());
                     message_box.getChildren().remove(target);
+                    try {
+                        dos.writeUTF("1" + ";;" + clientID + ";;" + Current_conv.getId() + ";;" + target.getId());
+                    } catch (IOException ex) {
+                        Logger.getLogger(ChatInboxController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 });
                 option2.setOnAction(e -> {
                     message_box.getChildren().remove(target);
@@ -188,8 +230,6 @@ thread.start();
                     Dialog<String> dialog = new Dialog<>();
                     dialog.setTitle("Input Dialog");
                     dialog.setHeaderText("Enter a text");
-
-                    // Create a label and a text field
                     Label label = new Label("Text:");
                     TextField textField = new TextField();
                     VBox content = new VBox(label, textField);
@@ -208,6 +248,11 @@ thread.start();
                         HBox hbox = (HBox) target;
                         Text text = (Text) hbox.getChildren().get(0);
                         text.setText(dialog.getResult() + " (modifié)");
+                        try {
+                            dos.writeUTF("2" + ";;" + clientID + ";;" + Current_conv.getId() + ";;" + target.getId() + "--" + dialog.getResult());
+                        } catch (IOException ex) {
+                            Logger.getLogger(ChatInboxController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         System.out.println("text : " + dialog.getResult());
                     }
                     // target.getChildren().get(0).setText(dialog.getResult);
@@ -238,6 +283,11 @@ thread.start();
                 option1.setOnAction(e -> {
                     testt.deletemessage(targett.getId());
                     message_box.getChildren().remove(targett);
+                    try {
+                        dos.writeUTF("1" + ";;" + clientID + ";;" + Current_conv.getId() + ";;" + targett.getId());
+                    } catch (IOException ex) {
+                        Logger.getLogger(ChatInboxController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 });
                 option2.setOnAction(e -> {
                     message_box.getChildren().remove(targett);
@@ -265,6 +315,11 @@ thread.start();
                         testt.updatemessage(targett.getId(), dialog.getResult());
                         Text text = (Text) target;
                         text.setText(dialog.getResult() + " (modifié)");
+                        try {
+                            dos.writeUTF("2" + ";;" + clientID + ";;" + Current_conv.getId() + ";;" + targett.getId() + "--" + dialog.getResult());
+                        } catch (IOException ex) {
+                            Logger.getLogger(ChatInboxController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                     // target.getChildren().get(0).setText(dialog.getResult);
                 });

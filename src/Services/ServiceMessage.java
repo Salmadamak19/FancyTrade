@@ -3,6 +3,7 @@ package Services;
 import DB.Database;
 import Entities.Conversation;
 import Entities.Message;
+import Server.ServerMessage;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -105,8 +106,6 @@ public class ServiceMessage {
         messages.getChildren().clear();
         Connection connection;
         connection = Database.getInstance().getCon();
-        //listView.getItems().get(0)
-        //  messagess.setSpacing(10);
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM message where to_conv = ? ORDER BY date_time");
             preparedStatement.setString(1, Integer.toString(conv.getId()));
@@ -117,7 +116,7 @@ public class ServiceMessage {
 
                 HBox messageContainer = new HBox();
                 messageContainer.setId(Integer.toString(m.getId_message()));
-                if (clientID.equals(m.getFrom_user())) {
+                if (clientID.equals(Integer.toString(m.getFrom_user()))) {
                     Text clientMessage = new Text(m.getText());
                     clientMessage.setFill(Color.WHITE);
                     clientMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
@@ -179,54 +178,56 @@ public class ServiceMessage {
         }
 
         HBox messageContainer = new HBox();
-        // StackPane stackPane = new StackPane();
         messageContainer.setId(Integer.toString(id_message));
         Text clientMessage = new Text(m.getText());
         clientMessage.setFill(Color.WHITE); // set the text color to white
         clientMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
-        // clientMessage.setBoundsType(TextBoundsType.VISUAL);
-
-        //  clientMessage.setPickOnBounds(false);;
         messageContainer.setPadding(new Insets(0, 20, 0, 0));
-        //clientMessage.setWrappingWidth(100);
-        //  clientMessage.setStyle("-fx-background-color: #2196F3; -fx-padding: 10px;");
-        //  double textWidth = clientMessage.getBoundsInLocal().getWidth();
-
         messageContainer.setAlignment(Pos.CENTER_RIGHT);
         messageContainer.setStyle("-fx-background-color: #007bff; -fx-background-radius: 0px;");
-        // messageContainer.setPrefWidth(1);
-        // messageContainer.setPadding(new Insets(1, -50, 1, -5));
         messageContainer.getChildren().add(clientMessage);
         messages.getChildren().add(messageContainer);
-        // messages.appendText(prenom(from) + " To " + prenom(to) + " : " + message + "\n");
+
     }
 
-    public Message readmessagefromserver(String message,Conversation Current_conv) {
+    public Message messagefromserver(String message, Conversation Current_conv) {
         Message m = null;
         String[] receivedData = message.split(";;");
         System.out.println("hello");
-        String senderID = receivedData[0];
-        String receiverID = receivedData[1];
-        String text = receivedData[2];
+        String senderID = receivedData[1];
+        String receiverID = receivedData[2];
+        String text = receivedData[3];
         if (Current_conv.getId() == Integer.parseInt(receiverID)) {
-        Connection connection;
-        connection = Database.getInstance().getCon();
-        String query = "SELECT * FROM message WHERE from_user = ? AND to_conv = ? AND message_text = ?";
-        PreparedStatement statement;
-        try {
-            statement = connection.prepareStatement(query);
-            statement.setString(1, senderID);
-            statement.setString(2, receiverID);
-            statement.setString(3, text);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                Conversation c = new Conversation(resultSet.getInt(3));
-                m = new Message(resultSet.getInt(1),resultSet.getInt(2),c,resultSet.getString(4));
+            Connection connection;
+            connection = Database.getInstance().getCon();
+            String query = "SELECT * FROM message WHERE from_user = ? AND to_conv = ? AND message_text = ?";
+            PreparedStatement statement;
+            try {
+                statement = connection.prepareStatement(query);
+                statement.setString(1, senderID);
+                statement.setString(2, receiverID);
+                statement.setString(3, text);
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    Conversation c = new Conversation(resultSet.getInt(3));
+                    m = new Message(resultSet.getInt(1), resultSet.getInt(2), c, resultSet.getString(4));
+                }
+                return m;
+            } catch (SQLException ex) {
+                return null;
             }
-        return m;
-        } catch (SQLException ex) {
-return null;
         }
+        return null;
+    }
+
+    public ServerMessage Objectfromserver(Object msg, Conversation Current_conv) {
+        if (msg instanceof ServerMessage) {
+            ServerMessage nmsg = (ServerMessage) msg;
+            if (Current_conv.getId() == Integer.parseInt(nmsg.getReceiverId())) {
+                return nmsg;
+            } else {
+                return null;
+            }
         }
 return null;
     }

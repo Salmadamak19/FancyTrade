@@ -5,6 +5,8 @@ import Services.ServiceMessage;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Connection;
@@ -42,12 +44,16 @@ public class Chat_Server {
         private String clientID;
         private DataInputStream dis;
         private DataOutputStream dos;
+      /*  private ObjectInputStream in;
+        private ObjectOutputStream out;*/
 
         ClientHandler(Socket client, String clientID) throws IOException {
             this.client = client;
             this.clientID = clientID;
             this.dis = new DataInputStream(client.getInputStream());
             this.dos = new DataOutputStream(client.getOutputStream());
+           /* this.in = new ObjectInputStream(client.getInputStream());
+            this.out = new ObjectOutputStream(client.getOutputStream());*/
         }
 
         @Override
@@ -56,36 +62,32 @@ public class Chat_Server {
                 try {
                     ServiceMessage testt = new ServiceMessage();
                     String message = dis.readUTF();
-                    System.out.println("Message from client: " + message);
-                    String[] receivedData = message.split(";;");
-                    Connection connection;
-                    connection = Database.getInstance().getCon();
-                    String query = "SELECT prenom FROM user WHERE id_user = ?";
-                    // String query2 = "INSERT INTO message(from_user,to_conv,message_text) VALUES(?,?,?)";
-                    //  PreparedStatement statement2;
-                    PreparedStatement statement;
-                    try {
-                        statement = connection.prepareStatement(query);
-                        //   statement2 = connection.prepareStatement(query2);
-                        statement.setString(1, receivedData[0]);
-                        /*  statement2.setString(1, receivedData[0]);
-                        statement2.setString(2, receivedData[1]);
-                        statement2.setString(3, receivedData[2]);
-                        statement2.executeUpdate();*/
+                    if (message != null) {
+                        String[] receivedData = message.split(";;");
+                        Connection connection;
+                        connection = Database.getInstance().getCon();
+                        String query = "SELECT prenom FROM user WHERE id_user = ?";
+                        PreparedStatement statement;
+                        try {
+                            statement = connection.prepareStatement(query);
+                            statement.setString(1, receivedData[1]);
 
-                        ResultSet resultSet = statement.executeQuery();
-                        String user_id = "not set";
-                        while (resultSet.next()) {
-                            user_id = resultSet.getString(1); //"zadaz";
-                        };
-                        String client_id = testt.GetReceiver(receivedData[0], receivedData[1]);
-                        String messageee = receivedData[2];
-                        //  dos.writeUTF(user_id + ";;" + receiver_id + ";;" + messageee);
-                        // sendMessageToClient(receivedData[0], message);
-                        sendMessageToClient(client_id, message);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                            ResultSet resultSet = statement.executeQuery();
+                            String user_id = "not set";
+                            while (resultSet.next()) {
+                                user_id = resultSet.getString(1); //"zadaz";
+                            };
+                            String client_id = testt.GetReceiver(receivedData[1], receivedData[2]);
+                            System.out.println(message);
+                            sendMessageToClient(client_id, message);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    } /*else if (msg != null) {
+                            String client_id = testt.GetReceiver(msg.getSenderId(), msg.getReceiverId());
+                            sendObjectToClient(client_id, msg);
+
+                    }*/
 
                 } catch (IOException e) {
                     System.out.println("Client disconnected");
@@ -118,3 +120,24 @@ public class Chat_Server {
         }
     }
 }
+/*                 public void sendObject(ServerMessage msg) {
+            try {
+                out.writeObject(msg);
+            } catch (IOException e) {
+                System.out.println("Error sending message to " + clientID + ": " + e.getMessage());
+                clients.remove(clientID);
+            }
+        }
+        public void sendObjectToClient(String clientID, ServerMessage msg) {
+            Socket socket = clients.get(clientID);
+            if (socket != null) {
+                try {
+                    new ClientHandler(socket, clientID).sendObject(msg);
+                    System.out.println("messenge sent to " + clientID);
+                } catch (IOException ex) {
+                    Logger.getLogger(Chat_Server.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                System.out.println("Error: no such client with id " + clientID);
+            }
+        } */
