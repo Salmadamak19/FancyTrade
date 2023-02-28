@@ -136,6 +136,7 @@ public class CommentViewController implements Initializable {
             } finally {
                 alert.showAndWait();
                 CommentsAndShit.getChildren().clear();
+                tadescription.clear();
                 this.getComments();
             }
 

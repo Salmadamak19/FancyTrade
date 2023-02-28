@@ -18,15 +18,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -44,6 +47,13 @@ public class ListdepostsController implements Initializable {
     private ScrollPane scroll;
     @FXML
     private GridPane grid;
+    @FXML
+    private Button ExitButton;
+    
+    public void exitScene(ActionEvent event){
+        Stage stage = (Stage) ExitButton.getScene().getWindow();
+        stage.close();
+    }
 
     
     public ObservableList<Post> Postdata = FXCollections.observableArrayList();

@@ -90,7 +90,7 @@ public class PostServices implements Iservice<Post> {
     @Override
     public List<Post> afficher() throws SQLException {
         List<Post> equipes = new ArrayList<>();
-        String req = "select * from post";
+        String req = "select * from post ORDER BY date_p desc";
         stm = connexion.createStatement();
         //ensemble de resultat
         ResultSet rst = stm.executeQuery(req);

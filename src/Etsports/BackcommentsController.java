@@ -33,11 +33,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -76,9 +78,9 @@ public class BackcommentsController implements Initializable {
     private TableColumn<Commentaire, Date> ColDatec;
     @FXML
     private TextField mod_descriptionc;
-    public ObservableList<Post> data =FXCollections.observableArrayList();
-    public ObservableList<Commentaire> comdata =FXCollections.observableArrayList();
-    PostServices p =new PostServices();
+    public ObservableList<Post> data = FXCollections.observableArrayList();
+    public ObservableList<Commentaire> comdata = FXCollections.observableArrayList();
+    PostServices p = new PostServices();
     CommentaireService c = new CommentaireService();
     @FXML
     private TextField tfsujet;
@@ -92,146 +94,176 @@ public class BackcommentsController implements Initializable {
     private Button buttonupload;
     @FXML
     private TextField tfimagep;
+    @FXML
+    private TextArea txtArea;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-                
+
         try {
-           afficherEvent();
-           
-            
+            afficherEvent();
+
         } catch (SQLException ex) {
             Logger.getLogger(BackcommentsController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-    }    
+
+    }
 
     @FXML
     private void selectCom(MouseEvent event) {
-                  
-    Commentaire A= tvtabCom.getSelectionModel().getSelectedItem();
- 
-    ColDescriptionc.setText(A.getDescriptionc());
-   
-    }
-public String controlSaisie(){
-             String nom = tfnomuser.getText();
-             if(nom.equals("")){
-                 return "You must type a name !";
-             }
-             String error = "";
-              Pattern pattern = Pattern.compile("[\\d]", Pattern.CASE_INSENSITIVE);
-              Matcher matcher = pattern.matcher(nom);
-              boolean matchFound = matcher.find();
-              if(matchFound) {
-                  error += "Name cant contain a number";
-                    } 
-              else {
-                    error = "";
-               }
-              return error;
-         }
-              
-    @FXML
-    private void selectPostcom(ActionEvent event) throws SQLException {
-       //  Post T = tabPost.getSelectionModel().getSelectedItem();
-          //     int id_post= T.getIdPost();
-               
-               
-                 comdata.clear();
 
-             //  List<Commentaire> coment = c.getCombyPost(id_post);
-                            List<Commentaire> coment = c.afficher();
-  
-                     comdata.addAll(coment);
-                     System.out.println(comdata);
-                colIdcom.setCellValueFactory(new PropertyValueFactory<>("id"));
-              ColNomuserc.setCellValueFactory(new PropertyValueFactory<>("nomuser"));
-              ColDescriptionc.setCellValueFactory(new PropertyValueFactory<>("descriptionc"));
-              ColDatec.setCellValueFactory(new PropertyValueFactory<>("datec"));
-              System.out.println("hh");
-
+        Commentaire A = tvtabCom.getSelectionModel().getSelectedItem();
+        this.mod_descriptionc.setText(A.getDescriptionc());
+        this.txtArea.setText(A.getDescriptionc());
+       
         
 
-        tvtabCom.setItems(comdata); 
+        //ColDescriptionc.setText(A.getDescriptionc());
+
+    }
+
+    public String controlSaisie() {
+        String nom = tfnomuser.getText();
+        if (nom.equals("")) {
+            return "You must type a name !";
+        }
+        String error = "";
+        Pattern pattern = Pattern.compile("[\\d]", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(nom);
+        boolean matchFound = matcher.find();
+        if (matchFound) {
+            error += "Name cant contain a number";
+        } else {
+            error = "";
+        }
+        return error;
+    }
+
+    
+    @FXML
+    private void handlepost(MouseEvent event) throws SQLException {
+        comdata.clear();
+        Post post = tabPost.getSelectionModel().getSelectedItem();
+        List<Commentaire> coment = c.afficherCommentairesDuPost(post.getIdPost());
+        
+        
+        tfnomuser.setText(post.getNom_user());
+        tfsujet.setText(post.getSujet());
+        tfdescription.setText(post.getDescription());
+        tfcommunaute.setText(post.getCommunaute());
+        tfimagep.setText(post.getImage());
+        
+        comdata.addAll(coment);
+        System.out.println(comdata);
+        colIdcom.setCellValueFactory(new PropertyValueFactory<>("id"));
+        ColNomuserc.setCellValueFactory(new PropertyValueFactory<>("nomuser"));
+        ColDescriptionc.setCellValueFactory(new PropertyValueFactory<>("descriptionc"));
+        ColDatec.setCellValueFactory(new PropertyValueFactory<>("datec"));
+        tvtabCom.setItems(comdata);
+        
+
+    }
+    
+    @FXML
+    private void selectPostcom(ActionEvent event) throws SQLException {
+        //  Post T = tabPost.getSelectionModel().getSelectedItem();
+        //     int id_post= T.getIdPost();
+
+        comdata.clear();
+        this.mod_descriptionc.setText("");
+        //  List<Commentaire> coment = c.getCombyPost(id_post);
+        Post post = tabPost.getSelectionModel().getSelectedItem();
+        List<Commentaire> coment = c.afficherCommentairesDuPost(post.getIdPost());
+        
+        
+
+        comdata.addAll(coment);
+        System.out.println(comdata);
+        colIdcom.setCellValueFactory(new PropertyValueFactory<>("id"));
+        ColNomuserc.setCellValueFactory(new PropertyValueFactory<>("nomuser"));
+        ColDescriptionc.setCellValueFactory(new PropertyValueFactory<>("descriptionc"));
+        ColDatec.setCellValueFactory(new PropertyValueFactory<>("datec"));
+        System.out.println("hh");
+
+        tvtabCom.setItems(comdata);
+    }
+
+    public void ExitScene(ActionEvent event) {
+        Stage stage = (Stage) tfsujet.getScene().getWindow();
+        stage.close();
     }
 
     @FXML
     private void deletecom(ActionEvent event) {
-        
-        Commentaire c= tvtabCom.getSelectionModel().getSelectedItem();
+
+        Commentaire c = tvtabCom.getSelectionModel().getSelectedItem();
         CommentaireService aS = new CommentaireService();
-        if (aS.delete(c)){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Succees");
-        alert.setHeaderText(null);
-        alert.setContentText("La suppression d'event a été effectué avec succées");
-        alert.showAndWait();
-        tvtabCom.refresh();
-        
-        }else{
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setHeaderText(null);
-        alert.setContentText("La supression d'event n'a pas été effectué!");
-        alert.showAndWait();   
-           tvtabCom.setItems(comdata);
-        
-    }
+        if (aS.delete(c)) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Succees");
+            alert.setHeaderText(null);
+            alert.setContentText("La suppression d'event a été effectué avec succées");
+            alert.showAndWait();
+            tvtabCom.refresh();
+
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText(null);
+            alert.setContentText("La supression d'event n'a pas été effectué!");
+            alert.showAndWait();
+            tvtabCom.setItems(comdata);
+
+        }
     }
 
     @FXML
     private void updatecom(ActionEvent event) {
         {
-        Commentaire A= tvtabCom.getSelectionModel().getSelectedItem();
-           
+            Commentaire A = tvtabCom.getSelectionModel().getSelectedItem();
 
-       
-        String desc = mod_descriptionc.getText();
- 
-         A.setDescriptionc(desc);
-        
-        
-        CommentaireService aS = new CommentaireService();
-        if (aS.update(A)){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Succées");
-        alert.setHeaderText(null);
-        alert.setContentText("La modification d'event a été effectué avec succées");
-        alert.showAndWait();
-      tvtabCom.refresh();
-        }else{
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setHeaderText(null);
-        alert.setContentText("La modufication d'event n'a pas été effectué!");
-      alert.showAndWait();   
-   tvtabCom.setItems(comdata);
-       }
-   }
+            String desc = txtArea.getText();
+
+            A.setDescriptionc(desc);
+
+            CommentaireService aS = new CommentaireService();
+            if (aS.update(A)) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Succées");
+                alert.setHeaderText(null);
+                alert.setContentText("La modification d'event a été effectué avec succées");
+                alert.showAndWait();
+                tvtabCom.refresh();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur");
+                alert.setHeaderText(null);
+                alert.setContentText("La modufication d'event n'a pas été effectué!");
+                alert.showAndWait();
+                tvtabCom.setItems(comdata);
+            }
+        }
     }
 
-
     private void afficherEvent() throws SQLException {
-       PostServices c = new PostServices();
-         data.clear();
+        PostServices c = new PostServices();
+        data.clear();
         data.addAll(p.afficher());
-  ColId.setCellValueFactory(new PropertyValueFactory<>("id"));
-       colnom_user.setCellValueFactory(new PropertyValueFactory<>("nom_user"));
-      Colsujet.setCellValueFactory(new PropertyValueFactory<>("sujet"));
-       Coldescription.setCellValueFactory(new PropertyValueFactory<>("description"));
-         Colcommunaute.setCellValueFactory(new PropertyValueFactory<>("communaute"));
-         ColDatep.setCellValueFactory(new PropertyValueFactory<>("date_p"));
-         ColImage.setCellValueFactory(new PropertyValueFactory<>("image"));
-         ColNbrj.setCellValueFactory(new PropertyValueFactory<>("nbr_jaime"));
+        ColId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colnom_user.setCellValueFactory(new PropertyValueFactory<>("nom_user"));
+        Colsujet.setCellValueFactory(new PropertyValueFactory<>("sujet"));
+        Coldescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        Colcommunaute.setCellValueFactory(new PropertyValueFactory<>("communaute"));
+        ColDatep.setCellValueFactory(new PropertyValueFactory<>("date_p"));
+        ColImage.setCellValueFactory(new PropertyValueFactory<>("image"));
+        ColNbrj.setCellValueFactory(new PropertyValueFactory<>("nbr_jaime"));
 
+        tabPost.setItems(data);
 
-      tabPost.setItems(data);
-     
-   }  
+    }
 
     @FXML
     private void upload(ActionEvent event) {
@@ -247,92 +279,84 @@ public String controlSaisie(){
     }
 
     @FXML
-    private void addpostback(ActionEvent event) throws SQLException, MalformedURLException, IOException{
-        
+    private void addpostback(ActionEvent event) throws SQLException, MalformedURLException, IOException {
+
         Post P;
         String nom_user = tfnomuser.getText();
         String sujet = tfsujet.getText();
         String description = tfdescription.getText();
         String communaute = tfcommunaute.getText();
         String image = tfimagep.getText();
-        
 
-
-        
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-String error = controlSaisie();
-           
-             
-          if(sujet.equals("") || nom_user.equals("") || description.equals("")|| communaute.equals("") || image.equals("") ){
-               //Alert Saisie Tournois :
-             alert.setAlertType(Alert.AlertType.WARNING);
+        String error = controlSaisie();
+
+        if (sujet.equals("") || nom_user.equals("") || description.equals("") || communaute.equals("") || image.equals("")) {
+            //Alert Saisie Tournois :
+            alert.setAlertType(Alert.AlertType.WARNING);
             alert.setTitle("Conditions de saisie");
             alert.setHeaderText(null);
             alert.setContentText("You need to fill all the fields first!");
-            alert.showAndWait();}
-          else if(sujet.length()>10){
+            alert.showAndWait();
+        } else if (sujet.length() > 10) {
             alert.setAlertType(Alert.AlertType.WARNING);
             alert.setTitle("Conditions de saisie");
             alert.setHeaderText(null);
             alert.setContentText("sujet must be under 10 letters");
             alert.showAndWait();
-            }
-          else if(description.length()<10){
+        } else if (description.length() < 10) {
             alert.setAlertType(Alert.AlertType.WARNING);
             alert.setTitle("Conditions de saisie");
             alert.setHeaderText(null);
             alert.setContentText("description must be over 10 letters");
             alert.showAndWait();
-            }
-          else if (error!=""){
-              alert.setAlertType(Alert.AlertType.WARNING);
+        } else if (error != "") {
+            alert.setAlertType(Alert.AlertType.WARNING);
             alert.setTitle("Conditions de saisie");
             alert.setHeaderText(null);
             alert.setContentText("nom user must be only letters");
             alert.showAndWait();
-          }
-            //Alert Saisie Tournois !
-          else{
-               P = new Post(sujet,description,communaute,nom_user,image);
-               try{
-                    p.ajouter(P); 
-                     alert.setAlertType(Alert.AlertType.INFORMATION);
-                     alert.setTitle("Add Post");
-                     alert.setHeaderText("Results:");
-                     alert.setContentText("post added successfully!");
-               } catch (SQLException ex){
-                                //Alert Error Tournois :
-                       alert.setAlertType(Alert.AlertType.WARNING);
-                       alert.setTitle("ERROR");
-                       alert.setHeaderText("Adding Error !! ");
-                       alert.setContentText(ex.getMessage());
-                       //Alert Error Tournois !
-        } finally{
-              alert.showAndWait();
+        } //Alert Saisie Tournois !
+        else {
+            P = new Post(sujet, description, communaute, nom_user, image);
+            try {
+                p.ajouter(P);
+                alert.setAlertType(Alert.AlertType.INFORMATION);
+                alert.setTitle("Add Post");
+                alert.setHeaderText("Results:");
+                alert.setContentText("post added successfully!");
+            } catch (SQLException ex) {
+                //Alert Error Tournois :
+                alert.setAlertType(Alert.AlertType.WARNING);
+                alert.setTitle("ERROR");
+                alert.setHeaderText("Adding Error !! ");
+                alert.setContentText(ex.getMessage());
+                //Alert Error Tournois !
+            } finally {
+                alert.showAndWait();
+            }
         }
-          }
         data.clear();
         try {
             data.addAll(p.afficher());
         } catch (SQLException ex) {
-           System.out.println(ex.getMessage());
+            System.out.println(ex.getMessage());
 
         }
-    
+
     }
-    
 
     @FXML
     private void updatepostback(ActionEvent event) {
         if (tabPost.getSelectionModel().getSelectedItem() != null) {
 
             Post P = tabPost.getSelectionModel().getSelectedItem();
-        System.out.println("Sujet:"+ tfsujet.getText());
-        System.out.println("description:"+ tfdescription.getText());
-        System.out.println("communaute:"+ tfcommunaute.getText());
-        System.out.println("nomuser:"+ tfnomuser.getText());
-           p.UpdateF(P.getIdPost(),tfsujet.getText(),tfdescription.getText(), tfcommunaute.getText(),tfnomuser.getText(), tfimagep.getText());
-            
+            System.out.println("Sujet:" + tfsujet.getText());
+            System.out.println("description:" + tfdescription.getText());
+            System.out.println("communaute:" + tfcommunaute.getText());
+            System.out.println("nomuser:" + tfnomuser.getText());
+            p.UpdateF(P.getIdPost(), tfsujet.getText(), tfdescription.getText(), tfcommunaute.getText(), tfnomuser.getText(), tfimagep.getText());
+
             Alert EditeJeuxAlert = new Alert(Alert.AlertType.INFORMATION);
             EditeJeuxAlert.setTitle("edit");
             EditeJeuxAlert.setHeaderText(null);
@@ -349,21 +373,19 @@ String error = controlSaisie();
             //Alert Select jeux !
         }
 
- data.clear();
+        data.clear();
         try {
             data.addAll(p.afficher());
         } catch (SQLException ex) {
-           System.out.println(ex.getMessage());
+            System.out.println(ex.getMessage());
 
         }
 
-
-        
     }
 
     @FXML
-    private void deletepostback(ActionEvent event) 
-    throws SQLException {
+    private void deletepostback(ActionEvent event)
+            throws SQLException {
 
         if (tabPost.getSelectionModel().getSelectedItem() != null) {
             Alert deleteTournoislert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -374,9 +396,7 @@ String error = controlSaisie();
             if (optiondeleteTournoisAlert.get() == ButtonType.OK) {
                 Post P = tabPost.getSelectionModel().getSelectedItem();
                 System.out.println(P.getIdPost());
-                    p.supprimer(P.getIdPost());
-             
-
+                p.supprimer(P.getIdPost());
 
                 //Alert Delete Blog :
                 Alert succDeleteMealAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -398,36 +418,17 @@ String error = controlSaisie();
             selectMealAlert.showAndWait();
 
         }
-        
-         data.clear();
+
+        data.clear();
         try {
             data.addAll(p.afficher());
         } catch (SQLException ex) {
-           System.out.println(ex.getMessage());
+            System.out.println(ex.getMessage());
 
         }
-        
-        
-    }
-
-    @FXML
-    private void handlepost(MouseEvent event) {
-        Post post= tabPost.getSelectionModel().getSelectedItem();
-     
-      tfnomuser.setText(post.getNom_user());
-
-       tfsujet.setText(post.getSujet());
-     
-           
-       tfdescription.setText(post.getDescription());
-      tfcommunaute.setText(post.getCommunaute());
-
-       
-       tfimagep.setText(post.getImage());
-
 
     }
 
     
-    
+
 }

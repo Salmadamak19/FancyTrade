@@ -65,6 +65,8 @@ public class CommentaireService {
          ps.executeUpdate();
   
     }
+         
+     
 
     
     public void supprimer(int id) throws SQLException {
@@ -79,6 +81,22 @@ public class CommentaireService {
         } catch (SQLException ex) {
             ex.getMessage();
         }
+    }
+    
+    
+    public List<Commentaire> afficherCommentairesDuPost(int idPost) throws SQLException {
+        List<Commentaire> commentaires = new ArrayList<>();
+        String req = "SELECT * FROM Commentaire WHERE post_id = "+idPost;
+        ResultSet rst = connexion.createStatement().executeQuery(req);
+        while (rst.next()){
+            Commentaire c = new Commentaire();
+            c.setId(rst.getInt("id"));
+            c.setDescriptionc(rst.getString("descriptionc"));
+            c.setDate_c(rst.getDate("datec"));
+            c.setNomuser(rst.getString("nomuser"));
+            commentaires.add(c);
+        }
+        return commentaires;
     }
 
     
