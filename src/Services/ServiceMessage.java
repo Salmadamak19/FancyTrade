@@ -134,17 +134,54 @@ public class ServiceMessage {
                     Text senderMessage = new Text(prenom(Integer.toString(m.getFrom_user())) + " : " + m.getText());
                     senderMessage.setFill(Color.WHITE); // set the text color to white
                     senderMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15)); // set the font
-                    // senderMessage.setStyle("-fx-background-color: #808080; -fx-background-radius: 0px;");
                     messageContainer.setPadding(new Insets(0, 0, 0, 10));
                     messageContainer.setStyle("-fx-background-color: #808080; -fx-background-radius: 0px;");
-                    // senderMessage.setStyle("-fx-background-color: #FFFFFF; -fx-padding: 10px;");
                     messageContainer.getChildren().add(senderMessage);
 
                 }
 
                 messages.getChildren().add(messageContainer);
-                //    messages.getChildren().add(messageBox);
-                // messages.appendText(prenom(from) + " To " + prenom(to) + " : " + message + "\n");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+        public void searchMessagesFromDB(String search,String clientID, VBox messages, Conversation conv) {
+        messages.getChildren().clear();
+        Connection connection;
+        connection = Database.getInstance().getCon();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM message where to_conv = ? AND message_text LIKE ? ORDER BY date_time");
+            preparedStatement.setString(1, Integer.toString(conv.getId()));
+            preparedStatement.setString(2, "%" + search + "%");
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Message m = new Message(resultSet.getInt("id_message"), resultSet.getInt("from_user"), resultSet.getString("message_text"));
+
+                HBox messageContainer = new HBox();
+                messageContainer.setId(Integer.toString(m.getId_message()));
+                if (clientID.equals(Integer.toString(m.getFrom_user()))) {
+                    Text clientMessage = new Text(m.getText());
+                    clientMessage.setFill(Color.WHITE);
+                    clientMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+
+                    messageContainer.setAlignment(Pos.CENTER_RIGHT);
+                    messageContainer.setStyle("-fx-background-color: #007bff; -fx-background-radius: 0px;");
+                    messageContainer.setPadding(new Insets(0, 20, 0, 0));
+                    messageContainer.getChildren().add(clientMessage);
+
+                } else {
+                    Text senderMessage = new Text(prenom(Integer.toString(m.getFrom_user())) + " : " + m.getText());
+                    senderMessage.setFill(Color.WHITE); // set the text color to white
+                    senderMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15)); // set the font
+                    messageContainer.setPadding(new Insets(0, 0, 0, 10));
+                    messageContainer.setStyle("-fx-background-color: #808080; -fx-background-radius: 0px;");
+                    messageContainer.getChildren().add(senderMessage);
+
+                }
+
+                messages.getChildren().add(messageContainer);
             }
         } catch (SQLException e) {
             e.printStackTrace();

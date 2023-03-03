@@ -76,15 +76,15 @@ public class ServiceConversation {
             listView.getChildren().clear();
             System.out.println("step 1");
             connection = Database.getInstance().getCon();
-            String query = """
-                           SELECT c.id,c.idconv_user,c.idconv_user2 
-                           FROM conv c
-                           JOIN user u ON (u.id_user = c.idconv_user OR u.id_user = c.idconv_user2 )
-                           WHERE u.id_user = ? AND u.prenom = ? """;
+            String query = "SELECT * FROM conv c \n"
+                    + "WHERE (c.idconv_user = ? OR c.idconv_user2 = ?) \n"
+                    + "AND EXISTS (SELECT * FROM user u WHERE (c.idconv_user = u.id_user AND u.prenom LIKE CONCAT('%', ?, '%')) OR (c.idconv_user2 = u.id_user AND u.prenom LIKE CONCAT('%', ?, '%')))";
             PreparedStatement statement;
             statement = connection.prepareStatement(query);
             statement.setString(1, id);
-            statement.setString(2, Name);
+            statement.setString(2, id);
+            statement.setString(4, Name);
+            statement.setString(3, Name);
             ResultSet rs = statement.executeQuery();
             System.out.println("step 1.2");
             while (rs.next()) {

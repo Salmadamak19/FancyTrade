@@ -14,11 +14,12 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <ScrollPane prefHeight="519.0" prefWidth="174.0">
+                  <ScrollPane layoutY="55.0" prefHeight="464.0" prefWidth="174.0">
                      <content>
                         <VBox fx:id="inbox_list" alignment="TOP_CENTER" onMouseClicked="#switch_conversation" prefHeight="517.0" prefWidth="172.0" />
                      </content>
                   </ScrollPane>
+                  <TextField fx:id="inputconver" layoutY="14.0" onKeyTyped="#Search" prefHeight="31.0" prefWidth="174.0" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="359.0" prefWidth="392.0">
@@ -31,7 +32,7 @@
                      </content>
                   </ScrollPane>
                   <Label fx:id="alertlabel" layoutX="20.0" layoutY="402.0" prefHeight="106.0" prefWidth="391.0" />
-                  <TextField fx:id="inputmess" layoutX="147.0" layoutY="10.0" prefHeight="31.0" prefWidth="174.0" />
+                  <TextField fx:id="inputmess" layoutX="147.0" layoutY="10.0" onKeyTyped="#searchmessage" prefHeight="31.0" prefWidth="174.0" />
                </children>
             </AnchorPane>
         </items>

@@ -353,4 +353,9 @@ public class ChatInboxController implements Initializable {
     private void Search(KeyEvent event) {
         convv.SearchConversations(inputconver.getText(),clientID, inbox_list);
     }
+
+    @FXML
+    private void searchmessage(KeyEvent event) {
+        testt.searchMessagesFromDB(inputmess.getText(),clientID, message_box, Current_conv);
+    }
 }
