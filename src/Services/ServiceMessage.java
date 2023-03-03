@@ -5,6 +5,7 @@ import Entities.Conversation;
 import Entities.Message;
 import Server.ServerMessage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -22,14 +23,22 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -40,7 +49,7 @@ import javafx.scene.text.Text;
  * @author oussema
  */
 public class ServiceMessage {
-
+    
     public String prenom(String id) {
         Connection connection;
         connection = Database.getInstance().getCon();
@@ -50,19 +59,19 @@ public class ServiceMessage {
         try {
             statement = connection.prepareStatement(query);
             statement.setString(1, id);
-
+            
             ResultSet resultSet = statement.executeQuery();
-
+            
             while (resultSet.next()) {
                 user_id = resultSet.getString(1); //"zadaz";
             }
-
+            
         } catch (SQLException ex) {
-
+            
         }
         return user_id;
     }
-
+    
     public String GetReceiver(String id, String convid) {
         Connection connection;
         connection = Database.getInstance().getCon();
@@ -73,15 +82,15 @@ public class ServiceMessage {
             statement = connection.prepareStatement(query);
             statement.setString(1, id);
             statement.setString(2, convid);
-
+            
             ResultSet resultSet = statement.executeQuery();
-
+            
             while (resultSet.next()) {
                 user_id = resultSet.getString(1); //"zadaz";
             }
-
+            
         } catch (SQLException ex) {
-
+            
         }
         if (user_id == null) {
             System.out.println("nullllllll");
@@ -90,22 +99,22 @@ public class ServiceMessage {
                 statement = connection.prepareStatement(query);
                 statement.setString(1, id);
                 statement.setString(2, convid);
-
+                
                 ResultSet resultSet = statement.executeQuery();
-
+                
                 while (resultSet.next()) {
                     user_id = resultSet.getString(1); //"zadaz";
                 }
-
+                
             } catch (SQLException ex) {
-
+                
             }
         } else {
             System.out.println(" not nullllllll");
         }
         return user_id;
     }
-
+    
     public void retrieveMessagesFromDB(String clientID, VBox messages, Conversation conv) {
         messages.getChildren().clear();
         Connection connection;
@@ -114,39 +123,61 @@ public class ServiceMessage {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM message where to_conv = ? ORDER BY date_time");
             preparedStatement.setString(1, Integer.toString(conv.getId()));
             ResultSet resultSet = preparedStatement.executeQuery();
-
+            
             while (resultSet.next()) {
                 Message m = new Message(resultSet.getInt("id_message"), resultSet.getInt("from_user"), resultSet.getString("message_text"));
-
-                HBox messageContainer = new HBox();
-                messageContainer.setId(Integer.toString(m.getId_message()));
-                if (clientID.equals(Integer.toString(m.getFrom_user()))) {
-                    Text clientMessage = new Text(m.getText());
-                    clientMessage.setFill(Color.WHITE);
-                    clientMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
-
-                    messageContainer.setAlignment(Pos.CENTER_RIGHT);
-                    messageContainer.setStyle("-fx-background-color: #007bff; -fx-background-radius: 0px;");
-                    messageContainer.setPadding(new Insets(0, 20, 0, 0));
-                    messageContainer.getChildren().add(clientMessage);
-
-                } else {
-                    Text senderMessage = new Text(prenom(Integer.toString(m.getFrom_user())) + " : " + m.getText());
-                    senderMessage.setFill(Color.WHITE); // set the text color to white
-                    senderMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15)); // set the font
-                    messageContainer.setPadding(new Insets(0, 0, 0, 10));
-                    messageContainer.setStyle("-fx-background-color: #808080; -fx-background-radius: 0px;");
-                    messageContainer.getChildren().add(senderMessage);
-
-                }
-
-                messages.getChildren().add(messageContainer);
+                
+                this.msgtemplate(clientID, m, messages);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-        public void searchMessagesFromDB(String search,String clientID, VBox messages, Conversation conv) {
+    
+    public Boolean checkImage(String Message) {
+        
+        if (Message.matches("[A-Za-z]+:/[A-Za-z]+:/.*\\.[A-Za-z]+")) {
+            return true;
+        } else {
+            return false;
+        }
+        
+    }
+    
+    public void sendImage(Message m, VBox message_box, ImageView imageView) {
+        Connection connection;
+        connection = Database.getInstance().getCon();
+        String query2 = "INSERT INTO message(from_user,to_conv,message_text) VALUES(?,?,?)";
+        PreparedStatement statement2;
+        int id_message = -1;
+        try {
+            statement2 = connection.prepareStatement(query2, PreparedStatement.RETURN_GENERATED_KEYS);
+            statement2.setInt(1, m.getFrom_user());
+            
+            statement2.setInt(2, m.getTo_conv().getId());
+            statement2.setString(3, m.getText());
+            int affectedRows = statement2.executeUpdate();
+            
+            if (affectedRows == 0) {
+                throw new SQLException("Creating record failed, no rows affected.");
+            }
+            try ( ResultSet rs = statement2.getGeneratedKeys()) {
+                if (rs.next()) {
+                    id_message = rs.getInt(1);
+                    m.setId_message(id_message);
+                } else {
+                    throw new SQLException("Creating record failed, no ID obtained.");
+                }
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ServiceMessage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        this.msgtemplate(Integer.toString(m.getFrom_user()), m, message_box);
+    }
+    
+    public void searchMessagesFromDB(String search, String clientID, VBox messages, Conversation conv) {
         messages.getChildren().clear();
         Connection connection;
         connection = Database.getInstance().getCon();
@@ -155,63 +186,111 @@ public class ServiceMessage {
             preparedStatement.setString(1, Integer.toString(conv.getId()));
             preparedStatement.setString(2, "%" + search + "%");
             ResultSet resultSet = preparedStatement.executeQuery();
-
+            
             while (resultSet.next()) {
                 Message m = new Message(resultSet.getInt("id_message"), resultSet.getInt("from_user"), resultSet.getString("message_text"));
-
-                HBox messageContainer = new HBox();
-                messageContainer.setId(Integer.toString(m.getId_message()));
-                if (clientID.equals(Integer.toString(m.getFrom_user()))) {
-                    Text clientMessage = new Text(m.getText());
-                    clientMessage.setFill(Color.WHITE);
-                    clientMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
-
-                    messageContainer.setAlignment(Pos.CENTER_RIGHT);
-                    messageContainer.setStyle("-fx-background-color: #007bff; -fx-background-radius: 0px;");
-                    messageContainer.setPadding(new Insets(0, 20, 0, 0));
-                    messageContainer.getChildren().add(clientMessage);
-
-                } else {
-                    Text senderMessage = new Text(prenom(Integer.toString(m.getFrom_user())) + " : " + m.getText());
-                    senderMessage.setFill(Color.WHITE); // set the text color to white
-                    senderMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15)); // set the font
-                    messageContainer.setPadding(new Insets(0, 0, 0, 10));
-                    messageContainer.setStyle("-fx-background-color: #808080; -fx-background-radius: 0px;");
-                    messageContainer.getChildren().add(senderMessage);
-
-                }
-
-                messages.getChildren().add(messageContainer);
+                this.msgtemplate(clientID, m, messages);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-public List<Message> showmessage (){
-try {
-    List<Message> messageList = new ArrayList<>();
-        Connection connection;
-        connection = Database.getInstance().getCon();
-    Statement stmt = connection.createStatement();
-    ResultSet rs = stmt.executeQuery("SELECT * FROM message");
-
-    while (rs.next()) {
-        int id = rs.getInt("id_message");
-        int sender = rs.getInt("from_user");
-        int recipient = rs.getInt("to_conv");
-        String text = rs.getString("message_text");
-        java.sql.Timestamp datee =rs.getTimestamp("date_time");
-        Conversation conv = new Conversation(recipient);
-        Message message = new Message(id, sender, conv, text,datee);
-        messageList.add(message);
+    
+    public void msgtemplate(String clientID, Message m, VBox messages) {
+        HBox messageContainer = new HBox();
+        messageContainer.setId(Integer.toString(m.getId_message()));
+        if (clientID.equals(Integer.toString(m.getFrom_user()))) {
+            if (this.checkImage(m.getText())) {
+                Image image = new Image(m.getText());
+                ImageView imageView = new ImageView(image);
+                messageContainer.setAlignment(Pos.CENTER_RIGHT);
+                messageContainer.setStyle("-fx-background-color: #007bff; -fx-background-radius: 0px;");
+                messageContainer.setPadding(new Insets(0, 20, 0, 0));
+                messageContainer.getChildren().add(imageView);
+                double initialWidth = 100;
+                double initialHeight = 100;
+                imageView.setFitWidth(initialWidth); // set the width to 200 pixels
+                imageView.setFitHeight(initialHeight); // set the height to 150 pixels
+                imageView.setOnMouseClicked(eventt -> {
+                    Stage stage = new Stage();
+                    ImageView enlargedImageView = new ImageView();
+                    enlargedImageView.setImage(imageView.getImage());
+                    enlargedImageView.setFitWidth(800);
+                    enlargedImageView.setFitHeight(600);
+                    enlargedImageView.setPreserveRatio(true);
+                    Scene scene = new Scene(new Group(enlargedImageView));
+                    stage.setScene(scene);
+                    stage.show();
+                });
+            } else {
+                Text clientMessage = new Text(m.getText());
+                clientMessage.setFill(Color.WHITE);
+                clientMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+                messageContainer.setAlignment(Pos.CENTER_RIGHT);
+                messageContainer.setStyle("-fx-background-color: #007bff; -fx-background-radius: 0px;");
+                messageContainer.setPadding(new Insets(0, 20, 0, 0));
+                messageContainer.getChildren().add(clientMessage);
+            }
+        } else {
+            if (this.checkImage(m.getText())) {
+                Image image = new Image(m.getText());
+                ImageView imageView = new ImageView(image);
+                messageContainer.setStyle("-fx-background-color: #808080; -fx-background-radius: 0px;");
+                messageContainer.setPadding(new Insets(0, 0, 0, 10));
+                messageContainer.getChildren().add(imageView);
+                double initialWidth = 100;
+                double initialHeight = 100;
+                imageView.setFitWidth(initialWidth); // set the width to 200 pixels
+                imageView.setFitHeight(initialHeight); // set the height to 150 pixels
+                imageView.setOnMouseClicked(eventt -> {
+                    Stage stage = new Stage();
+                    ImageView enlargedImageView = new ImageView();
+                    enlargedImageView.setImage(imageView.getImage());
+                    enlargedImageView.setFitWidth(800);
+                    enlargedImageView.setFitHeight(600);
+                    enlargedImageView.setPreserveRatio(true);
+                    Scene scene = new Scene(new Group(enlargedImageView));
+                    stage.setScene(scene);
+                    stage.show();
+                });
+            } else {
+                Text senderMessage = new Text(prenom(Integer.toString(m.getFrom_user())) + " : " + m.getText());
+                senderMessage.setFill(Color.WHITE); // set the text color to white
+                senderMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15)); // set the font
+                messageContainer.setPadding(new Insets(0, 0, 0, 10));
+                messageContainer.setStyle("-fx-background-color: #808080; -fx-background-radius: 0px;");
+                messageContainer.getChildren().add(senderMessage);
+            }
+        }
+        messages.getChildren().add(messageContainer);
     }
-    return messageList;
-} catch (SQLException e) {
-    e.printStackTrace();
-        return null;
-}
-
-}
+    
+    public List<Message> showmessage() {
+        try {
+            List<Message> messageList = new ArrayList<>();
+            Connection connection;
+            connection = Database.getInstance().getCon();
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM message");
+            
+            while (rs.next()) {
+                int id = rs.getInt("id_message");
+                int sender = rs.getInt("from_user");
+                int recipient = rs.getInt("to_conv");
+                String text = rs.getString("message_text");
+                java.sql.Timestamp datee = rs.getTimestamp("date_time");
+                Conversation conv = new Conversation(recipient);
+                Message message = new Message(id, sender, conv, text, datee);
+                messageList.add(message);
+            }
+            return messageList;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        
+    }
+    
     public void sendmessage(Message m, VBox messages) {
         Connection connection;
         connection = Database.getInstance().getCon();
@@ -221,40 +300,31 @@ try {
         try {
             statement2 = connection.prepareStatement(query2, PreparedStatement.RETURN_GENERATED_KEYS);
             statement2.setInt(1, m.getFrom_user());
-
+            
             statement2.setInt(2, m.getTo_conv().getId());
             statement2.setString(3, m.getText());
             int affectedRows = statement2.executeUpdate();
-
+            
             if (affectedRows == 0) {
                 throw new SQLException("Creating record failed, no rows affected.");
             }
             try ( ResultSet rs = statement2.getGeneratedKeys()) {
                 if (rs.next()) {
                     id_message = rs.getInt(1);
-                    // Use the last inserted ID here
+                    m.setId_message(id_message);
                 } else {
                     throw new SQLException("Creating record failed, no ID obtained.");
                 }
             }
-
+            
         } catch (SQLException ex) {
             Logger.getLogger(ServiceMessage.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        HBox messageContainer = new HBox();
-        messageContainer.setId(Integer.toString(id_message));
-        Text clientMessage = new Text(m.getText());
-        clientMessage.setFill(Color.WHITE); // set the text color to white
-        clientMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
-        messageContainer.setPadding(new Insets(0, 20, 0, 0));
-        messageContainer.setAlignment(Pos.CENTER_RIGHT);
-        messageContainer.setStyle("-fx-background-color: #007bff; -fx-background-radius: 0px;");
-        messageContainer.getChildren().add(clientMessage);
-        messages.getChildren().add(messageContainer);
-
+        
+ this.msgtemplate(Integer.toString(m.getFrom_user()), m, messages);
+        
     }
-
+    
     public Message messagefromserver(String message, Conversation Current_conv) {
         Message m = null;
         String[] receivedData = message.split(";;");
@@ -284,7 +354,7 @@ try {
         }
         return null;
     }
-
+    
     public ServerMessage Objectfromserver(Object msg, Conversation Current_conv) {
         if (msg instanceof ServerMessage) {
             ServerMessage nmsg = (ServerMessage) msg;
@@ -294,9 +364,9 @@ try {
                 return null;
             }
         }
-return null;
+        return null;
     }
-
+    
     public String messageowner(String id) {
         Connection connection;
         connection = Database.getInstance().getCon();
@@ -305,7 +375,7 @@ return null;
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT from_user FROM message where id_message = ? ");
             preparedStatement.setString(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-
+            
             while (resultSet.next()) {
                 from = resultSet.getString("from_user");
             }
@@ -313,9 +383,9 @@ return null;
             Logger.getLogger(ServiceMessage.class.getName()).log(Level.SEVERE, null, ex);
         }
         return from;
-
+        
     }
-
+    
     public void deletemessage(String id) {
         Connection connection;
         connection = Database.getInstance().getCon();
@@ -328,9 +398,9 @@ return null;
         } catch (SQLException ex) {
             Logger.getLogger(ServiceMessage.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
     }
-
+    
     public void updatemessage(String id, String message) {
         Connection connection;
         connection = Database.getInstance().getCon();
@@ -344,9 +414,9 @@ return null;
         } catch (SQLException ex) {
             Logger.getLogger(ServiceMessage.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
     }
-
+    
     public Set<String> badwordslist() throws FileNotFoundException, IOException {
         Set<String> set = new HashSet<>();
         String fileName = "C:/Users/ousso/Documents/NetBeansProjects/Fancy_Trade_Messagerie/src/Services/badwords.txt"; // Replace with the name of your file
@@ -359,7 +429,7 @@ return null;
         }
         return set;
     }
-
+    
     public boolean checkInput(TextField input, Label alertlabel) throws IOException {
         String inputt = input.getText().toLowerCase();
         boolean containsBadWord = badwordslist().stream().anyMatch(inputt::contains);
@@ -371,12 +441,12 @@ return null;
             Font font = Font.font("Verdana", FontWeight.BOLD, 16);
             alertlabel.setFont(font);
             alertlabel.setWrapText(true);
-
+            
             return true;
         } else {
             return false;
         }
-
+        
     }
-
+    
 }

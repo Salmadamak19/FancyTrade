@@ -11,6 +11,7 @@ import Server.ServerMessage;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -24,8 +25,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.Side;
+import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
@@ -33,15 +37,20 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -75,6 +84,8 @@ public class ChatInboxController implements Initializable {
     private TextField inputconver;
     @FXML
     private TextField inputmess;
+    @FXML
+    private Button upimage;
 
     /**
      * Initializes the controller class.
@@ -83,6 +94,8 @@ public class ChatInboxController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         inbox_list.setPadding(new Insets(10));
         inbox_list.setSpacing(10);
+        //        message_box.setPadding(new Insets(10));
+        // message_box.setSpacing(10);
         alertlabel.setVisible(false);
         convv.GetConversations(clientID, inbox_list);
         try {
@@ -110,15 +123,7 @@ public class ChatInboxController implements Initializable {
                                 Message messagee = testt.messagefromserver(readutf, Current_conv);
                                 System.out.println("hello");
                                 if (messagee != null) {
-                                    HBox messageContainer = new HBox();
-                                    messageContainer.setId(Integer.toString(messagee.getId_message()));
-                                    Text senderMessage = new Text(testt.prenom(Integer.toString(messagee.getFrom_user())) + " : " + messagee.getText());
-                                    senderMessage.setFill(Color.WHITE);
-                                    senderMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
-                                    messageContainer.setPadding(new Insets(0, 0, 0, 10));
-                                    messageContainer.setStyle("-fx-background-color: #808080; -fx-background-radius: 0px;");
-                                    messageContainer.getChildren().add(senderMessage);
-                                    message_box.getChildren().add(messageContainer);
+                                    testt.msgtemplate(clientID, messagee, message_box);
                                 }
                             } else if (type.equals("1")) {
                                 for (Node child : message_box.getChildren()) {
@@ -351,11 +356,49 @@ public class ChatInboxController implements Initializable {
 
     @FXML
     private void Search(KeyEvent event) {
-        convv.SearchConversations(inputconver.getText(),clientID, inbox_list);
+        convv.SearchConversations(inputconver.getText(), clientID, inbox_list);
     }
 
     @FXML
     private void searchmessage(KeyEvent event) {
-        testt.searchMessagesFromDB(inputmess.getText(),clientID, message_box, Current_conv);
+        testt.searchMessagesFromDB(inputmess.getText(), clientID, message_box, Current_conv);
+    }
+
+    @FXML
+    private void uploadimage(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Image File");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg")
+        );
+        File selectedFile = fileChooser.showOpenDialog(null);
+        if (selectedFile != null) {
+            Image image = new Image(selectedFile.toURI().toString());
+            ImageView imageView = new ImageView(image);
+            double initialWidth = 100;
+            double initialHeight = 100;
+            imageView.setFitWidth(initialWidth); // set the width to 200 pixels
+            imageView.setFitHeight(initialHeight); // set the height to 150 pixels
+            imageView.setOnMouseClicked(eventt -> {
+                Stage stage = new Stage();
+                ImageView enlargedImageView = new ImageView();
+                enlargedImageView.setImage(imageView.getImage());
+                enlargedImageView.setFitWidth(800);
+                enlargedImageView.setFitHeight(600);
+                enlargedImageView.setPreserveRatio(true);
+                Scene scene = new Scene(new Group(enlargedImageView));
+                stage.setScene(scene);
+                stage.show();
+            });
+            try {
+                Message m = new Message(Integer.parseInt(clientID), Current_conv, selectedFile.toURI().toString());
+                testt.sendImage(m, message_box, imageView);
+                dos.writeUTF("0" + ";;" + clientID + ";;" + Current_conv.getId() + ";;" + selectedFile.toURI().toString());
+            } catch (IOException ex) {
+                Logger.getLogger(ChatInboxController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
     }
 }
