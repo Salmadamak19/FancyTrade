@@ -4,6 +4,7 @@
  */
 package Entities;
 
+import java.security.Timestamp;
 import org.eclipse.persistence.jpa.jpql.parser.DateTime;
 
 /**
@@ -16,7 +17,7 @@ public class Message {
     int from_user;
     Conversation to_conv;
     String text;
-    DateTime date_time;
+    java.sql.Timestamp date_time;
 
     public Message() {
     }
@@ -26,7 +27,6 @@ public class Message {
         this.from_user = from_user;
         this.text = text;
     }
-    
 
     public Message(int from_user, Conversation to_conv, String text) {
         this.from_user = from_user;
@@ -41,13 +41,14 @@ public class Message {
         this.text = text;
     }
 
-    public Message(int id_message, int from_user, Conversation to_conv, String text, DateTime date_time) {
+    public Message(int id_message, int from_user, Conversation to_conv, String text, java.sql.Timestamp date_time) {
         this.id_message = id_message;
         this.from_user = from_user;
         this.to_conv = to_conv;
         this.text = text;
         this.date_time = date_time;
     }
+
 
     public int getId_message() {
         return id_message;
@@ -81,11 +82,11 @@ public class Message {
         this.text = text;
     }
 
-    public DateTime getDate_time() {
+    public java.sql.Timestamp getDate_time() {
         return date_time;
     }
 
-    public void setDate_time(DateTime date_time) {
+    public void setDate_time(java.sql.Timestamp date_time) {
         this.date_time = date_time;
     }
 

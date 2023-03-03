@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -37,6 +39,7 @@ public class ServiceConversation {
 
     public VBox GetConversations(String id, VBox listView) {
         try {
+            listView.getChildren().clear();
 
             connection = Database.getInstance().getCon();
             String query = "SELECT id,idconv_user,idconv_user2 FROM conv WHERE idconv_user = ? OR idconv_user2 = ?";
@@ -68,4 +71,41 @@ public class ServiceConversation {
         return listView;
     }
 
+    public VBox SearchConversations(String Name, String id, VBox listView) {
+        try {
+            listView.getChildren().clear();
+            System.out.println("step 1");
+            connection = Database.getInstance().getCon();
+            String query = """
+                           SELECT c.id,c.idconv_user,c.idconv_user2 
+                           FROM conv c
+                           JOIN user u ON (u.id_user = c.idconv_user OR u.id_user = c.idconv_user2 )
+                           WHERE u.id_user = ? AND u.prenom = ? """;
+            PreparedStatement statement;
+            statement = connection.prepareStatement(query);
+            statement.setString(1, id);
+            statement.setString(2, Name);
+            ResultSet rs = statement.executeQuery();
+            System.out.println("step 1.2");
+            while (rs.next()) {
+                System.out.println("step 2");
+                Conversation conv = new Conversation(rs.getInt("c.id"), rs.getInt("c.idconv_user"), rs.getInt("c.idconv_user2"));
+                HBox conversationContainer = new HBox();
+                conversationContainer.setPadding(new Insets(20, 25, 20, 25));
+                conversationContainer.setStyle("-fx-background-color: #808080; -fx-background-radius: 50px;");
+                Text clientConversations = new Text(conv.showidreceiver(id));
+                System.out.println(conv.showidreceiver(id));
+                clientConversations.setUserData(conv);
+                clientConversations.setFill(Color.WHITE);
+                clientConversations.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+                conversationContainer.getChildren().add(clientConversations);
+                listView.getChildren().add(conversationContainer);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ServiceConversation.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listView;
+
+    }
 }

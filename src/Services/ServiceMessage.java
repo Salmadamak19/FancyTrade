@@ -8,11 +8,15 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.security.Timestamp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -146,7 +150,31 @@ public class ServiceMessage {
             e.printStackTrace();
         }
     }
+public List<Message> showmessage (){
+try {
+    List<Message> messageList = new ArrayList<>();
+        Connection connection;
+        connection = Database.getInstance().getCon();
+    Statement stmt = connection.createStatement();
+    ResultSet rs = stmt.executeQuery("SELECT * FROM message");
 
+    while (rs.next()) {
+        int id = rs.getInt("id_message");
+        int sender = rs.getInt("from_user");
+        int recipient = rs.getInt("to_conv");
+        String text = rs.getString("message_text");
+        java.sql.Timestamp datee =rs.getTimestamp("date_time");
+        Conversation conv = new Conversation(recipient);
+        Message message = new Message(id, sender, conv, text,datee);
+        messageList.add(message);
+    }
+    return messageList;
+} catch (SQLException e) {
+    e.printStackTrace();
+        return null;
+}
+
+}
     public void sendmessage(Message m, VBox messages) {
         Connection connection;
         connection = Database.getInstance().getCon();

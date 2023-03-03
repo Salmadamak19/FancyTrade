@@ -33,6 +33,7 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -47,6 +48,7 @@ import javafx.scene.text.Text;
  *
  * @author oussema
  */
+// image + api location + design + recherche conv message + admin view
 public class ChatInboxController implements Initializable {
 
     private int id;
@@ -59,7 +61,7 @@ public class ChatInboxController implements Initializable {
     private ObjectInputStream in;
     private ObjectOutputStream out;
 
-    private String clientID = "2";
+    private String clientID = "1";
     ServiceMessage testt = new ServiceMessage();
     ServiceConversation convv = new ServiceConversation();
     Conversation Current_conv = new Conversation();
@@ -69,6 +71,10 @@ public class ChatInboxController implements Initializable {
     private VBox message_box;
     @FXML
     private Label alertlabel;
+    @FXML
+    private TextField inputconver;
+    @FXML
+    private TextField inputmess;
 
     /**
      * Initializes the controller class.
@@ -341,5 +347,10 @@ public class ChatInboxController implements Initializable {
             }
         }
 
+    }
+
+    @FXML
+    private void Search(KeyEvent event) {
+        convv.SearchConversations(inputconver.getText(),clientID, inbox_list);
     }
 }
