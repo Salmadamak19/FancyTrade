@@ -7,8 +7,7 @@ import Services.ServiceConversation;
 import Services.ServiceMessage;
 import Entities.Conversation;
 import Entities.Message;
-import Server.ServerMessage;
-import java.io.ByteArrayInputStream;
+import Services.ServiceChat;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -25,7 +24,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -43,11 +41,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -66,6 +60,7 @@ public class ChatInboxController implements Initializable {
     @FXML
     private TextField message_input;
     private DataInputStream dis;
+    private ServiceChat sc = new ServiceChat();
     private DataOutputStream dos;
     private ObjectInputStream in;
     private ObjectOutputStream out;
@@ -86,6 +81,8 @@ public class ChatInboxController implements Initializable {
     private TextField inputmess;
     @FXML
     private Button upimage;
+    @FXML
+    private Button location;
 
     /**
      * Initializes the controller class.
@@ -94,8 +91,6 @@ public class ChatInboxController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         inbox_list.setPadding(new Insets(10));
         inbox_list.setSpacing(10);
-        //        message_box.setPadding(new Insets(10));
-        // message_box.setSpacing(10);
         alertlabel.setVisible(false);
         convv.GetConversations(clientID, inbox_list);
         try {
@@ -400,5 +395,22 @@ public class ChatInboxController implements Initializable {
             }
         }
 
+    }
+
+    @FXML
+    private void sendLocation(ActionEvent event) {
+        String Location = sc.getLocation();
+        System.out.println(Location);
+        String[] receivedData = Location.split("--");
+        String Latitude = receivedData[0];
+        String Longitude = receivedData[1];
+        try {
+            dos.writeUTF("0" + ";;" + clientID + ";;" + Current_conv.getId() + ";;" + Location);
+            Message m = new Message(Integer.parseInt(clientID), Current_conv, Location);
+            testt.sendmessage(m, message_box);
+            alertlabel.setVisible(false);
+        } catch (IOException ex) {
+            Logger.getLogger(ChatInboxController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
