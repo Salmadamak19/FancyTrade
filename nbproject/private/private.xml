@@ -3,24 +3,24 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Nguira%20Azyz/Downloads/troc/src/edu/troc/services/posteCRUD.java</file>
-            <file>file:/C:/Users/Nguira%20Azyz/Downloads/troc/src/edu/troc/gui/Afficher_postController.java</file>
-            <file>file:/C:/Users/Nguira%20Azyz/Downloads/troc/src/troc/troc.java</file>
-            <file>file:/C:/Users/Nguira%20Azyz/Downloads/troc/src/edu/troc/gui/Afficher_commentaireController.java</file>
-            <file>file:/C:/Users/Nguira%20Azyz/Downloads/troc/src/edu/troc/gui/Interface_crudController.java</file>
-            <file>file:/C:/Users/Nguira%20Azyz/Downloads/troc/src/edu/troc/gui/interface_principale.java</file>
-            <file>file:/C:/Users/Nguira%20Azyz/Downloads/troc/src/edu/troc/gui/afficher_post.fxml</file>
-            <file>file:/C:/Users/Nguira%20Azyz/Downloads/troc/src/edu/troc/model/commentaire.java</file>
-            <file>file:/C:/Users/Nguira%20Azyz/Downloads/troc/src/edu/troc/gui/ajouter_commentaire.fxml</file>
-            <file>file:/C:/Users/Nguira%20Azyz/Downloads/troc/src/edu/troc/interfaces/InterfaceCRUD.java</file>
-            <file>file:/C:/Users/Nguira%20Azyz/Downloads/troc/src/edu/troc/model/poste.java</file>
-            <file>file:/C:/Users/Nguira%20Azyz/Downloads/troc/src/edu/troc/gui/interface_crud.fxml</file>
-            <file>file:/C:/Users/Nguira%20Azyz/Downloads/troc/src/edu/troc/gui/afficher_commentaire.fxml</file>
-            <file>file:/C:/Users/Nguira%20Azyz/Downloads/troc/src/edu/troc/gui/ajouter_poste.fxml</file>
-            <file>file:/C:/Users/Nguira%20Azyz/Downloads/troc/src/edu/troc/interfaces/IcommentaireCRUD.java</file>
-            <file>file:/C:/Users/Nguira%20Azyz/Downloads/troc/src/edu/troc/gui/Ajouter_commentaireController.java</file>
-            <file>file:/C:/Users/Nguira%20Azyz/Downloads/troc/src/edu/troc/gui/Ajouter_posteController.java</file>
-            <file>file:/C:/Users/Nguira%20Azyz/Downloads/troc/src/edu/troc/services/commentaireCRUD.java</file>
+            <file>file:/C:/Users/Nguira%20Azyz/Desktop/Poste_comm/src/poste_comm/Poste_comm.java</file>
+            <file>file:/C:/Users/Nguira%20Azyz/Desktop/Poste_comm/src/entite/Poste.java</file>
+            <file>file:/C:/Users/Nguira%20Azyz/Desktop/Poste_comm/src/GUI/MespostesController.java</file>
+            <file>file:/C:/Users/Nguira%20Azyz/Desktop/Poste_comm/src/service/ServiceUser.java</file>
+            <file>file:/C:/Users/Nguira%20Azyz/Desktop/Poste_comm/src/entite/RatingControl.java</file>
+            <file>file:/C:/Users/Nguira%20Azyz/Desktop/Poste_comm/src/GUI/AddcommentController.java</file>
+            <file>file:/C:/Users/Nguira%20Azyz/Desktop/Poste_comm/src/GUI/AffichagePController.java</file>
+            <file>file:/C:/Users/Nguira%20Azyz/Desktop/Poste_comm/src/GUI/NewFXMain.java</file>
+            <file>file:/C:/Users/Nguira%20Azyz/Desktop/Poste_comm/src/entite/Commentaire.java</file>
+            <file>file:/C:/Users/Nguira%20Azyz/Desktop/Poste_comm/src/util/DataSource.java</file>
+            <file>file:/C:/Users/Nguira%20Azyz/Desktop/Poste_comm/src/service/ServiceCategorie.java</file>
+            <file>file:/C:/Users/Nguira%20Azyz/Desktop/Poste_comm/src/service/Iservice.java</file>
+            <file>file:/C:/Users/Nguira%20Azyz/Desktop/Poste_comm/src/GUI/AddposteController.java</file>
+            <file>file:/C:/Users/Nguira%20Azyz/Desktop/Poste_comm/src/entite/User.java</file>
+            <file>file:/C:/Users/Nguira%20Azyz/Desktop/Poste_comm/src/service/ServiceCommentaire.java</file>
+            <file>file:/C:/Users/Nguira%20Azyz/Desktop/Poste_comm/src/service/ServicePoste.java</file>
+            <file>file:/C:/Users/Nguira%20Azyz/Desktop/Poste_comm/src/entite/RatingStar.java</file>
+            <file>file:/C:/Users/Nguira%20Azyz/Desktop/Poste_comm/src/entite/categorie.java</file>
         </group>
     </open-files>
 </project-private>
