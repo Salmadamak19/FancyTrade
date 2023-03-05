@@ -17,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -50,6 +51,8 @@ public class PostcardController implements Initializable {
     private Label tfcommunaute;
     @FXML
     private Label labelimage;
+    @FXML
+    private Button commentsButton;
 
     /**
      * Initializes the controller class.
@@ -59,16 +62,18 @@ public class PostcardController implements Initializable {
         // TODO
     }
 
-    void setData(int id, String sujet, String description, String communaute, String nom_user, Date date_p, String image, int nbr_jaime) {
+    void setData(int id, String sujet, String description, String communaute, String nom_user, Date date_p, String image, int nbr_jaime , int nb) {
 
         tfsujet.setText(sujet);
         tfdescription.setText(description);
         tfnom_user.setText(nom_user);
         labelimage.setVisible(false);
         tfcommunaute.setText(communaute);
+        this.commentsButton.setText(nb+" "+commentsButton.getText());
 //    Image imgp = new Image(getClass().getResourceAsStream("/ressources/"+ image +""));
 //    imagepost.setImage(imgp);
         File file = new File("C:/Users/DELL/Desktop/ProjetPi/Esports-Application/blog/src/Images/" + image);
+        //System.out.println(("C:/Users/DELL/Desktop/ProjetPi/Esports-Application/blog/src/Images/" + image));
         Image img = new Image(file.toURI().toString());
         imagepost.setImage(img);
 

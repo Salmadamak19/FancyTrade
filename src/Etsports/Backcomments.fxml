@@ -14,7 +14,7 @@
    <children>
       <AnchorPane layoutX="2.0" prefHeight="551.0" prefWidth="1055.0" stylesheets="@style.css">
          <children>
-            <TableView fx:id="tabPost" layoutY="215.0" onMouseClicked="#handlepost" prefHeight="310.0" prefWidth="660.0">
+            <TableView fx:id="tabPost" layoutX="14.0" layoutY="261.0" onMouseClicked="#handlepost" prefHeight="264.0" prefWidth="646.0">
                <columns>
                   <TableColumn fx:id="ColId" prefWidth="75.0" text="id" visible="false" />
                   <TableColumn id="nom_user" fx:id="colnom_user" prefWidth="75.0" text="Utilisateur" />
@@ -53,7 +53,7 @@
             <TextField fx:id="tfcommunaute" layoutX="360.0" layoutY="81.0" promptText="communaute" />
             <TextField fx:id="tfnomuser" layoutX="87.0" layoutY="55.0" promptText="nom_user" />
             <Button fx:id="buttonupload" layoutX="516.0" layoutY="120.0" mnemonicParsing="false" onAction="#upload" text="..." />
-            <Button layoutX="315.0" layoutY="163.0" mnemonicParsing="false" onAction="#addpostback" prefHeight="26.0" prefWidth="60.0" text="Ajouter" />
+            <Button layoutX="315.0" layoutY="163.0" mnemonicParsing="false" onAction="#addpostback" prefHeight="26.0" prefWidth="60.0" text="Ajouter" visible="false" />
             <Button layoutX="385.0" layoutY="163.0" mnemonicParsing="false" onAction="#updatepostback" text="Modifier" />
             <Button layoutX="454.0" layoutY="163.0" mnemonicParsing="false" onAction="#deletepostback" text="Supprimer" />
             <TextField fx:id="tfimagep" layoutX="360.0" layoutY="120.0" promptText="image" />
@@ -68,6 +68,7 @@
                </font>
             </Button>
             <TextArea fx:id="txtArea" layoutX="676.0" layoutY="430.0" prefHeight="91.0" prefWidth="225.0" />
+            <TextField fx:id="searchBar" layoutX="13.0" layoutY="226.0" onKeyTyped="#please_work" prefHeight="26.0" prefWidth="646.0" promptText="Rechercher..." />
          </children>
       </AnchorPane>
    </children>

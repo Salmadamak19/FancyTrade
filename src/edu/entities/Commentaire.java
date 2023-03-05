@@ -15,14 +15,14 @@ public class Commentaire {
     private int id;
     private String descriptionc;
     private String nomuser;
-    private Date datec;
+    private String datec;
     private String imagec;
     private int post_id;
 
     public Commentaire() {
     }
 
-    public Commentaire(int id, String descriptionc, String nomuser, Date date_c, String image_c) {
+    public Commentaire(int id, String descriptionc, String nomuser, String date_c, String image_c) {
         this.id = id;
         this.descriptionc = descriptionc;
         this.nomuser = nomuser;
@@ -30,7 +30,7 @@ public class Commentaire {
         this.imagec = image_c;
     }
 
-    public Commentaire(String descriptionc, String nomuser, Date date_c, String image_c, int post) {
+    public Commentaire(String descriptionc, String nomuser, String date_c, String image_c, int post) {
         this.descriptionc = descriptionc;
         this.nomuser = nomuser;
         this.datec = date_c;
@@ -38,7 +38,7 @@ public class Commentaire {
         this.post_id = post;
     }
 
-    public Commentaire(int id, String descriptionc, String nomuser, Date date_c, String image_c, int post) {
+    public Commentaire(int id, String descriptionc, String nomuser, String date_c, String image_c, int post) {
         this.id = id;
         this.descriptionc = descriptionc;
         this.nomuser = nomuser;
@@ -54,7 +54,7 @@ public class Commentaire {
         this.post_id = post_id;
     }
 
-    public Commentaire(int id, String descriptionc, String nomuser, Date datec) {
+    public Commentaire(int id, String descriptionc, String nomuser, String datec) {
         this.id = id;
         this.descriptionc = descriptionc;
         this.nomuser = nomuser;
@@ -80,7 +80,7 @@ public class Commentaire {
         this.post_id = post_id;
     }
 
-    public Commentaire(int id, String descriptionc, String nomuser, Date datec, int post_id) {
+    public Commentaire(int id, String descriptionc, String nomuser, String datec, int post_id) {
         this.id = id;
         this.descriptionc = descriptionc;
         this.nomuser = nomuser;
@@ -117,11 +117,11 @@ public class Commentaire {
         this.nomuser = nomuser;
     }
 
-    public Date getDate_c() {
+    public String getDate_c() {
         return datec;
     }
 
-    public void setDate_c(Date date_c) {
+    public void setDate_c(String date_c) {
         this.datec = date_c;
     }
 

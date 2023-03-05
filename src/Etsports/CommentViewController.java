@@ -5,6 +5,8 @@
  */
 package Etsports;
 
+import edu.services.BadWords;
+
 import edu.entities.Commentaire;
 import edu.entities.Post;
 import edu.services.CommentaireService;
@@ -91,7 +93,7 @@ public class CommentViewController implements Initializable {
             this.getComments();
         } catch (Exception ex) {
             System.out.println("THIRD STOP");
-            System.out.println("Error Cause : " + ex.getMessage() );
+            System.out.println("Error Cause : " + ex.getMessage());
         }
     }
 
@@ -118,26 +120,34 @@ public class CommentViewController implements Initializable {
             //Alert saisie post !
 
         } else {
-            Commentaire c = new Commentaire(description, nom_user, po.getTest());
 
-            try {
-                cer.ajouter(c);
-                alert.setAlertType(Alert.AlertType.INFORMATION);
-                alert.setTitle("Add comment");
-                alert.setHeaderText("Results:");
-                alert.setContentText("Post added successfully!");
-            } catch (SQLException ex) {
-                //Alert Error jeux :
-                alert.setAlertType(Alert.AlertType.WARNING);
-                alert.setTitle("ERROR");
-                alert.setHeaderText("Adding Error !! ");
-                alert.setContentText(ex.getMessage());
-                //Alert Error jeux !
-            } finally {
-                alert.showAndWait();
-                CommentsAndShit.getChildren().clear();
-                tadescription.clear();
-                this.getComments();
+            BadWords.loadConfigs();
+
+            if (BadWords.filterText(description)) {
+                Alert alert2 = new Alert(Alert.AlertType.WARNING, "Votre Commentaire Contient des termes vulgaires!");
+                alert2.showAndWait();
+            } else {
+                Commentaire c = new Commentaire(description, nom_user, po.getTest());
+
+                try {
+                    cer.ajouter(c);
+                    alert.setAlertType(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Add comment");
+                    alert.setHeaderText("Results:");
+                    alert.setContentText("Post added successfully!");
+                } catch (SQLException ex) {
+                    //Alert Error jeux :
+                    alert.setAlertType(Alert.AlertType.WARNING);
+                    alert.setTitle("ERROR");
+                    alert.setHeaderText("Adding Error !! ");
+                    alert.setContentText(ex.getMessage());
+                    //Alert Error jeux !
+                } finally {
+                    alert.showAndWait();
+                    CommentsAndShit.getChildren().clear();
+                    tadescription.clear();
+                    this.getComments();
+                }
             }
 
         }
@@ -152,13 +162,14 @@ public class CommentViewController implements Initializable {
         List<Text> texts = new ArrayList<Text>();
         for (Commentaire commentaire : comdata) {
             System.out.println(commentaire.toString());
-            Text username = new Text(commentaire.getNomuser()+"\n");
+            Text username = new Text(commentaire.getNomuser() + "\n");
             username.setFont(Font.font("Arial", FontWeight.BOLD, 16));
-            Text date = new Text(commentaire.getDate_c()+"\n");
+            Text date = new Text(commentaire.getDate_c() + "\n");
             date.setFont(Font.font("Arial", FontWeight.LIGHT, 12));
-            Text comment = new Text(commentaire.getDescriptionc()+"\n\n");
+            System.out.println("INFO" + commentaire.getDate_c() + "\n");
+            Text comment = new Text(commentaire.getDescriptionc() + "\n\n");
             comment.setFont(Font.font("Arial", FontWeight.MEDIUM, 14));
-            
+
             texts.add(username);
             texts.add(date);
             texts.add(comment);

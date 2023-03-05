@@ -9,6 +9,7 @@ import edu.entities.Commentaire;
 import edu.entities.Post;
 import edu.services.CommentaireService;
 import edu.services.PostServices;
+import edu.services.SmS;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -96,6 +97,8 @@ public class BackcommentsController implements Initializable {
     private TextField tfimagep;
     @FXML
     private TextArea txtArea;
+    @FXML
+    private TextField searchBar;
 
     /**
      * Initializes the controller class.
@@ -113,16 +116,41 @@ public class BackcommentsController implements Initializable {
     }
 
     @FXML
+    private void please_work(){
+        try {
+            if (this.searchBar.getText().length() != 0) {
+                System.err.println(this.searchBar.getText());
+                data.clear();
+                data.addAll(p.affichageAvancee(this.searchBar.getText().toString()));
+
+                ColId.setCellValueFactory(new PropertyValueFactory<>("id"));
+                colnom_user.setCellValueFactory(new PropertyValueFactory<>("nom_user"));
+                Colsujet.setCellValueFactory(new PropertyValueFactory<>("sujet"));
+                Coldescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+                Colcommunaute.setCellValueFactory(new PropertyValueFactory<>("communaute"));
+                ColDatep.setCellValueFactory(new PropertyValueFactory<>("date_p"));
+                ColImage.setCellValueFactory(new PropertyValueFactory<>("image"));
+                ColNbrj.setCellValueFactory(new PropertyValueFactory<>("nbr_jaime"));
+
+                tabPost.setItems(data);
+
+            } else {
+                System.err.println("NOT");
+                this.afficherEvent();
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    @FXML
     private void selectCom(MouseEvent event) {
 
         Commentaire A = tvtabCom.getSelectionModel().getSelectedItem();
         this.mod_descriptionc.setText(A.getDescriptionc());
         this.txtArea.setText(A.getDescriptionc());
-       
-        
 
         //ColDescriptionc.setText(A.getDescriptionc());
-
     }
 
     public String controlSaisie() {
@@ -142,20 +170,18 @@ public class BackcommentsController implements Initializable {
         return error;
     }
 
-    
     @FXML
     private void handlepost(MouseEvent event) throws SQLException {
         comdata.clear();
         Post post = tabPost.getSelectionModel().getSelectedItem();
         List<Commentaire> coment = c.afficherCommentairesDuPost(post.getIdPost());
-        
-        
+
         tfnomuser.setText(post.getNom_user());
         tfsujet.setText(post.getSujet());
         tfdescription.setText(post.getDescription());
         tfcommunaute.setText(post.getCommunaute());
         tfimagep.setText(post.getImage());
-        
+
         comdata.addAll(coment);
         System.out.println(comdata);
         colIdcom.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -163,10 +189,9 @@ public class BackcommentsController implements Initializable {
         ColDescriptionc.setCellValueFactory(new PropertyValueFactory<>("descriptionc"));
         ColDatec.setCellValueFactory(new PropertyValueFactory<>("datec"));
         tvtabCom.setItems(comdata);
-        
 
     }
-    
+
     @FXML
     private void selectPostcom(ActionEvent event) throws SQLException {
         //  Post T = tabPost.getSelectionModel().getSelectedItem();
@@ -177,8 +202,6 @@ public class BackcommentsController implements Initializable {
         //  List<Commentaire> coment = c.getCombyPost(id_post);
         Post post = tabPost.getSelectionModel().getSelectedItem();
         List<Commentaire> coment = c.afficherCommentairesDuPost(post.getIdPost());
-        
-        
 
         comdata.addAll(coment);
         System.out.println(comdata);
@@ -334,6 +357,8 @@ public class BackcommentsController implements Initializable {
                 //Alert Error Tournois !
             } finally {
                 alert.showAndWait();
+                SmS s = new SmS();
+                s.send_sms("+21652532874", "post added ");
             }
         }
         data.clear();
@@ -348,6 +373,7 @@ public class BackcommentsController implements Initializable {
 
     @FXML
     private void updatepostback(ActionEvent event) {
+        Post post = new Post();
         if (tabPost.getSelectionModel().getSelectedItem() != null) {
 
             Post P = tabPost.getSelectionModel().getSelectedItem();
@@ -355,7 +381,14 @@ public class BackcommentsController implements Initializable {
             System.out.println("description:" + tfdescription.getText());
             System.out.println("communaute:" + tfcommunaute.getText());
             System.out.println("nomuser:" + tfnomuser.getText());
-            p.UpdateF(P.getIdPost(), tfsujet.getText(), tfdescription.getText(), tfcommunaute.getText(), tfnomuser.getText(), tfimagep.getText());
+            post.setIdPost(P.getIdPost());
+            post.setNom_user(tfnomuser.getText());
+            post.setCommunaute(tfcommunaute.getText());
+            post.setSujet(tfsujet.getText());
+            post.setDescription(tfdescription.getText());
+            post.setImage(tfimagep.getText());
+            
+            p.UpdateF(post);
 
             Alert EditeJeuxAlert = new Alert(Alert.AlertType.INFORMATION);
             EditeJeuxAlert.setTitle("edit");
@@ -428,7 +461,5 @@ public class BackcommentsController implements Initializable {
         }
 
     }
-
-    
 
 }
