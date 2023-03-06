@@ -57,12 +57,12 @@
             <Font name="System Bold" size="13.0" />
          </font>
       </Button>
-      <Button fx:id="ajoutPoste" layoutX="28.0" layoutY="37.0" mnemonicParsing="false" onAction="#openAjoutPoste" style="-fx-background-color: #D7B14A;" text="Ajouter un Poste">
+      <Button fx:id="ajoutPoste" layoutX="14.0" layoutY="89.0" mnemonicParsing="false" onAction="#openAjoutPoste" style="-fx-background-color: #D7B14A;" text="Ajouter un Poste">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Button>
-      <Button layoutX="28.0" layoutY="116.0" mnemonicParsing="false" onAction="#refreshData" style="-fx-background-color: #049fff;" text="↺ Actualiser" textFill="#f7f7f7">
+      <Button layoutX="14.0" layoutY="129.0" mnemonicParsing="false" onAction="#refreshData" style="-fx-background-color: #D7B14A;" text="↺ Actualiser">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>

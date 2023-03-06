@@ -12,6 +12,7 @@ import edu.entities.Post;
 import edu.services.CommentaireService;
 import edu.services.PostServices;
 import java.awt.Color;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -102,7 +103,7 @@ public class CommentViewController implements Initializable {
     }
 
     @FXML
-    private void addcommentfront(ActionEvent event) throws SQLException {
+    private void addcommentfront(ActionEvent event) throws SQLException, IOException {
         CommentaireService cer = new CommentaireService();
 
         String nom_user = tfnom_user.getText();
@@ -123,7 +124,7 @@ public class CommentViewController implements Initializable {
 
             BadWords.loadConfigs();
 
-            if (BadWords.filterText(description)) {
+            if (BadWords.haveBad(description)) {
                 Alert alert2 = new Alert(Alert.AlertType.WARNING, "Votre Commentaire Contient des termes vulgaires!");
                 alert2.showAndWait();
             } else {

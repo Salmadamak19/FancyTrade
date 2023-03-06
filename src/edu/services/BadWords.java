@@ -80,8 +80,11 @@ public class BadWords {
 
         ArrayList<String> badWords = new ArrayList<>();
         input = input.toLowerCase().replaceAll("[^a-zA-Z]", "");
+        
 
         // iterate over each letter in the word
+        
+        
         for(int start = 0; start < input.length(); start++) {
             // from each letter, keep going to find bad words until either the end of the sentence is reached, or the max word length is reached. 
             for(int offset = 1; offset < (input.length()+1 - start) && offset < largestWordLength; offset++)  {
@@ -110,6 +113,28 @@ public class BadWords {
 
     }
 
+    
+    public static boolean haveBad(String input){
+        // remove leetspeak
+        input = input.replaceAll("1","i");
+        input = input.replaceAll("!","i");
+        input = input.replaceAll("3","e");
+        input = input.replaceAll("4","a");
+        input = input.replaceAll("@","a");
+        input = input.replaceAll("5","s");
+        input = input.replaceAll("7","t");
+        input = input.replaceAll("0","o");
+        input = input.replaceAll("9","g");
+        
+        input = input.toLowerCase().replaceAll("[^a-zA-Z]", "");
+        String[] inputSplit = input.split(" ");
+        for(String oneWord : inputSplit){
+            if(words.containsKey(oneWord)){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public static boolean filterText(String input) {
         ArrayList<String> badWords = badWordsFound(input);

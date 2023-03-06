@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 
 import javafx.application.Application;
@@ -22,15 +25,14 @@ import javafx.stage.StageStyle;
  * @author salma
  */
 public class NewFXMain extends Application {
-    
+
     @Override
     public void start(Stage primaryStage) throws IOException {
-       Parent root = FXMLLoader.load(getClass().getResource("/Etsports/listdeposts.fxml"));
-       primaryStage.initStyle(StageStyle.UNDECORATED);
-        
-        
+        Parent root = FXMLLoader.load(getClass().getResource("/Etsports/listdeposts.fxml"));
+        primaryStage.initStyle(StageStyle.UNDECORATED);
+
         Scene scene = new Scene(root);
-        
+
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -38,8 +40,11 @@ public class NewFXMain extends Application {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException, IOException {
+        
+
         launch(args);
+
     }
-    
+
 }
