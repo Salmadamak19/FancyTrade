@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="850.0" prefWidth="780.0" stylesheets="@fullpackstyling.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Etsports.ListdepostsController">
+   <children>
+      <BorderPane layoutX="84.0" layoutY="56.0" prefHeight="871.0" prefWidth="867.0">
+         <top>
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="871.0" prefWidth="850.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="441.0">
+                     <VBox.margin>
+                        <Insets left="20.0" right="20.0" top="10.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <ComboBox fx:id="communautes" onAction="#filter" onInputMethodTextChanged="#filter" prefWidth="150.0" promptText="Filtre 🜄" style="-fx-background-color: #D7B14A; -fx-background-radius: 20px;" />
+                  <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="731.0" prefWidth="642.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <ScrollPane fx:id="scroll" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="614.0" prefWidth="586.0" styleClass="transparent" stylesheets="@GamesStyle.css">
+                           <content>
+                              <GridPane fx:id="grid" prefHeight="0.0" prefWidth="24.0">
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                                 </rowConstraints>
+                              </GridPane>
+                           </content>
+                           <HBox.margin>
+                              <Insets top="10.0" />
+                           </HBox.margin>
+                        </ScrollPane>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </top>
+      </BorderPane>
+      <ImageView fitHeight="65.0" fitWidth="98.0" layoutX="775.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" />
+      <Label layoutX="170.0" layoutY="41.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="88.0" prefWidth="440.0" text="FANCY TRADE" textOverrun="CLIP">
+         <font>
+            <Font name="Monotype Corsiva" size="69.0" />
+         </font>
+      </Label>
+      <Button fx:id="ExitButton" cancelButton="true" layoutX="703.0" layoutY="33.0" mnemonicParsing="false" onAction="#exitScene" prefHeight="27.0" prefWidth="62.0" style="-fx-background-color: #fa0505;" text="Quitter" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Button>
+      <Button fx:id="ajoutPoste" layoutX="28.0" layoutY="37.0" mnemonicParsing="false" onAction="#openAjoutPoste" style="-fx-background-color: #D7B14A;" text="Ajouter un Poste">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <Button layoutX="28.0" layoutY="116.0" mnemonicParsing="false" onAction="#refreshData" style="-fx-background-color: #049fff;" text="↺ Actualiser" textFill="#f7f7f7">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
