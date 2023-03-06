@@ -54,7 +54,7 @@ public class ServiceMessage {
     public String prenom(String id) {
         Connection connection;
         connection = Database.getInstance().getCon();
-        String query = "SELECT prenom FROM user WHERE id_user = ?";
+        String query = "SELECT prenom FROM utilisateur WHERE id = ?";
         PreparedStatement statement;
         String user_id = "not set";
         try {
@@ -215,7 +215,7 @@ public class ServiceMessage {
             if (this.checkImage(m.getText())) {
                 Image image = new Image(m.getText());
                 ImageView imageView = new ImageView(image);
-sc.myhboxdesign(messageContainer);
+                sc.myhboxdesign(messageContainer);
                 messageContainer.getChildren().add(imageView);
                 double initialWidth = 100;
                 double initialHeight = 100;
@@ -235,7 +235,7 @@ sc.myhboxdesign(messageContainer);
             } else {
                 if (this.checkLocation(m.getText())) {
                     Text clientMessage = new Text(m.getText());
-sc.textdesign(clientMessage);
+                    sc.textdesign(clientMessage);
                     clientMessage.setOnMouseClicked(eventt -> {
                         String[] receivedData = m.getText().split("--");
                         String lat = receivedData[0];
@@ -253,12 +253,12 @@ sc.textdesign(clientMessage);
                             Logger.getLogger(ServiceMessage.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     });
-sc.myhboxdesign(messageContainer);
+                    sc.myhboxdesign(messageContainer);
                     messageContainer.getChildren().add(clientMessage);
                 } else {
                     Text clientMessage = new Text(m.getText());
                     sc.textdesign(clientMessage);
-sc.myhboxdesign(messageContainer);
+                    sc.myhboxdesign(messageContainer);
                     messageContainer.getChildren().add(clientMessage);
                 }
             }
@@ -266,7 +266,7 @@ sc.myhboxdesign(messageContainer);
             if (this.checkImage(m.getText())) {
                 Image image = new Image(m.getText());
                 ImageView imageView = new ImageView(image);
-sc.hishboxdesign(messageContainer);
+                sc.hishboxdesign(messageContainer);
                 messageContainer.getChildren().add(imageView);
                 double initialWidth = 100;
                 double initialHeight = 100;
@@ -304,7 +304,7 @@ sc.hishboxdesign(messageContainer);
                             Logger.getLogger(ServiceMessage.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     });
-sc.hishboxdesign(messageContainer);
+                    sc.hishboxdesign(messageContainer);
                     messageContainer.getChildren().add(senderMessage);
                 } else {
                     Text senderMessage = new Text(prenom(Integer.toString(m.getFrom_user())) + " : " + m.getText());

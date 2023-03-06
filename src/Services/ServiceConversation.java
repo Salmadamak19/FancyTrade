@@ -3,6 +3,7 @@ package Services;
 import DB.Database;
 import Entities.Conversation;
 import com.mysql.cj.xdevapi.Statement;
+import entities.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -57,7 +58,7 @@ public class ServiceConversation {
                 conversationContainer.setStyle("-fx-background-color: #808080; -fx-background-radius: 50px;");
                 Text clientConversations = new Text(conv.showidreceiver(id));
                 clientConversations.setUserData(conv);
-                clientConversations.setFill(Color.WHITE);
+                clientConversations.setFill(Color.BLACK);
                 clientConversations.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
                 conversationContainer.getChildren().add(clientConversations);
                 listView.getChildren().add(conversationContainer);
@@ -71,6 +72,23 @@ public class ServiceConversation {
         return listView;
     }
 
+    public void AddConversation(User Connected, User other) {
+        Connection connection;
+        connection = Database.getInstance().getCon();
+        String query2 = "INSERT INTO conv(idconv_user,idconv_user2) VALUES(?,?)";
+        PreparedStatement statement2;
+        try {
+            statement2 = connection.prepareStatement(query2, PreparedStatement.RETURN_GENERATED_KEYS);
+            statement2.setInt(1, Connected.getId());
+
+            statement2.setInt(2, other.getId());
+            int affectedRows = statement2.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ServiceMessage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public VBox SearchConversations(String Name, String id, VBox listView) {
         try {
             listView.getChildren().clear();
@@ -78,7 +96,7 @@ public class ServiceConversation {
             connection = Database.getInstance().getCon();
             String query = "SELECT * FROM conv c \n"
                     + "WHERE (c.idconv_user = ? OR c.idconv_user2 = ?) \n"
-                    + "AND EXISTS (SELECT * FROM user u WHERE (c.idconv_user = u.id_user AND u.prenom LIKE CONCAT('%', ?, '%')) OR (c.idconv_user2 = u.id_user AND u.prenom LIKE CONCAT('%', ?, '%')))";
+                    + "AND EXISTS (SELECT * FROM utilisateur u WHERE (c.idconv_user = u.id AND u.prenom LIKE CONCAT('%', ?, '%')) OR (c.idconv_user2 = u.id AND u.prenom LIKE CONCAT('%', ?, '%')))";
             PreparedStatement statement;
             statement = connection.prepareStatement(query);
             statement.setString(1, id);
@@ -96,7 +114,7 @@ public class ServiceConversation {
                 Text clientConversations = new Text(conv.showidreceiver(id));
                 System.out.println(conv.showidreceiver(id));
                 clientConversations.setUserData(conv);
-                clientConversations.setFill(Color.WHITE);
+                clientConversations.setFill(Color.BLACK);
                 clientConversations.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
                 conversationContainer.getChildren().add(clientConversations);
                 listView.getChildren().add(conversationContainer);

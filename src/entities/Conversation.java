@@ -17,6 +17,7 @@ public class Conversation {
     int idconv_user2;
 
     public Conversation() {
+        this.id=0;
     }
 
     public Conversation(int id) {

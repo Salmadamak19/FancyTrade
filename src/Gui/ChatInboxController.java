@@ -190,7 +190,8 @@ public void init(){
 
     @FXML
     private void Send_message(ActionEvent event) throws IOException {
-        System.out.println(connected + "client snet dadada");
+        
+        if(Current_conv.getId() != 0){
         if (!testt.checkInput(message_input, alertlabel)) {
             try {
                 dos.writeUTF("0" + ";;" + Integer.toString(connected.getId()) + ";;" + Current_conv.getId() + ";;" + message_input.getText());
@@ -201,6 +202,7 @@ public void init(){
             } catch (IOException ex) {
                 Logger.getLogger(ChatInboxController.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
         }
 
     }
@@ -217,7 +219,7 @@ public void init(){
                 index++;
             }
             HBox clickedHbox = (HBox) target.getParent();
-            clickedHbox.setStyle("-fx-background-color: #007bff; -fx-background-radius: 50px;");
+            clickedHbox.setStyle("-fx-background-color: #d7b14a; -fx-background-radius: 50px;");
 
             Text text = (Text) target;
             Current_conv = (Conversation) text.getUserData();
@@ -229,7 +231,7 @@ public void init(){
                 index++;
             }
             HBox clickedHbox = (HBox) target;
-            clickedHbox.setStyle("-fx-background-color: #007bff; -fx-background-radius: 50px;");
+            clickedHbox.setStyle("-fx-background-color: #d7b14a; -fx-background-radius: 50px;");
             Conversation conv;
             Text text = new Text();
             for (Node child : ((HBox) target).getChildren()) {
@@ -390,6 +392,8 @@ public void init(){
 
     @FXML
     private void Search(KeyEvent event) {
+        Current_conv.setId(0);
+        message_box.getChildren().clear();
         convv.SearchConversations(inputconver.getText(), Integer.toString(connected.getId()), inbox_list);
     }
 
@@ -400,6 +404,7 @@ public void init(){
 
     @FXML
     private void uploadimage(ActionEvent event) {
+        if(Current_conv.getId() != 0){
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Image File");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
@@ -433,11 +438,13 @@ public void init(){
                 Logger.getLogger(ChatInboxController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        }
 
     }
 
     @FXML
     private void sendLocation(ActionEvent event) {
+        if(Current_conv.getId() != 0){
         String Location = sc.getLocation();
         System.out.println(Location);
         String[] receivedData = Location.split("--");
@@ -451,5 +458,6 @@ public void init(){
         } catch (IOException ex) {
             Logger.getLogger(ChatInboxController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
     }
 }

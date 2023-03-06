@@ -64,12 +64,13 @@ public class ServiceChat {
 
     public void scrolldesign(ScrollPane... scrolls) {
         for (ScrollPane scroll : scrolls) {
-            scroll.setStyle("-fx-background-color: transparent;");
-            Node scrollbar = scroll.lookup(".scroll-bar:vertical");
-            if (scrollbar != null) {
-                scrollbar.setOpacity(0.0);
-                scrollbar.setStyle("-fx-background-color: black;");
-            }
+            scroll.setStyle("-fx-background-color: transparent;-fx-border-color: #808080;-fx-border-width: 4;");
+            scroll.skinProperty().addListener((obs, oldSkin, newSkin) -> {
+                if (newSkin != null) {
+                    scroll.lookup(".scroll-bar:vertical").setOpacity(0.5);
+                    scroll.lookup(".scroll-bar:vertical").setStyle("-fx-background-color: black;");
+                }
+            });
             scroll.setFitToWidth(true);
         }
     }
