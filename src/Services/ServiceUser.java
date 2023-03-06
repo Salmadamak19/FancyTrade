@@ -33,13 +33,13 @@ public class ServiceUser {
         ArrayList<User> listusers = new ArrayList<>();
         try {
             ste = connection.createStatement();
-            String req_select = "SELECT * FROM user";
+            String req_select = "SELECT * FROM utilisateur";
             ResultSet res = ste.executeQuery(req_select);
             while (res.next()) {
                 int id = res.getInt(1);
                 String nom = res.getString(2);
                 String prenom = res.getString(3);
-                String mail = res.getString(5);
+                String mail = res.getString(4);
                 String password = res.getString(6);
                 String role = res.getString(7);
 
@@ -68,13 +68,13 @@ public class ServiceUser {
 
     public void ajouter2(User u) {
         try {
-            PreparedStatement pre = connection.prepareStatement("INSERT INTO user (nom,prenom,mot_du_passe,email,type) VALUES (?,?,?,?,?)");
+            PreparedStatement pre = connection.prepareStatement("INSERT INTO utilisateur (nom,prenom,mot_du_passe,email,type) VALUES (?,?,?,?,?)");
 
            
             pre.setString(1, u.getNom());
             pre.setString(2, u.getPrenom());
-            pre.setString(3, u.getPassword());
-            pre.setString(4, u.getMail());
+            pre.setString(3, u.getMdp());
+            pre.setString(4, u.getEmail());
             pre.setString(5, u.getRole());
 
             pre.executeUpdate();
@@ -88,8 +88,8 @@ public class ServiceUser {
             PreparedStatement pre = connection.prepareStatement("INSERT INTO user (email,mot_du_passe) VALUES (?,?)");
 
            
-            pre.setString(1, u.getMail());
-            pre.setString(2, u.getPassword());
+            pre.setString(1, u.getEmail());
+            pre.setString(2, u.getMdp());
       
 
             pre.executeUpdate();
@@ -102,11 +102,11 @@ public class ServiceUser {
     public User ChercherParMail(String mail) {
 
         try {
-            PreparedStatement pre = connection.prepareStatement("SELECT * FROM user where email = ?");
+            PreparedStatement pre = connection.prepareStatement("SELECT * FROM utilisateur where email = ?");
             pre.setString(1, mail);
             ResultSet result = pre.executeQuery();
             while (result.next()) {
-                User u = new User(result.getInt(1), result.getString(2), result.getString(3), result.getString(5), result.getString(6), result.getString(7));
+                User u = new User(result.getInt(1), result.getString(2), result.getString(3), result.getString(4), result.getString(6), result.getString(7));
                 return u;
             }
         } catch (SQLException ex) {
@@ -123,8 +123,8 @@ public class ServiceUser {
 
            pre.setString(1, u.getNom());
             pre.setString(2, u.getPrenom());
-            pre.setString(3, u.getMail());
-            pre.setString(4, u.getPassword());
+            pre.setString(3, u.getEmail());
+            pre.setString(4, u.getMdp());
             pre.setString(5, u.getRole());
             pre.setInt(6, u.getId());
 
@@ -138,7 +138,7 @@ public class ServiceUser {
     public boolean isExiste(String mail) {
 
         try {
-            PreparedStatement pre = connection.prepareStatement("SELECT * FROM user where email = ?");
+            PreparedStatement pre = connection.prepareStatement("SELECT * FROM utilisateur where email = ?");
             pre.setString(1, mail);
             ResultSet result = pre.executeQuery();
             return result.first();
@@ -153,11 +153,11 @@ public class ServiceUser {
     public User ChercherParId(int id) {
 
         try {
-            PreparedStatement pre = connection.prepareStatement("SELECT * FROM user where id_user = ?");
+            PreparedStatement pre = connection.prepareStatement("SELECT * FROM utilisateur where id = ?");
             pre.setInt(1, id);
             ResultSet result = pre.executeQuery();
             while (result.next()) {
-                User u = new User(result.getInt(1), result.getString(2), result.getString(3), result.getString(4), result.getString(5), result.getString(6));
+                User u = new User(result.getInt(1), result.getString(2), result.getString(3), result.getString(4), result.getString(6), result.getString(7));
                 return u;
             }
         } catch (SQLException ex) {

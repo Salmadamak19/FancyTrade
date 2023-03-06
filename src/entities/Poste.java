@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package Entities;
-
+import entities.User;
 import java.sql.Date;
 
 

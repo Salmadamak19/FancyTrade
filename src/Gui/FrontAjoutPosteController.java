@@ -8,6 +8,7 @@ import Entities.Post_forum;
 import Services.BadWords;
 import Services.PostServices;
 import Services.SmS;
+import entities.User;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -54,13 +55,16 @@ public class FrontAjoutPosteController implements Initializable {
     @FXML
     private Button addBtn;
     @FXML
-    private Label userName;
+    private User connected;
+    public void setConnectedUser(User connectedUser) {
+        this.connected = connectedUser;
+        System.out.println(connected + "client snet dadada");
+    }
 
     PostServices postService = new PostServices();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.userName.setText("CURRENT USER");
         this.imgUrl.setDisable(true);
         this.imgUrl.setVisible(false);
         this.nomCommunaute.getItems().addAll(
@@ -109,7 +113,7 @@ public class FrontAjoutPosteController implements Initializable {
                 alert2.showAndWait();
             } else {
                 Post_forum p = new Post_forum();
-                p.setNom_user(this.userName.getText());
+                p.setNom_user(this.connected.getNom());
                 p.setSujet(this.nomSujet.getText());
                 p.setCommunaute(this.nomCommunaute.getValue().toString());
                 p.setDescription(this.desc.getText());

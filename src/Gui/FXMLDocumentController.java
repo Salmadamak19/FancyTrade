@@ -3,7 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXML2.java to edit this template
  */
 package Gui;
-import crud_app.utils.database;
+
+import DB.Database;
+import Gui.ChatInboxController;
+import entities.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Connection;
@@ -28,12 +31,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-
 /**
  *
  * @author user
  */
 public class FXMLDocumentController implements Initializable {
+
     public Label codVUs;
     public ComboBox<?> ageUs;
     public TextField emailUs;
@@ -45,16 +48,17 @@ public class FXMLDocumentController implements Initializable {
     public TextField prenomUs;
 
     public Label roleUs;
+    public User connected;
 
     @FXML
     private TextField ageFld;
 
     @FXML
     private Button btnCnx;
-    
+
     @FXML
     private Button btnConnexion;
-    
+
     @FXML
     private Button btnCreateCompte;
 
@@ -82,91 +86,105 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private PasswordField passwordFld;
 
-    
     private Connection connect;
     private PreparedStatement prepare;
     private ResultSet result;
     private Alert alert;
     @FXML
     private Button btnInscription;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-      
+
     }
-    @FXML    
-    public void loginAccount(){
-            String sql="SELECT * FROM utilisateur WHERE email = ? and mdp = ?";
-            connect = database.connect();
-        try{
+
+    @FXML
+    public void loginAccount() {
+        String sql = "SELECT * FROM utilisateur WHERE email = ? and mdp = ?";
+        connect = Database.getInstance().getCon();
+        try {
             Alert alert;
-            if(loginFld.getText().isEmpty() || mpFld.getText().isEmpty() ){
-                alert=new Alert(AlertType.ERROR);
+            if (loginFld.getText().isEmpty() || mpFld.getText().isEmpty()) {
+                alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Message d'erreurs");
                 alert.setHeaderText(null);
                 alert.setContentText("Veuillez saisir votre login et mot de passe");
                 alert.showAndWait();
-            } else{
+            } else {
                 prepare = connect.prepareStatement(sql);
                 prepare.setString(1, loginFld.getText());
                 prepare.setString(2, mpFld.getText());
-                result=prepare.executeQuery();
+                result = prepare.executeQuery();
                 // a ajouter pour passer 2 controllers
-                if(result.next()){
-                     alert=new Alert(AlertType.INFORMATION);
-                     alert.setTitle("Message d'information");
-                     alert.setHeaderText(null);
-                     alert.setContentText("Vous ete connecté avec succès");
-                     alert.showAndWait();
-                     // pour disparaitre le loginForm
-                     btnConnexion.getScene().getWindow().hide();
-                    if(result.getInt("role")==1)
-                    {
-                       // pour afficher le CRUD ADMIN
-                     Parent root = FXMLLoader.load(getClass().getResource("/Gui/CRUDUser.fxml"));
-                     Stage stage = new Stage();
-                     Scene scene = new Scene(root);
-                     stage.setScene(scene);
-                     stage.show(); 
-                    }else if(result.getInt("role")==2){
-                      
-                       
-                        Parent root = FXMLLoader.load(getClass().getResource("/Gui/profileUser.fxml"));
+                if (result.next()) {
+                    User u = new User(result.getInt(1), result.getString(2), result.getString(3), result.getString(4), result.getInt(5), result.getString(6), result.getString(7), result.getString(8));
+                    setUser(u);
+                    System.out.println(u);
+                    alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Message d'information");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Vous ete connecté avec succès");
+                    alert.showAndWait();
+                    // pour disparaitre le loginForm
+                    btnConnexion.getScene().getWindow().hide();
+                    if (result.getInt("role") == 1) {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Gui/User Menu.fxml"));
+                        Parent root = loader.load();
+                        UserMenuController controller = loader.getController();
+                        controller.setConnectedUser(u);
                         Stage stage = new Stage();
                         Scene scene = new Scene(root);
                         stage.setScene(scene);
-                        stage.show(); 
-                        
+                        stage.show();
+                    } else if (result.getInt("role") == 2) {
+
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Gui/Admin Menu.fxml"));
+                        Parent root = loader.load();
+                        Stage stage = new Stage();
+                        Scene scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+
                     }
- 
-                }else{
+
+                } else {
                     // si login et mot de passe invalides
-                     alert=new Alert(AlertType.ERROR);
-                     alert.setTitle("Message d'erreurs");
-                     alert.setHeaderText(null);
-                     alert.setContentText("Login et/ou mot de passe invalide");
-                     alert.showAndWait();
+                    alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Message d'erreurs");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Login et/ou mot de passe invalide");
+                    alert.showAndWait();
                 }
             }
-            
-        }catch(Exception e){
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }
-    
-    public void displayData(){
-     
+
+    public void setUser(User user) {
+        this.connected = user;
+    }
+
+    public User getUser() {
+
+        return this.connected;
+
+    }
+
+    public void displayData() {
+
         try {
-            String sql="SELECT * FROM utilisateur WHERE email = ?";
-            connect = database.connect();
+            String sql = "SELECT * FROM utilisateur WHERE email = ?";
+            connect = Database.getInstance().getCon();
             prepare = connect.prepareStatement(sql);
             prepare.setString(1, loginFld.getText());
-            result=prepare.executeQuery();
-            
-            if(result.next()){
-                
+            result = prepare.executeQuery();
+
+            if (result.next()) {
+
                 nomUs.setText(result.getString("nom"));
                 prenomUs.setText(result.getString("nom"));
                 emailUs.setText(result.getString("email"));
@@ -175,80 +193,81 @@ public class FXMLDocumentController implements Initializable {
                 roleUs.setText(result.getString("role"));
                 codVUs.setText(result.getString("verification_code"));
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
+
     @FXML
-    public void registerAccount(){
-        String sql="INSERT INTO utilisateur(nom, prenom, email, age, mdp, role, verification_code) VALUES (?,?,?,?,?,?,?)";
-        connect = database.connect();
-        try{
+    public void registerAccount() {
+        String sql = "INSERT INTO utilisateur(nom, prenom, email, age, mdp, role, verification_code) VALUES (?,?,?,?,?,?,?)";
+        connect = Database.getInstance().getCon();
+        try {
             Alert alert;
-            if(nomFld.getText().isEmpty()||prenFld.getText().isEmpty()||mailFld.getText().isEmpty()||ageFld.getText().isEmpty()||passwordFld.getText().isEmpty())
-            {
-                alert=new Alert(AlertType.ERROR);
+            if (nomFld.getText().isEmpty() || prenFld.getText().isEmpty() || mailFld.getText().isEmpty() || ageFld.getText().isEmpty() || passwordFld.getText().isEmpty()) {
+                alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Message d'erreurs");
                 alert.setHeaderText(null);
                 alert.setContentText("Veuillez remplir les champs obligatoires");
                 alert.showAndWait();
-                
-            }else{
-                String checkData="SELECT email from utilisateur where email ='"+mailFld.getText()+"'";
-                prepare=connect.prepareCall(checkData);
-                result=prepare.executeQuery();
-                if(result.next()){
-                    alert=new Alert(AlertType.ERROR);
+
+            } else {
+                String checkData = "SELECT email from utilisateur where email ='" + mailFld.getText() + "'";
+                prepare = connect.prepareCall(checkData);
+                result = prepare.executeQuery();
+                if (result.next()) {
+                    alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Message d'erreurs");
                     alert.setHeaderText(null);
-                    alert.setContentText(mailFld.getText()+" Email existe déjà !! ");
+                    alert.setContentText(mailFld.getText() + " Email existe déjà !! ");
                     alert.showAndWait();
-            }else{
-                    if(passwordFld.getText().length() < 8 ){
-                alert=new Alert(AlertType.ERROR);
-                alert.setTitle("Message d'erreurs");
-                alert.setHeaderText(null);
-                alert.setContentText("Mot de passe invalide");
-                alert.showAndWait();
-            }else{ 
-                prepare=connect.prepareCall(sql);
-                prepare.setString(1, nomFld.getText());
-                prepare.setString(2, prenFld.getText());
-                prepare.setString(3, mailFld.getText());
-                prepare.setInt(4, Integer.parseInt(ageFld.getText()));
-                prepare.setString(5, passwordFld.getText());
-                prepare.setInt(6,2);
-                prepare.setInt(7,200);
-                prepare.executeUpdate();
-                alert=new Alert(AlertType.INFORMATION);
-                alert.setTitle("Message d'information");
-                alert.setHeaderText(null);
-                alert.setContentText("Inscription effectuée avec succès");
-                alert.showAndWait();
-                loginForm.setVisible(true);
-                inscrpForm.setVisible(false);
-                loginFld.setText("");
-                mpFld.setText("");    
+                } else {
+                    if (passwordFld.getText().length() < 8) {
+                        alert = new Alert(AlertType.ERROR);
+                        alert.setTitle("Message d'erreurs");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Mot de passe invalide");
+                        alert.showAndWait();
+                    } else {
+                        prepare = connect.prepareCall(sql);
+                        prepare.setString(1, nomFld.getText());
+                        prepare.setString(2, prenFld.getText());
+                        prepare.setString(3, mailFld.getText());
+                        prepare.setInt(4, Integer.parseInt(ageFld.getText()));
+                        prepare.setString(5, passwordFld.getText());
+                        prepare.setInt(6, 2);
+                        prepare.setInt(7, 200);
+                        prepare.executeUpdate();
+                        alert = new Alert(AlertType.INFORMATION);
+                        alert.setTitle("Message d'information");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Inscription effectuée avec succès");
+                        alert.showAndWait();
+                        loginForm.setVisible(true);
+                        inscrpForm.setVisible(false);
+                        loginFld.setText("");
+                        mpFld.setText("");
+                    }
+                }
             }
-            }
-            }
-            
-            }catch(Exception e){
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }
+
     @FXML
-     public void switchForm(ActionEvent event){
-         if(event.getSource()==this.btnCreateCompte){
-             loginForm.setVisible(false);
-             inscrpForm.setVisible(true);
-         }else if(event.getSource()==this.btnCnx){
-             loginForm.setVisible(true);
-             inscrpForm.setVisible(false);
-         }
-                
-         }
+    public void switchForm(ActionEvent event) {
+        if (event.getSource() == this.btnCreateCompte) {
+            loginForm.setVisible(false);
+            inscrpForm.setVisible(true);
+        } else if (event.getSource() == this.btnCnx) {
+            loginForm.setVisible(true);
+            inscrpForm.setVisible(false);
+        }
+
+    }
 }

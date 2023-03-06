@@ -4,6 +4,7 @@
  */
 package Gui;
 
+import DB.Database;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,7 +20,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import crud_app.utils.database;
 import entities.User;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -125,7 +125,7 @@ public class CRUDUserController implements Initializable {
     
     public void userAddBtn(){
         String insertData = "INSERT INTO utilisateur(nom, prenom, email, age,mdp,role,verification_code) VALUES (?,?,?,?,?,?,?)";
-        connect = database.connect();
+        connect = Database.getInstance().getCon();
         try{
            
                 if(emailUs.getText().isEmpty() || nomUs.getText().isEmpty() || prenomUs.getText().isEmpty() || ageUs.getSelectionModel().getSelectedItem()==null)
@@ -190,7 +190,7 @@ public class CRUDUserController implements Initializable {
     
     public ObservableList<User> getUsersList(){
         ObservableList<User> userList = FXCollections.observableArrayList();
-        connect = database.connect();
+        connect = Database.getInstance().getCon();
         String query = "SELECT * FROM utilisateur";
         Statement st;
         ResultSet rs;
@@ -236,7 +236,7 @@ public class CRUDUserController implements Initializable {
     
     public void modifierBtn(){
         String updateData = "UPDATE  utilisateur SET nom = ? , prenom = ? , email = ?  , mdp = ? WHERE id = ? ";
-        connect = database.connect();
+        connect = Database.getInstance().getCon();
         
         try {
             prepare2 = connect.prepareStatement(updateData);
@@ -264,7 +264,7 @@ public class CRUDUserController implements Initializable {
     
      public void rechercherBtn(){
         String updateData = "SELECT * FROM  utilisateur  WHERE email = ? ";
-        connect = database.connect();
+        connect = Database.getInstance().getCon();
         
         try {
             prepare2 = connect.prepareStatement(updateData);
@@ -304,7 +304,7 @@ public class CRUDUserController implements Initializable {
     
     public void supprimerBtn(){
         String updateData = "DELETE FROM  utilisateur  WHERE id = ? ";
-        connect = database.connect();
+        connect = Database.getInstance().getCon();
         
         try {
             prepare2 = connect.prepareStatement(updateData);

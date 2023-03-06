@@ -4,8 +4,8 @@
  * and open the template in the editor.
  */
 package GUI;
+
 import Entities.categorie;
-import util.DataSource;
 import Services.ServicePoste;
 import Entities.Poste;
 import Entities.RatingControl;
@@ -43,6 +43,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import Services.ServiceCategorie;
+import entities.User;
 
 /**
  * FXML Controller class
@@ -62,28 +63,29 @@ public class AffichagePController implements Initializable {
     private ComboBox<String> combotri;
     private ServiceCategorie sd = new ServiceCategorie();
     private ImageView[] stars = new ImageView[5];
+    private User connected;
 
-    /**
-     * Initializes the controller class.
-     */
-    public void table(){
+    public void setConnectedUser(User connectedUser) {
+        this.connected = connectedUser;
+        System.out.println(connected + "client snet dadada");
+    }
+
+    public void table() {
         List<Poste> offres = sp.getAll();
         VBox vBox = new VBox();
-        
+
         vBox.setAlignment(Pos.TOP_CENTER);
         vBox.setSpacing(30);
-        
 
         HBox hBox = new HBox();
-         
+
         hBox.setAlignment(Pos.CENTER);
         hBox.setSpacing(100);//
-        
 
         int count = 0;
         for (Poste offre : offres) {
             VBox box = createOffreBox(offre);
-            
+
             hBox.getChildren().add(box);
             count++;
 
@@ -104,33 +106,26 @@ public class AffichagePController implements Initializable {
         scrollpane.setFitToWidth(true);
         scrollpane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
     }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         combotri.setItems(sd.getalls());
         table();
-        
+
     }
 
-    
-    
-    
-    
-    private VBox createOffreBox(Poste offre)  {
+    private VBox createOffreBox(Poste offre) {
         VBox box = new VBox();
         ServicePoste sp = new ServicePoste();
         box.setAlignment(Pos.CENTER);
         box.setSpacing(30);
-         box.setUserData(offre.getId()); // set the ID as the user data for the VBox
-
+        box.setUserData(offre.getId()); // set the ID as the user data for the VBox
 
         Label titre = new Label(offre.getTitre());
-        
-        
-        Label comment_total = new Label("Total Commentaires :"+String.valueOf(sp.comments(offre.getId())));
-        
-       
-        
+
+        Label comment_total = new Label("Total Commentaires :" + String.valueOf(sp.comments(offre.getId())));
+
         File imagef = new File(offre.getImg());
         Image image = new Image(imagef.toURI().toString());
         ImageView imm = new ImageView(image);
@@ -138,43 +133,33 @@ public class AffichagePController implements Initializable {
         Label user = new Label(offre.getUser().getNom());
         Label voir = new Label("Cliquez pour Afficher plus ou commentez");
         Label sep = new Label("_________________________________________________________________________________________________");
-        
-        
+
         titre.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-        
-      user.setStyle("-fx-text-fill : Black;");
-      voir.setStyle("-fx-text-fill : Red;");
-        
-         voir.setFont(Font.font("Serif", FontWeight.LIGHT, 15));
+
+        user.setStyle("-fx-text-fill : Black;");
+        voir.setStyle("-fx-text-fill : Red;");
+
+        voir.setFont(Font.font("Serif", FontWeight.LIGHT, 15));
         user.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-        
+
         user.setWrapText(true);
         imm.setFitWidth(100);
         imm.setFitHeight(100);
-        
-        box.getChildren().addAll( user,titre,imm,date,comment_total,voir,sep);
-        
-        
-        
-        
-          box.setOnMouseClicked(event -> {
+
+        box.getChildren().addAll(user, titre, imm, date, comment_total, voir, sep);
+
+        box.setOnMouseClicked(event -> {
             try {
-                Poste selectedC=sp.getOneById(offre.getId());
-                
-                
-                FXMLLoader loader= new FXMLLoader(getClass().getResource("Addcomment.fxml"));
-                Parent view_2=loader.load();
-                AddcommentController ModifierController=loader.getController();
-                
-                 ModifierController.getPoste(selectedC);
-                 ModifierController.p =selectedC;
-                 
-                     
-                
-               
-                
-                
-                Stage stage=(Stage)((Node)event.getSource()).getScene().getWindow();
+                Poste selectedC = sp.getOneById(offre.getId());
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("Addcomment.fxml"));
+                Parent view_2 = loader.load();
+                AddcommentController ModifierController = loader.getController();
+
+                ModifierController.getPoste(selectedC);
+                ModifierController.p = selectedC;
+
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 Scene scene = new Scene(view_2);
                 stage.setScene(scene);
                 stage.show();
@@ -183,7 +168,6 @@ public class AffichagePController implements Initializable {
             }
         });
 
-
         return box;
     }
 
@@ -191,21 +175,19 @@ public class AffichagePController implements Initializable {
     private void tri(ActionEvent event) {
         List<Poste> offres = sp.getAllT(combotri.getValue());
         VBox vBox = new VBox();
-        
+
         vBox.setAlignment(Pos.TOP_CENTER);
         vBox.setSpacing(30);
-        
 
         HBox hBox = new HBox();
-         
+
         hBox.setAlignment(Pos.CENTER);
         hBox.setSpacing(100);//
-        
 
         int count = 0;
         for (Poste offre : offres) {
             VBox box = createOffreBox(offre);
-            
+
             hBox.getChildren().add(box);
             count++;
 
@@ -231,21 +213,19 @@ public class AffichagePController implements Initializable {
     private void rech(ActionEvent event) {
         List<Poste> offres = sp.getAll(tfrech.getText());
         VBox vBox = new VBox();
-        
+
         vBox.setAlignment(Pos.TOP_CENTER);
         vBox.setSpacing(30);
-        
 
         HBox hBox = new HBox();
-         
+
         hBox.setAlignment(Pos.CENTER);
         hBox.setSpacing(100);//
-        
 
         int count = 0;
         for (Poste offre : offres) {
             VBox box = createOffreBox(offre);
-            
+
             hBox.getChildren().add(box);
             count++;
 
@@ -270,10 +250,12 @@ public class AffichagePController implements Initializable {
     @FXML
     private void ajj(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
-         fxmlLoader.setLocation(getClass().getResource("Addposte.fxml"));
-          AnchorPane anchorPane;
-          anchorPane = fxmlLoader.load();
-          Stage stage = new Stage();
+        fxmlLoader.setLocation(getClass().getResource("Addposte.fxml"));
+        AnchorPane anchorPane;
+        anchorPane = fxmlLoader.load();
+        AddposteController controller = fxmlLoader.getController();
+        controller.setConnectedUser(connected);
+        Stage stage = new Stage();
         stage.setScene(new Scene(anchorPane));
         stage.show();
     }
@@ -286,12 +268,12 @@ public class AffichagePController implements Initializable {
     @FXML
     private void mep(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
-         fxmlLoader.setLocation(getClass().getResource("Mespostes.fxml"));
-          AnchorPane anchorPane;
-          anchorPane = fxmlLoader.load();
-          Stage stage = new Stage();
+        fxmlLoader.setLocation(getClass().getResource("Mespostes.fxml"));
+        AnchorPane anchorPane;
+        anchorPane = fxmlLoader.load();
+        Stage stage = new Stage();
         stage.setScene(new Scene(anchorPane));
         stage.show();
     }
-    
+
 }

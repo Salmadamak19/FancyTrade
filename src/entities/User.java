@@ -28,7 +28,18 @@ public class User {
      */
     
 
-    public User(String nom, String prenom, String email,int age, String mdp, String role, String verificationCode) {      
+    public User(int id, String nom, String prenom, String email, String mdp, String role) {      
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.mdp = mdp;
+        this.role = role;
+        
+        
+    }
+
+    public User(String nom, String prenom, String email, int age, String mdp, String role, String verificationCode) {
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
@@ -36,8 +47,17 @@ public class User {
         this.mdp = mdp;
         this.role = role;
         this.verificationCode = verificationCode;
-        
-        
+    }
+
+    public User(int id, String nom, String prenom, String email, int age, String mdp, String role, String verificationCode) {
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.age = age;
+        this.mdp = mdp;
+        this.role = role;
+        this.verificationCode = verificationCode;
     }
 
     public User(int id, String nom, String prenom, String email, int age, String mdp, String role) {
@@ -158,7 +178,6 @@ public class User {
     public void setVerificationCode(String verificationCode) {
         this.verificationCode = verificationCode;
     }
-    
     
     
     @Override

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="Gui.AdminMenuController">
+   <children>
+      <Button layoutX="75.0" layoutY="60.0" mnemonicParsing="false" onAction="#gotoadminchat" text="Chat" />
+      <Button layoutX="75.0" layoutY="106.0" mnemonicParsing="false" onAction="#gotoadminpost" text="Post" />
+      <Button layoutX="75.0" layoutY="175.0" mnemonicParsing="false" onAction="#gotoadminforum" text="Forum" />
+      <Button layoutX="413.0" layoutY="106.0" mnemonicParsing="false" onAction="#gotoadminuser" text="user" />
+      <Button layoutX="401.0" layoutY="60.0" mnemonicParsing="false" onAction="#gotoadminreclamation" text="Reclamation" />
+      <Button layoutX="404.0" layoutY="185.0" mnemonicParsing="false" onAction="#gotoadminechange" text="Echange" />
+   </children>
+</AnchorPane>

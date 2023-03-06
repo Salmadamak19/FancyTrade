@@ -6,13 +6,11 @@ import Entities.Message;
 import Server.ServerMessage;
 import java.awt.Desktop;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.security.Timestamp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -34,15 +32,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /*
@@ -54,6 +48,8 @@ import javafx.stage.Stage;
  * @author oussema
  */
 public class ServiceMessage {
+
+    private ServiceChat sc = new ServiceChat();
 
     public String prenom(String id) {
         Connection connection;
@@ -151,7 +147,7 @@ public class ServiceMessage {
 
     public Boolean checkLocation(String Message) {
 
-        if (Message.matches("[0-9]+--[0-9]+")) {
+        if (Message.matches("[0-9]*\\.[0-9]+--[0-9]*\\.[0-9]+")) {
             return true;
         } else {
             return false;
@@ -213,14 +209,13 @@ public class ServiceMessage {
 
     public void msgtemplate(String clientID, Message m, VBox messages) {
         HBox messageContainer = new HBox();
+        HBox.setHgrow(messageContainer, Priority.NEVER);
         messageContainer.setId(Integer.toString(m.getId_message()));
         if (clientID.equals(Integer.toString(m.getFrom_user()))) {
             if (this.checkImage(m.getText())) {
                 Image image = new Image(m.getText());
                 ImageView imageView = new ImageView(image);
-                messageContainer.setAlignment(Pos.CENTER_RIGHT);
-                messageContainer.setStyle("-fx-background-color: #007bff; -fx-background-radius: 0px;");
-                messageContainer.setPadding(new Insets(0, 20, 0, 0));
+sc.myhboxdesign(messageContainer);
                 messageContainer.getChildren().add(imageView);
                 double initialWidth = 100;
                 double initialHeight = 100;
@@ -240,8 +235,7 @@ public class ServiceMessage {
             } else {
                 if (this.checkLocation(m.getText())) {
                     Text clientMessage = new Text(m.getText());
-                    clientMessage.setFill(Color.WHITE);
-                    clientMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+sc.textdesign(clientMessage);
                     clientMessage.setOnMouseClicked(eventt -> {
                         String[] receivedData = m.getText().split("--");
                         String lat = receivedData[0];
@@ -259,17 +253,12 @@ public class ServiceMessage {
                             Logger.getLogger(ServiceMessage.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     });
-                    messageContainer.setAlignment(Pos.CENTER_RIGHT);
-                    messageContainer.setStyle("-fx-background-color: #007bff; -fx-background-radius: 0px;");
-                    messageContainer.setPadding(new Insets(0, 20, 0, 0));
+sc.myhboxdesign(messageContainer);
                     messageContainer.getChildren().add(clientMessage);
                 } else {
                     Text clientMessage = new Text(m.getText());
-                    clientMessage.setFill(Color.WHITE);
-                    clientMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
-                    messageContainer.setAlignment(Pos.CENTER_RIGHT);
-                    messageContainer.setStyle("-fx-background-color: #007bff; -fx-background-radius: 0px;");
-                    messageContainer.setPadding(new Insets(0, 20, 0, 0));
+                    sc.textdesign(clientMessage);
+sc.myhboxdesign(messageContainer);
                     messageContainer.getChildren().add(clientMessage);
                 }
             }
@@ -277,8 +266,7 @@ public class ServiceMessage {
             if (this.checkImage(m.getText())) {
                 Image image = new Image(m.getText());
                 ImageView imageView = new ImageView(image);
-                messageContainer.setStyle("-fx-background-color: #808080; -fx-background-radius: 0px;");
-                messageContainer.setPadding(new Insets(0, 0, 0, 10));
+sc.hishboxdesign(messageContainer);
                 messageContainer.getChildren().add(imageView);
                 double initialWidth = 100;
                 double initialHeight = 100;
@@ -298,8 +286,7 @@ public class ServiceMessage {
             } else {
                 if (this.checkLocation(m.getText())) {
                     Text senderMessage = new Text(prenom(Integer.toString(m.getFrom_user())) + " : " + m.getText());
-                    senderMessage.setFill(Color.WHITE); // set the text color to white
-                    senderMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15)); // set the font
+                    sc.textdesign(senderMessage);
                     senderMessage.setOnMouseClicked(eventt -> {
                         String[] receivedData = m.getText().split("--");
                         String lat = receivedData[0];
@@ -317,15 +304,12 @@ public class ServiceMessage {
                             Logger.getLogger(ServiceMessage.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     });
-                    messageContainer.setPadding(new Insets(0, 0, 0, 10));
-                    messageContainer.setStyle("-fx-background-color: #808080; -fx-background-radius: 0px;");
+sc.hishboxdesign(messageContainer);
                     messageContainer.getChildren().add(senderMessage);
                 } else {
                     Text senderMessage = new Text(prenom(Integer.toString(m.getFrom_user())) + " : " + m.getText());
-                    senderMessage.setFill(Color.WHITE); // set the text color to white
-                    senderMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 15)); // set the font
-                    messageContainer.setPadding(new Insets(0, 0, 0, 10));
-                    messageContainer.setStyle("-fx-background-color: #808080; -fx-background-radius: 0px;");
+                    sc.textdesign(senderMessage);
+                    sc.hishboxdesign(messageContainer);
                     messageContainer.getChildren().add(senderMessage);
                 }
             }

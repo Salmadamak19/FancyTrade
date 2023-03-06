@@ -8,6 +8,19 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import org.json.JSONObject;
 
 /**
@@ -18,7 +31,7 @@ public class ServiceChat {
 
     public String getLocation() {
         String url = "http://ip-api.com/json/?fields=lat,lon";
-        int lat = 0, lon = 0;
+        float lat = 0, lon = 0;
         try {
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -33,15 +46,76 @@ public class ServiceChat {
             in.close();
 
             JSONObject json = new JSONObject(response.toString());
-            lat = json.getInt("lat");
-            lon = json.getInt("lon");
+            lat = json.getFloat("lat");
+            lon = json.getFloat("lon");
             System.out.println("Latitude: " + lat);
             System.out.println("Longitude: " + lon);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return Integer. toString(lat)+"--"+Integer. toString(lon);
+        return Float.toString(lat) + "--" + Float.toString(lon);
     }
-    
+
+    public void inputdesign(TextField... inputs) {
+        for (TextField input : inputs) {
+            input.setStyle("-fx-background-color: #d7b14a; -fx-text-inner-color: black; -fx-prompt-text-fill: black;");
+        }
+    }
+
+    public void scrolldesign(ScrollPane... scrolls) {
+        for (ScrollPane scroll : scrolls) {
+            scroll.setStyle("-fx-background-color: transparent;");
+            Node scrollbar = scroll.lookup(".scroll-bar:vertical");
+            if (scrollbar != null) {
+                scrollbar.setOpacity(0.0);
+                scrollbar.setStyle("-fx-background-color: black;");
+            }
+            scroll.setFitToWidth(true);
+        }
+    }
+
+    public void paindesign(Pane... panes) {
+        for (Pane pain : panes) {
+            pain.setStyle("-fx-background-color: black;");
+        }
+    }
+
+    public void vboxdesign(VBox... vboxes) {
+        for (VBox vbox : vboxes) {
+            vbox.setStyle("-fx-background-color: black;");
+
+        }
+    }
+
+    public void buttondesign(Button... buttons) {
+        for (Button button : buttons) {
+            button.setStyle("-fx-background-color: #d7b14a; -fx-text-fill: black;");
+
+        }
+    }
+
+    public void textdesign(Text... texts) {
+        for (Text text : texts) {
+            text.setStyle("-fx-text-fill: black;");
+            text.setFont(Font.font("Arial", 15));
+
+        }
+    }
+
+    public void myhboxdesign(HBox... hboxes) {
+        for (HBox hbox : hboxes) {
+            hbox.setStyle("-fx-background-color: #d7b14a; -fx-background-radius: 0px;");
+            hbox.setAlignment(Pos.CENTER_RIGHT);
+            hbox.setPadding(new Insets(0, 20, 0, 0));
+        }
+    }
+
+    public void hishboxdesign(HBox... hboxes) {
+        for (HBox hbox : hboxes) {
+            hbox.setStyle("-fx-background-color: #808080; -fx-background-radius: 0px;");
+            hbox.setPadding(new Insets(0, 0, 0, 10));
+
+        }
+    }
 
 }

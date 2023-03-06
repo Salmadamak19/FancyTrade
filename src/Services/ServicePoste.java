@@ -196,7 +196,7 @@ public int comments (int id){
                
                 p.setDate(rs.getDate("date"));
                 p.setPoste(sp.getOneById(rs.getInt("id_poste")));
-                p.setUser(su.ChercherParId(rs.getInt("id_user")));
+                p.setUser(su.ChercherParId(rs.getInt("id")));
                posts.add(p);
             }
            

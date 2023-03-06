@@ -8,6 +8,7 @@ package Gui;
 import Entities.Post_forum;
 import Services.CommentaireService;
 import Services.PostServices;
+import entities.User;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -56,7 +57,11 @@ public class ListdepostsController implements Initializable {
     private Button ajoutPoste;
     @FXML
     private ComboBox communautes;
-
+    private User connected;
+    public void setConnectedUser(User connectedUser) {
+        this.connected = connectedUser;
+        System.out.println(connected + "client snet dadada");
+    }
     public void exitScene(ActionEvent event) {
         Stage stage = (Stage) ExitButton.getScene().getWindow();
         stage.close();
@@ -113,6 +118,8 @@ public class ListdepostsController implements Initializable {
     public void openAjoutPoste(ActionEvent event) throws IOException {
         FXMLLoader fXMLLoader = new FXMLLoader(getClass().getResource("/Gui/FrontAjoutPoste.fxml"));
         Parent root = (Parent) fXMLLoader.load();
+                FrontAjoutPosteController controller = fXMLLoader.getController();
+        controller.setConnectedUser(connected);
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.show();

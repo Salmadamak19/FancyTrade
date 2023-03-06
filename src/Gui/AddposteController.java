@@ -13,7 +13,6 @@ import java.io.IOException;
 import Services.ServiceCategorie;
 import Services.ServicePoste;
 import Services.ServiceUser;
-import util.DataSource;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -62,9 +61,11 @@ public class AddposteController implements Initializable {
     private ImageView ben;
     @FXML
     private ComboBox<String> combodomaine1;
-    /**
-     * Initializes the controller class.
-     */
+    private User connected;
+    public void setConnectedUser(User connectedUser) {
+        this.connected = connectedUser;
+        System.out.println(connected + "client snet dadada");
+    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -110,7 +111,7 @@ public class AddposteController implements Initializable {
             ddd=new categorie(combodomaine1.getValue().toString());
             p.setCategorie(ddd);
             p.setDate(java.sql.Date.valueOf(today));
-            p.setUser(sa.ChercherParId(1));
+            p.setUser(sa.ChercherParId(connected.getId()));
             
             sp.ajouter(p);
             
