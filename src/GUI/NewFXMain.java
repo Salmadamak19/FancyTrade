@@ -5,10 +5,6 @@
  */
 package GUI;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,35 +15,32 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-/** 
+/**
  *
- * @author wissal
+ * @author fairouzkhayat
  */
 public class NewFXMain extends Application {
     
-     @Override
-    public void start(Stage primaryStage) {
-      try {
-            Parent root = FXMLLoader.load(getClass(). getResource("AffichageP.fxml"));
-            Scene scene = new Scene(root);
-            primaryStage.setTitle("Cards");
-            primaryStage.setScene(scene);
-            primaryStage.show();         
-            
-        } catch (IOException ex) {
-            Logger.getLogger(NewFXMain.class.getName()).log(Level.SEVERE, null, ex);
-        }    }
+    @Override
+    public void start(Stage stage) {
+try{
+//FXMLLoader loader  = new FXMLLoader(getClass().getResource("liste_reclamation.fxml"));
+Parent root = FXMLLoader.load(getClass().getResource("interface_reclamation.fxml"));
+Scene scene = new Scene(root);
+stage.setScene(scene);
+stage.show();
+}
+catch(Exception e){
+e.printStackTrace();
+}
+     
+    }
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
         launch(args);
-
-
-
-
-}
-}
-
+    }
     
+}

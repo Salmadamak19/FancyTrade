@@ -7,36 +7,38 @@ package util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 
 /**
  *
- * @author wissal
+ * @author fairouzkhayat
  */
-public class DataSource {
-    private Connection cnx;
-    private static DataSource instance;
+public class DataSource {    
     
-    private final String USER = "root";
-    private final String PWD = "";
-    private final String URL = "jdbc:mysql://localhost:3306/fancytrade";
-
-    private DataSource() {
+private Connection cnx;
+    private DataSource(){
         try {
-            cnx = DriverManager.getConnection(URL, USER, PWD);
-            System.out.println("Connected !");
-        } catch (SQLException ex) {
-            System.err.println(ex.getMessage());
+            String USERNAME = "root";
+            String db_name = "fancytrade";
+            String url = "jdbc:mysql://localhost:3306/fancytrade";
+            String MY_PASS = "root";
+            cnx = DriverManager.getConnection(url, USERNAME, MY_PASS);
+         System.out.println("JDBC CONNECTED TO ");
+        }catch (Exception ex ) {
+          
+         System.out.println(ex.getMessage());
         }
     }
-
     public static DataSource getInstance() {
-        if(instance == null)
-            instance = new DataSource();
-        return instance;
+        return new DataSource();
     }
 
     public Connection getCnx() {
         return cnx;
     }
+   
+    
 }
+
+
+    
+
