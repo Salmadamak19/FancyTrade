@@ -7,7 +7,7 @@ package GUI;
 
 import Entities.categorie;
 import Entities.Poste;
-import Entities.User;
+import entities.User;
 import java.io.File;
 import java.io.IOException;
 import Services.ServiceCategorie;

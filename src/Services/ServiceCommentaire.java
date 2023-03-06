@@ -8,7 +8,7 @@ package Services;
 import DB.Database;
 import Entities.Commentaire;
 import Entities.Poste;
-import Entities.User;
+import entities.User;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;

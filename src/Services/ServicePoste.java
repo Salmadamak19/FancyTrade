@@ -9,7 +9,7 @@ import DB.Database;
 import Entities.Commentaire;
 import Entities.categorie;
 import Entities.Poste;
-import Entities.User;
+import entities.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

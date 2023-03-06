@@ -5,7 +5,7 @@
  */
 package Services;
 import DB.Database;
-import Entities.User;
+import entities.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
