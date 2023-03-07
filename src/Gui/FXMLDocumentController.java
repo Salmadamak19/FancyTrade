@@ -199,6 +199,33 @@ public class FXMLDocumentController implements Initializable {
         }
 
     }
+    
+    public Boolean checkEmail(String Message) {
+String mail="[-A-Za-z0-9!#$%&'*+/=?^_`{|}~]+(?:\\.[-A-Za-z0-9!#$%&'*+/=?^_`{|}~]+)*@(?:[A-Za-z0-9](?:[-A-Za-z0-9]*[A-Za-z0-9])?\\.)+[A-Za-z0-9](?:[-A-Za-z0-9]*[A-Za-z0-9])?";
+
+        if (Message.matches(mail)) {
+            System.out.println(Message +"true");
+            return true;
+        } else {
+            System.out.println(Message +"false");
+            return false;
+        }
+
+    }
+        public Boolean checknom(String Message) {
+            String nameRegex = "[A-Za-z]+";
+
+
+        if (Message.matches(nameRegex)) {
+            System.out.println(Message +"true");
+            return true;
+            
+        } else {
+            System.out.println(Message +"false");
+            return false;
+        }
+
+    }
 
     @FXML
     public void registerAccount() {
@@ -213,6 +240,12 @@ public class FXMLDocumentController implements Initializable {
                 alert.setContentText("Veuillez remplir les champs obligatoires");
                 alert.showAndWait();
 
+            }else if(this.checknom(nomFld.getText())== false || this.checknom(prenFld.getText())== false || this.checkEmail(mailFld.getText())== false){
+                            alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Message d'erreurs");
+                alert.setHeaderText(null);
+                alert.setContentText("Veuillez nom et prenom test");
+                alert.showAndWait();
             } else {
                 String checkData = "SELECT email from utilisateur where email ='" + mailFld.getText() + "'";
                 prepare = connect.prepareCall(checkData);
