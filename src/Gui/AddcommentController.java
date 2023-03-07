@@ -33,8 +33,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import Services.ServiceCommentaire;
 import Services.ServiceCategorie;
+import Services.ServiceConversation;
 import Services.ServicePoste;
 import Services.ServiceUser;
+import entities.User;
+import java.sql.SQLException;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 
@@ -64,9 +67,19 @@ public class AddcommentController implements Initializable {
     @FXML
     private Button aff;
     private Boolean b=false;
-    /**
-     * Initializes the controller class.
-     */
+    private User connected;
+    private ServiceConversation scc = new ServiceConversation();
+   private User owner;
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+        System.out.println(owner + " owner of post");
+    }
+
+    public void setConnectedUser(User connectedUser) {
+        this.connected = connectedUser;
+        System.out.println(connected + "client snet dadada");
+    }
     public void table(){
          List<Commentaire> offres = sc.getAll(idd);
         VBox vBox = new VBox();
@@ -259,6 +272,14 @@ imganch.getChildren().add(imageView);
     private void affv(ActionEvent event) {
         tablem();
         b=true;
+    }
+
+    @FXML
+    private void createConversation(ActionEvent event) throws SQLException {
+        if(connected.getId() != owner.getId()){
+        scc.AddConversation(connected,owner);
+        }
+        
     }
     
 }

@@ -72,20 +72,35 @@ public class ServiceConversation {
         return listView;
     }
 
-    public void AddConversation(User Connected, User other) {
+    public void AddConversation(User Connected, User other) throws SQLException {
         Connection connection;
+        Connection connection2;
         connection = Database.getInstance().getCon();
-        String query2 = "INSERT INTO conv(idconv_user,idconv_user2) VALUES(?,?)";
-        PreparedStatement statement2;
-        try {
-            statement2 = connection.prepareStatement(query2, PreparedStatement.RETURN_GENERATED_KEYS);
-            statement2.setInt(1, Connected.getId());
+        connection2 = Database.getInstance().getCon();
+        String check = "SELECT * FROM conv WHERE (idconv_user = ? OR idconv_user = ?) AND (idconv_user2 = ? OR idconv_user2 = ?)";
+        PreparedStatement statement3;
+        statement3 = connection2.prepareStatement(check);
+        statement3.setInt(1, Connected.getId());
+        statement3.setInt(2, other.getId());
+        statement3.setInt(3, Connected.getId());
+        statement3.setInt(4, other.getId());
+        ResultSet rs = statement3.executeQuery();
+        if (rs.next()) {
+             System.out.println("already exist");
+        }else{
+                        String query2 = "INSERT INTO conv(idconv_user,idconv_user2) VALUES(?,?)";
+            PreparedStatement statement2;
+            try {
+                statement2 = connection.prepareStatement(query2, PreparedStatement.RETURN_GENERATED_KEYS);
+                statement2.setInt(1, Connected.getId());
 
-            statement2.setInt(2, other.getId());
-            int affectedRows = statement2.executeUpdate();
+                statement2.setInt(2, other.getId());
+                int affectedRows = statement2.executeUpdate();
 
-        } catch (SQLException ex) {
-            Logger.getLogger(ServiceMessage.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(ServiceMessage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+           System.out.println("conver added");
         }
     }
 

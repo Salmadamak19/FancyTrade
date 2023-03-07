@@ -156,6 +156,8 @@ public class AffichagePController implements Initializable {
                 Parent view_2 = loader.load();
                 AddcommentController ModifierController = loader.getController();
 
+                ModifierController.setConnectedUser(connected);
+                ModifierController.setOwner(offre.getUser());
                 ModifierController.getPoste(selectedC);
                 ModifierController.p = selectedC;
 
