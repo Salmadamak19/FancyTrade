@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 /**
  * FXML Controller class
  *
@@ -50,15 +51,11 @@ public class CRUDUserController implements Initializable {
     @FXML
     private TableColumn<User, Integer> idCol;
 
-    @FXML
-    private Button btnAjouter;
     
     
     @FXML
      private Button btnRecherche;
 
-    @FXML
-    private Button btnEffacer;
 
     @FXML
     private Button btnModifier;
@@ -66,8 +63,6 @@ public class CRUDUserController implements Initializable {
     @FXML
     private Button btnSupprimer;
 
-    @FXML
-    private TextField idUserCol;
 
     @FXML
     private Label roleL;
@@ -89,8 +84,6 @@ public class CRUDUserController implements Initializable {
     @FXML
     private TableColumn<User, String> roleCol;
 
-    @FXML
-    private TextField mpUs;
 
 
     @FXML
@@ -108,8 +101,6 @@ public class CRUDUserController implements Initializable {
     @FXML
     private TextField prenomUs;
 
-    @FXML
-    private ComboBox<?> roleUs;
 
    
 
@@ -122,7 +113,13 @@ public class CRUDUserController implements Initializable {
     private Alert alert;
     private final int ageList[] ={22,23,24,25,26,27,28};
     private final String roleList[] ={"ADMINISTRATOR","USER"};
-    
+    @FXML
+    private Button ExitButton;
+    @FXML
+        public void exitScene(ActionEvent event) {
+        Stage stage = (Stage) ExitButton.getScene().getWindow();
+        stage.close();
+    }
     public void userAddBtn(){
         String insertData = "INSERT INTO utilisateur(nom, prenom, email, age,mdp,role,verification_code) VALUES (?,?,?,?,?,?,?)";
         connect = Database.getInstance().getCon();
@@ -222,6 +219,7 @@ public class CRUDUserController implements Initializable {
     }
     
     
+    @FXML
     public void userSelectData(){
         User user = usersTable.getSelectionModel().getSelectedItem();
         int num = usersTable.getSelectionModel().getSelectedIndex();
@@ -234,6 +232,7 @@ public class CRUDUserController implements Initializable {
         motPasse.setText(String.valueOf(user.getMdp()));
     }
     
+    @FXML
     public void modifierBtn(){
         String updateData = "UPDATE  utilisateur SET nom = ? , prenom = ? , email = ?  , mdp = ? WHERE id = ? ";
         connect = Database.getInstance().getCon();
@@ -262,6 +261,7 @@ public class CRUDUserController implements Initializable {
         
     }
     
+    @FXML
      public void rechercherBtn(){
         String updateData = "SELECT * FROM  utilisateur  WHERE email = ? ";
         connect = Database.getInstance().getCon();
@@ -302,6 +302,7 @@ public class CRUDUserController implements Initializable {
     
     
     
+    @FXML
     public void supprimerBtn(){
         String updateData = "DELETE FROM  utilisateur  WHERE id = ? ";
         connect = Database.getInstance().getCon();

@@ -28,6 +28,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -135,6 +136,7 @@ public class FXMLDocumentController implements Initializable {
                         controller.setConnectedUser(u);
                         Stage stage = new Stage();
                         Scene scene = new Scene(root);
+                        stage.getIcons().add(new Image("C:/Users/ousso/Downloads/lgooo.png"));
                         stage.setScene(scene);
                         stage.show();
                     } else if (result.getInt("role") == 1) {
@@ -142,6 +144,7 @@ public class FXMLDocumentController implements Initializable {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Gui/Admin Menu.fxml"));
                         Parent root = loader.load();
                         Stage stage = new Stage();
+                        stage.getIcons().add(new Image("C:/Users/ousso/Downloads/lgooo.png"));
                         Scene scene = new Scene(root);
                         stage.setScene(scene);
                         stage.show();

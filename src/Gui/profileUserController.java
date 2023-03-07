@@ -27,6 +27,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 /**
  *
@@ -65,7 +66,13 @@ public class profileUserController implements Initializable{
     private Alert alert;
     private final int ageList[] ={22,23,24,25,26,27,28};
         private User connected;
-
+    @FXML
+    private Button ExitButton;
+    @FXML
+    public void exitScene(ActionEvent event) {
+        Stage stage = (Stage) ExitButton.getScene().getWindow();
+        stage.close();
+    }
     public void setConnectedUser(User connectedUser) {
         this.connected = connectedUser;
         System.out.println(connected + "client snet dadada");

@@ -14,9 +14,11 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -28,10 +30,14 @@ public class AdminPanelController implements Initializable {
     @FXML
     private TableView<Message> messageTable;
     private ServiceMessage test = new ServiceMessage();
+    @FXML
+    private Button ExitButton;
 
-    /**
-     * Initializes the controller class.
-     */
+    @FXML
+    public void exitScene(ActionEvent event) {
+        Stage stage = (Stage) ExitButton.getScene().getWindow();
+        stage.close();
+    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 

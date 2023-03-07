@@ -96,11 +96,19 @@ public class ChatInboxController implements Initializable {
     @FXML
     private Pane messagepane;
     private User connected;
+    @FXML
+    private Button ExitButton;
+
     public void setConnectedUser(User connectedUser) {
         this.connected = connectedUser;
         System.out.println(connected + "client snet dadada");
     }
-public void init(){
+    @FXML
+    public void exitScene(ActionEvent event) {
+        Stage stage = (Stage) ExitButton.getScene().getWindow();
+        stage.close();
+    }
+    public void init() {
         System.out.println(connected + "client snet dadada");
         sc.paindesign(messagepane);
         sc.inputdesign(inputconver, inputmess, message_input);
@@ -117,6 +125,11 @@ public void init(){
         imageView2.setFitWidth(40); // set the width to 200 pixels
         imageView2.setFitHeight(40);
         upimage.setGraphic(imageView2);
+        Image image3 = new Image("C:/Users/ousso/Documents/NetBeansProjects/Fancy_Trade_Messagerie/src/Services/send.png");
+        ImageView imageView3 = new ImageView(image3);
+        imageView3.setFitWidth(40); // set the width to 200 pixels
+        imageView3.setFitHeight(40);
+        send_button.setGraphic(imageView3);
         inbox_list.setPadding(new Insets(10));
         inbox_list.setSpacing(10);
         alertlabel.setVisible(false);
@@ -180,7 +193,8 @@ public void init(){
         });
         thread.setDaemon(true);
         thread.start();
-}
+    }
+
     /**
      * Initializes the controller class.
      */
@@ -190,19 +204,19 @@ public void init(){
 
     @FXML
     private void Send_message(ActionEvent event) throws IOException {
-        
-        if(Current_conv.getId() != 0){
-        if (!testt.checkInput(message_input, alertlabel)) {
-            try {
-                dos.writeUTF("0" + ";;" + Integer.toString(connected.getId()) + ";;" + Current_conv.getId() + ";;" + message_input.getText());
-                Message m = new Message(Integer.parseInt(Integer.toString(connected.getId())), Current_conv, message_input.getText());
-                testt.sendmessage(m, message_box);
-                message_input.clear();
-                alertlabel.setVisible(false);
-            } catch (IOException ex) {
-                Logger.getLogger(ChatInboxController.class.getName()).log(Level.SEVERE, null, ex);
+
+        if (Current_conv.getId() != 0) {
+            if (!testt.checkInput(message_input, alertlabel)) {
+                try {
+                    dos.writeUTF("0" + ";;" + Integer.toString(connected.getId()) + ";;" + Current_conv.getId() + ";;" + message_input.getText());
+                    Message m = new Message(Integer.parseInt(Integer.toString(connected.getId())), Current_conv, message_input.getText());
+                    testt.sendmessage(m, message_box);
+                    message_input.clear();
+                    alertlabel.setVisible(false);
+                } catch (IOException ex) {
+                    Logger.getLogger(ChatInboxController.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-        }
         }
 
     }
@@ -404,60 +418,60 @@ public void init(){
 
     @FXML
     private void uploadimage(ActionEvent event) {
-        if(Current_conv.getId() != 0){
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Image File");
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg")
-        );
-        File selectedFile = fileChooser.showOpenDialog(null);
-        if (selectedFile != null) {
-            Image image = new Image(selectedFile.toURI().toString());
-            ImageView imageView = new ImageView(image);
-            double initialWidth = 100;
-            double initialHeight = 100;
-            imageView.setFitWidth(initialWidth); // set the width to 200 pixels
-            imageView.setFitHeight(initialHeight); // set the height to 150 pixels
-            imageView.setOnMouseClicked(eventt -> {
-                Stage stage = new Stage();
-                ImageView enlargedImageView = new ImageView();
-                enlargedImageView.setImage(imageView.getImage());
-                enlargedImageView.setFitWidth(800);
-                enlargedImageView.setFitHeight(600);
-                enlargedImageView.setPreserveRatio(true);
-                Scene scene = new Scene(new Group(enlargedImageView));
-                stage.setScene(scene);
-                stage.show();
-            });
-            try {
-                Message m = new Message(Integer.parseInt(Integer.toString(connected.getId())), Current_conv, selectedFile.toURI().toString());
-                testt.sendImage(m, message_box, imageView);
-                dos.writeUTF("0" + ";;" + Integer.toString(connected.getId()) + ";;" + Current_conv.getId() + ";;" + selectedFile.toURI().toString());
-            } catch (IOException ex) {
-                Logger.getLogger(ChatInboxController.class.getName()).log(Level.SEVERE, null, ex);
+        if (Current_conv.getId() != 0) {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Open Image File");
+            fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+            fileChooser.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg")
+            );
+            File selectedFile = fileChooser.showOpenDialog(null);
+            if (selectedFile != null) {
+                Image image = new Image(selectedFile.toURI().toString());
+                ImageView imageView = new ImageView(image);
+                double initialWidth = 100;
+                double initialHeight = 100;
+                imageView.setFitWidth(initialWidth); // set the width to 200 pixels
+                imageView.setFitHeight(initialHeight); // set the height to 150 pixels
+                imageView.setOnMouseClicked(eventt -> {
+                    Stage stage = new Stage();
+                    ImageView enlargedImageView = new ImageView();
+                    enlargedImageView.setImage(imageView.getImage());
+                    enlargedImageView.setFitWidth(800);
+                    enlargedImageView.setFitHeight(600);
+                    enlargedImageView.setPreserveRatio(true);
+                    Scene scene = new Scene(new Group(enlargedImageView));
+                    stage.setScene(scene);
+                    stage.show();
+                });
+                try {
+                    Message m = new Message(Integer.parseInt(Integer.toString(connected.getId())), Current_conv, selectedFile.toURI().toString());
+                    testt.sendImage(m, message_box, imageView);
+                    dos.writeUTF("0" + ";;" + Integer.toString(connected.getId()) + ";;" + Current_conv.getId() + ";;" + selectedFile.toURI().toString());
+                } catch (IOException ex) {
+                    Logger.getLogger(ChatInboxController.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-        }
         }
 
     }
 
     @FXML
     private void sendLocation(ActionEvent event) {
-        if(Current_conv.getId() != 0){
-        String Location = sc.getLocation();
-        System.out.println(Location);
-        String[] receivedData = Location.split("--");
-        String Latitude = receivedData[0];
-        String Longitude = receivedData[1];
-        try {
-            dos.writeUTF("0" + ";;" + Integer.toString(connected.getId()) + ";;" + Current_conv.getId() + ";;" + Location);
-            Message m = new Message(Integer.parseInt(Integer.toString(connected.getId())), Current_conv, Location);
-            testt.sendmessage(m, message_box);
-            alertlabel.setVisible(false);
-        } catch (IOException ex) {
-            Logger.getLogger(ChatInboxController.class.getName()).log(Level.SEVERE, null, ex);
+        if (Current_conv.getId() != 0) {
+            String Location = sc.getLocation();
+            System.out.println(Location);
+            String[] receivedData = Location.split("--");
+            String Latitude = receivedData[0];
+            String Longitude = receivedData[1];
+            try {
+                dos.writeUTF("0" + ";;" + Integer.toString(connected.getId()) + ";;" + Current_conv.getId() + ";;" + Location);
+                Message m = new Message(Integer.parseInt(Integer.toString(connected.getId())), Current_conv, Location);
+                testt.sendmessage(m, message_box);
+                alertlabel.setVisible(false);
+            } catch (IOException ex) {
+                Logger.getLogger(ChatInboxController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-    }
     }
 }

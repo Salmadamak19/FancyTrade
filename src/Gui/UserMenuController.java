@@ -18,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import GUI.AffichagePController;
 import GUI.InterfaceReclamationController;
+import javafx.scene.image.Image;
 
 /**
  * FXML Controller class
@@ -49,6 +50,7 @@ public class UserMenuController implements Initializable {
         controller.setConnectedUser(connected);
         controller.init();
         Stage stage = new Stage();
+                stage.getIcons().add(new Image("C:/Users/ousso/Downloads/lgooo.png"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -61,6 +63,7 @@ public class UserMenuController implements Initializable {
         AffichagePController controller = loader.getController();
         controller.setConnectedUser(connected);
         Stage stage = new Stage();
+        stage.getIcons().add(new Image("C:/Users/ousso/Downloads/lgooo.png"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -73,6 +76,7 @@ public class UserMenuController implements Initializable {
         ListdepostsController controller = loader.getController();
         controller.setConnectedUser(connected);
         Stage stage = new Stage();
+        stage.getIcons().add(new Image("C:/Users/ousso/Downloads/lgooo.png"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -86,6 +90,7 @@ public class UserMenuController implements Initializable {
         controller.setConnectedUser(connected);
         controller.init();
         Stage stage = new Stage();
+        stage.getIcons().add(new Image("C:/Users/ousso/Downloads/lgooo.png"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -96,6 +101,7 @@ public class UserMenuController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Gui/echange3.fxml"));
         Parent root = loader.load();
         Stage stage = new Stage();
+        stage.getIcons().add(new Image("C:/Users/ousso/Downloads/lgooo.png"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -108,6 +114,7 @@ public class UserMenuController implements Initializable {
         InterfaceReclamationController controller = loader.getController();
         controller.setConnectedUser(connected);
         Stage stage = new Stage();
+        stage.getIcons().add(new Image("C:/Users/ousso/Downloads/lgooo.png"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
