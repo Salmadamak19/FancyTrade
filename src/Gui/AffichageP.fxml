@@ -13,7 +13,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1024.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.AffichagePController">
    <children>
-      <ScrollPane fx:id="scrollpane" layoutX="352.0" layoutY="88.0" prefHeight="712.0" prefWidth="646.0">
+      <ScrollPane fx:id="scrollpane" layoutX="352.0" layoutY="143.0" prefHeight="634.0" prefWidth="646.0">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
         </content>
@@ -24,26 +24,40 @@
          </image>
       </ImageView>
       <Label fx:id="tfid" layoutX="922.0" layoutY="116.0" text="Label" visible="false" />
-      <TextField fx:id="tfrech" layoutX="53.0" layoutY="227.0" />
-      <ComboBox fx:id="combotri" layoutX="52.0" layoutY="150.0" prefWidth="150.0" />
-      <Text fill="#d0b104" fontSmoothingType="LCD" layoutX="86.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tri">
+      <TextField fx:id="tfrech" layoutX="30.0" layoutY="675.0" prefHeight="26.0" prefWidth="176.0" />
+      <ComboBox fx:id="combotri" layoutX="31.0" layoutY="597.0" prefHeight="26.0" prefWidth="176.0" />
+      <Text fill="#d0b104" fontSmoothingType="LCD" layoutX="31.0" layoutY="583.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tri" wrappingWidth="53.283966064453125">
          <font>
-            <Font name="System Bold Italic" size="29.0" />
+            <Font name="System Bold Italic" size="20.0" />
          </font></Text>
-      <Button layoutX="223.0" layoutY="153.0" mnemonicParsing="false" onAction="#tri" text="Trier" />
-      <Button layoutX="237.0" layoutY="227.0" mnemonicParsing="false" onAction="#rech" text="Search" />
-      <Button layoutX="126.0" layoutY="432.0" mnemonicParsing="false" onAction="#ajj" text="Ajouter poste" />
-      <Button layoutX="125.0" layoutY="351.0" mnemonicParsing="false" onAction="#afftout" text="Afficher tout" />
-      <Button layoutX="131.0" layoutY="391.0" mnemonicParsing="false" onAction="#mep" text="Mes postes" />
-      <Text fill="#d0b104" fontSmoothingType="LCD" layoutX="359.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fancy Trade" wrappingWidth="320.7969970703125">
+      <Button layoutX="217.0" layoutY="597.0" mnemonicParsing="false" onAction="#tri" prefHeight="26.0" prefWidth="78.0" style="-fx-background-color: #D7B14A;" text="Trier" />
+      <Button layoutX="218.0" layoutY="675.0" mnemonicParsing="false" onAction="#rech" prefHeight="26.0" prefWidth="77.0" style="-fx-background-color: #D7B14A;" text="Chercher" />
+      <Button layoutX="17.0" layoutY="291.0" mnemonicParsing="false" onAction="#ajj" prefHeight="40.0" prefWidth="290.0" style="-fx-background-color: #D7B14A;" text="Ajouter poste">
          <font>
-            <Font name="System Bold Italic" size="37.0" />
+            <Font name="System Bold" size="18.0" />
+         </font></Button>
+      <Button layoutX="18.0" layoutY="143.0" mnemonicParsing="false" onAction="#afftout" prefHeight="26.0" prefWidth="290.0" style="-fx-background-color: #D7B14A;" text="Afficher tout">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Button>
+      <Button layoutX="17.0" layoutY="217.0" mnemonicParsing="false" onAction="#mep" prefHeight="26.0" prefWidth="290.0" style="-fx-background-color: #D7B14A;" text="Mes postes">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Button>
+      <Text fill="#d0b104" fontSmoothingType="LCD" layoutX="30.0" layoutY="659.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Recherche" wrappingWidth="132.0">
+         <font>
+            <Font name="System Bold Italic" size="20.0" />
          </font>
       </Text>
-      <Text fill="#d0b104" fontSmoothingType="LCD" layoutX="77.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Recherche" wrappingWidth="132.0">
+      <Label layoutX="399.0" layoutY="31.0" prefHeight="83.0" prefWidth="445.0" text="FANCY TRADE" textFill="#efefee">
          <font>
-            <Font name="System Bold Italic" size="19.0" />
+            <Font name="Monotype Corsiva" size="64.0" />
          </font>
-      </Text>
+      </Label>
+      <ImageView fitHeight="118.0" fitWidth="150.0" layoutX="884.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/lgooo.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

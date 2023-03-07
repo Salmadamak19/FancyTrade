@@ -4,39 +4,54 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
-
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Gui.profileUserController">
    <children>
       <BorderPane prefHeight="600.0" prefWidth="322.0" styleClass="other-form" stylesheets="@design.css">
          <center>
-            <Label text="Mon Profile" textFill="#faf4f4" BorderPane.alignment="CENTER">
+            <Label text="Mon Profil" textFill="#faf4f4" BorderPane.alignment="CENTER">
                <font>
                   <Font name="Arial Black" size="24.0" />
                </font>
             </Label>
          </center>
+         <top>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+               <image>
+                  <Image url="@../Images/lgooo.png" />
+               </image>
+            </ImageView>
+         </top>
+         <bottom>
+            <Label prefWidth="314.0" text="FANCY TRADE" textFill="#efefee" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="Monotype Corsiva" size="48.0" />
+               </font>
+            </Label>
+         </bottom>
       </BorderPane>
-      <AnchorPane layoutX="322.0" layoutY="-3.0" prefHeight="600.0" prefWidth="776.0">
+      <AnchorPane layoutX="322.0" layoutY="-3.0" prefHeight="600.0" prefWidth="776.0" style="-fx-background-color: black;">
          <children>
             <AnchorPane layoutX="21.0" layoutY="17.0" prefHeight="567.0" prefWidth="529.0" styleClass="border" stylesheets="@crudDesign.css">
                <children>
-                  <Label layoutX="42.0" layoutY="110.0" text="Nom" />
+                  <Label layoutX="42.0" layoutY="110.0" text="Nom" textFill="WHITE" />
                   <TextField fx:id="nomUs" layoutX="145.0" layoutY="106.0" prefHeight="26.0" prefWidth="294.0" />
-                  <Label layoutX="42.0" layoutY="145.0" text="Prénom" />
+                  <Label layoutX="42.0" layoutY="145.0" text="Prénom" textFill="WHITE" />
                   <TextField fx:id="prenomUs" layoutX="145.0" layoutY="141.0" prefHeight="26.0" prefWidth="294.0" />
-                  <Label layoutX="42.0" layoutY="183.0" text="Email" />
+                  <Label layoutX="42.0" layoutY="183.0" text="Email" textFill="WHITE" />
                   <TextField fx:id="emailUs" layoutX="145.0" layoutY="179.0" prefHeight="26.0" prefWidth="294.0" />
-                  <Label layoutX="41.0" layoutY="219.0" text="Age" />
+                  <Label layoutX="41.0" layoutY="219.0" text="Age" textFill="WHITE" />
                   <ComboBox fx:id="ageUs" layoutX="145.0" layoutY="215.0" prefHeight="26.0" prefWidth="294.0" />
-                  <Label layoutX="42.0" layoutY="261.0" text="Mot de passe" />
+                  <Label layoutX="42.0" layoutY="261.0" text="Mot de passe" textFill="WHITE" />
                   <TextField fx:id="motPasseUs" layoutX="145.0" layoutY="257.0" prefHeight="26.0" prefWidth="294.0" />
-                  <Label layoutX="41.0" layoutY="302.0" text="Role" />
-                  <Label layoutX="41.0" layoutY="341.0" text="Code Verif." />
-                  <Label layoutX="39.0" layoutY="48.0" text="Utilisateur" textFill="#510763">
+                  <Label layoutX="41.0" layoutY="302.0" text="Role" textFill="WHITE" />
+                  <Label layoutX="41.0" layoutY="341.0" text="Code Verif." textFill="WHITE" />
+                  <Label layoutX="39.0" layoutY="48.0" text="Utilisateur" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
