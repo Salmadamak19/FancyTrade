@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import GUI.AffichagePController;
+import GUI.InterfaceReclamationController;
 
 /**
  * FXML Controller class
@@ -101,6 +102,8 @@ public class UserMenuController implements Initializable {
     private void gotoreclamation(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Gui/InterfaceReclamation.fxml"));
         Parent root = loader.load();
+        InterfaceReclamationController controller = loader.getController();
+        controller.setConnectedUser(connected);
         Stage stage = new Stage();
         Scene scene = new Scene(root);
         stage.setScene(scene);

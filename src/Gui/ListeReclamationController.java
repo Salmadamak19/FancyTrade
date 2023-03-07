@@ -35,18 +35,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
-import javax.swing.text.Document;
-import com.itextpdf.text.BadElementException;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.DocumentException;
+import entities.User;
 
 
 
@@ -92,17 +83,21 @@ public class ListeReclamationController implements Initializable {
     private TextField cont;
     @FXML
     private DatePicker datepick;
+    private User connected;
 
+    public void setConnectedUser(User connectedUser) {
+        this.connected = connectedUser;
+        System.out.println(connected + "client snet dadada");
+    }
     /**
      * Initializes the controller class.
      */
     public void initialize(URL url, ResourceBundle rb) {
-      ActionEvent event = null;
-        
-          
-         afficherReclamation(event);
     }    
-
+public void init(){
+          ActionEvent event = null;
+afficherReclamation(event);
+}
     @FXML
     private void modifierReclamation(ActionEvent event) {
           ServiceReclamation sr = new ServiceReclamation();
@@ -257,7 +252,7 @@ PdfWriter.getInstance(document, file);
     @FXML
     private void afficherReclamation(ActionEvent event) {
          ServiceReclamation sr = new ServiceReclamation();
-        ObservableList<Reclamation> list = FXCollections.observableList(sr.afficher());
+        ObservableList<Reclamation> list = FXCollections.observableList(sr.afficheruser(connected));
        date.setCellValueFactory(new PropertyValueFactory<>("reclamation_Date"));
         type.setCellValueFactory(new PropertyValueFactory<>("reclamation_type"));
         contenu.setCellValueFactory(new PropertyValueFactory<>("contenu"));

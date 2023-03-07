@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Entities;
-
+import entities.User;
 import java.time.LocalDate;
 
 /**
@@ -18,7 +18,26 @@ public class Reclamation {
     private String reclamation_type;
     private String contenu;
     private String objet;
+    private User user;
 
+    public Reclamation(LocalDate reclamation_Date, int reclamation_category_id, String reclamation_type, String contenu, String objet, User user) {
+        this.reclamation_Date = reclamation_Date;
+        this.reclamation_category_id = reclamation_category_id;
+        this.reclamation_type = reclamation_type;
+        this.contenu = contenu;
+        this.objet = objet;
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    
     public Reclamation(int id) {
         this.id = id;
     }

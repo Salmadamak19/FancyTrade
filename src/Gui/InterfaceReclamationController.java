@@ -6,6 +6,8 @@ package GUI;
 
 import Entities.Reclamation;
 import Services.ServiceReclamation;
+import entities.User;
+import GUI.ListeReclamationController;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -45,6 +47,12 @@ public class InterfaceReclamationController implements Initializable {
     private TextField type;
     @FXML
     private TextField categorie;
+    private User connected;
+
+    public void setConnectedUser(User connectedUser) {
+        this.connected = connectedUser;
+        System.out.println(connected + "client snet dadada");
+    }
 
     /**
      * Initializes the controller class.
@@ -52,12 +60,15 @@ public class InterfaceReclamationController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
     @FXML
     private void gotopage(ActionEvent event) throws IOException {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("listeReclamation.fxml"));
-        Parent root = loader.load();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("listeReclamation.fxml"));
+                Parent root = loader.load();
+        ListeReclamationController controller = loader.getController();
+        controller.setConnectedUser(connected);
+        controller.init();
         Scene newScene = new Scene(root);
         Stage stage = (Stage) btnlist.getScene().getWindow();
         stage.setScene(newScene);
@@ -66,22 +77,20 @@ public class InterfaceReclamationController implements Initializable {
 
     @FXML
     private void ajouter(ActionEvent event) {
-          ServiceReclamation srch = new ServiceReclamation();
-               
-            
-LocalDate daterec = date.getValue();
-int cat = Integer.parseInt(categorie.getText());
- String typ = type.getText();
-  String contenu = idcontenu.getText();
-   String obj = idobjet.getText();  
-    
-     Reclamation res = new Reclamation( daterec ,cat, typ, contenu, obj);
-                      ServiceReclamation service = new ServiceReclamation();
+        ServiceReclamation srch = new ServiceReclamation();
 
-    service.ajouter(res);
-          JOptionPane.showMessageDialog(null, "Reclamation envoyé avec success !");
-          service.afficher();
-    }
-    }
-    
+        LocalDate daterec = date.getValue();
+        int cat = Integer.parseInt(categorie.getText());
+        String typ = type.getText();
+        String contenu = idcontenu.getText();
+        String obj = idobjet.getText();
+        User user = new User(connected.getId());
 
+        Reclamation res = new Reclamation(daterec, cat, typ, contenu, obj, user);
+        ServiceReclamation service = new ServiceReclamation();
+
+        service.ajouter(res);
+        JOptionPane.showMessageDialog(null, "Reclamation envoyé avec success !");
+        service.afficher();
+    }
+}

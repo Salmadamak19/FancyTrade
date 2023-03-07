@@ -128,7 +128,7 @@ public class FXMLDocumentController implements Initializable {
                     alert.showAndWait();
                     // pour disparaitre le loginForm
                     btnConnexion.getScene().getWindow().hide();
-                    if (result.getInt("role") == 1) {
+                    if (result.getInt("role") == 2) {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Gui/User Menu.fxml"));
                         Parent root = loader.load();
                         UserMenuController controller = loader.getController();
@@ -137,7 +137,7 @@ public class FXMLDocumentController implements Initializable {
                         Scene scene = new Scene(root);
                         stage.setScene(scene);
                         stage.show();
-                    } else if (result.getInt("role") == 2) {
+                    } else if (result.getInt("role") == 1) {
 
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Gui/Admin Menu.fxml"));
                         Parent root = loader.load();

@@ -6,6 +6,7 @@ package Services;
 
 import DB.Database;
 import Entities.Reclamation;
+import entities.User;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,7 +27,7 @@ public class ServiceReclamation implements IService<Reclamation>{
     
     public void ajouter(Reclamation r) {
          try {
-                    String req = "INSERT INTO reclamation(reclamation_Date,reclamation_category_id,reclamation_type,contenu,objet) VALUES(?,?,?,?,?)";
+                    String req = "INSERT INTO reclamation(reclamation_Date,reclamation_category_id,reclamation_type,contenu,objet,id_user) VALUES(?,?,?,?,?,?)";
             
                     java.sql.PreparedStatement pst = cnx.prepareStatement(req);
              java.sql.Date date =java.sql.Date.valueOf(r.getReclamation_Date());
@@ -37,6 +38,7 @@ public class ServiceReclamation implements IService<Reclamation>{
         pst.setString(3, r.getReclamation_type());
          pst.setString(4, r.getContenu());
           pst.setString(5, r.getObjet());
+          pst.setInt(6, r.getUser().getId());
       
         
 
@@ -129,6 +131,41 @@ catch(SQLException ex){
 return list ;
 
     }  
+        public List<Reclamation> afficheruser(User user) {
+        List<Reclamation> list = new ArrayList<>();
+        
+        
+        try{
+ String requete = "SELECT * FROM reclamation where id_user = ?";
+  PreparedStatement pst = cnx.prepareStatement(requete);
+  pst.setInt(1, user.getId());
+  ResultSet rs = pst.executeQuery();
+
+  while (rs.next()) {
+
+java.sql.Date date =rs.getDate("reclamation_Date");//traduire date en date sql
+LocalDate Localdate= date.toLocalDate();
+    int id = rs.getInt("id");
+    int cat = rs.getInt("reclamation_category_id");
+    String type = rs.getString("reclamation_type");
+    String contenu = rs.getString("contenu");
+    String objet = rs.getString("objet");
+    
+   
+
+    
+   
+
+    Reclamation r = new Reclamation(id,Localdate,cat,type,contenu,objet);
+    list.add(r);
+      System.out.println(list);
+  }}
+catch(SQLException ex){
+        System.err.println(ex.getMessage());
+        }
+return list ;
+
+    } 
 }
 
     
