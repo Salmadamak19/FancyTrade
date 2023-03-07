@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Gui.profileUserController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Gui.profileUserController">
    <children>
       <BorderPane prefHeight="600.0" prefWidth="322.0" styleClass="other-form" stylesheets="@design.css">
          <center>
@@ -56,7 +56,7 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Button fx:id="btnModif" layoutX="151.0" layoutY="406.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="246.0" styleClass="btn" stylesheets="@crudDesign.css" text="Modifier" />
+                  <Button fx:id="btnModif" layoutX="151.0" layoutY="406.0" mnemonicParsing="false" onAction="#profili" prefHeight="47.0" prefWidth="246.0" styleClass="btn" stylesheets="@crudDesign.css" text="Modifier" />
                   <Label fx:id="roleUs" layoutX="142.0" layoutY="299.0" text="|" />
                   <Label fx:id="codVUs" layoutX="142.0" layoutY="341.0" text="|" />
                </children>

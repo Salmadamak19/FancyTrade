@@ -6,13 +6,15 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Gui.BackcommentsController">
    <children>
-      <AnchorPane layoutX="2.0" prefHeight="551.0" prefWidth="1055.0" style="-fx-background-color: #000000;" stylesheets="@style.css">
+      <AnchorPane layoutX="-3.0" prefHeight="551.0" prefWidth="1055.0" style="-fx-background-color: #000000;" stylesheets="@style.css">
          <children>
             <TableView fx:id="tabPost" layoutX="14.0" layoutY="261.0" onMouseClicked="#handlepost" prefHeight="264.0" prefWidth="646.0">
                <columns>
@@ -43,7 +45,7 @@
                   <Font name="System Italic" size="24.0" />
                </font>
             </Label>
-            <Label layoutX="666.0" layoutY="4.0" prefHeight="35.0" prefWidth="257.0" text="Commentaires" textFill="#d7b14a">
+            <Label layoutX="672.0" layoutY="122.0" prefHeight="35.0" prefWidth="257.0" text="Commentaires" textFill="#d7b14a">
                <font>
                   <Font name="System Italic" size="24.0" />
                </font>
@@ -69,6 +71,16 @@
             </Button>
             <TextArea fx:id="txtArea" layoutX="676.0" layoutY="430.0" prefHeight="91.0" prefWidth="225.0" />
             <TextField fx:id="searchBar" layoutX="13.0" layoutY="226.0" onKeyTyped="#please_work" prefHeight="26.0" prefWidth="646.0" promptText="Rechercher..." />
+            <Label layoutX="568.0" layoutY="24.0" prefWidth="314.0" text="FANCY TRADE" textFill="#efefee">
+               <font>
+                  <Font name="Monotype Corsiva" size="48.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="99.0" fitWidth="150.0" layoutX="934.0" layoutY="83.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/lgooo.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
    </children>

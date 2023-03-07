@@ -82,6 +82,9 @@ public class UserMenuController implements Initializable {
     private void gotoprofile(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Gui/profileUser.fxml"));
         Parent root = loader.load();
+                profileUserController controller = loader.getController();
+        controller.setConnectedUser(connected);
+        controller.init();
         Stage stage = new Stage();
         Scene scene = new Scene(root);
         stage.setScene(scene);
