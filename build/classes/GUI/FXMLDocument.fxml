@@ -70,6 +70,11 @@
                      </font>
                   </Button>
                   <Label layoutX="157.0" layoutY="457.0" text="Avoir déjà un compte" textFill="#fcfbfb" />
+                  <ImageView fitHeight="197.0" fitWidth="219.0" layoutX="136.0" layoutY="171.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/lgooo.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
          </left>
@@ -93,11 +98,6 @@
                   <Text fill="WHITE" layoutX="64.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" />
                   <TextField fx:id="mailFld" layoutX="157.0" layoutY="331.0" prefHeight="26.0" prefWidth="211.0" promptText="Email" />
                   <Text fill="WHITE" layoutX="63.0" layoutY="411.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mot de passe" />
-                <ImageView fitHeight="197.0" fitWidth="219.0" layoutX="136.0" layoutY="171.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Images/lgooo.png" />
-                     </image>
-                  </ImageView>
                </children>
             </AnchorPane>
          </center>
