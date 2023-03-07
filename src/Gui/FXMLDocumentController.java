@@ -232,6 +232,7 @@ String mail="[-A-Za-z0-9!#$%&'*+/=?^_`{|}~]+(?:\\.[-A-Za-z0-9!#$%&'*+/=?^_`{|}~]
         String sql = "INSERT INTO utilisateur(nom, prenom, email, age, mdp, role, verification_code) VALUES (?,?,?,?,?,?,?)";
         connect = Database.getInstance().getCon();
         try {
+            //zazofoazfkaz
             Alert alert;
             if (nomFld.getText().isEmpty() || prenFld.getText().isEmpty() || mailFld.getText().isEmpty() || ageFld.getText().isEmpty() || passwordFld.getText().isEmpty()) {
                 alert = new Alert(AlertType.ERROR);
