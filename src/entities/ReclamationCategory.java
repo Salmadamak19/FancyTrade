@@ -19,6 +19,14 @@ public class ReclamationCategory {
         this.id = id;
     }
 
+    public ReclamationCategory() {
+    }
+
+    public ReclamationCategory(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public ReclamationCategory(String name, String description) {
         this.name = name;
         this.description = description;
