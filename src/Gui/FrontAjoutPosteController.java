@@ -54,11 +54,13 @@ public class FrontAjoutPosteController implements Initializable {
     private Button cancelBtn;
     @FXML
     private Button addBtn;
-    @FXML
     private User connected;
+    @FXML
+    private Label userName;
     public void setConnectedUser(User connectedUser) {
         this.connected = connectedUser;
         System.out.println(connected + "client snet dadada");
+        userName.setText(connected.getNom());
     }
 
     PostServices postService = new PostServices();
@@ -79,11 +81,13 @@ public class FrontAjoutPosteController implements Initializable {
 
     }
 
+    @FXML
     public void close(ActionEvent event) {
         Stage stage = (Stage) this.cancelBtn.getScene().getWindow();
         stage.close();
     }
 
+    @FXML
     public void browseFiles(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Veuillez Choisir une Image...");
@@ -96,6 +100,7 @@ public class FrontAjoutPosteController implements Initializable {
         }
     }
 
+    @FXML
     public void confirm(ActionEvent event) throws SQLException, MalformedURLException, IOException {
         Alert alert;
         if (this.nomSujet.getText().equals("")
