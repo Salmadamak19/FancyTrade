@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="800.0" prefWidth="1024.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.AddposteController">
+<AnchorPane id="AnchorPane" prefHeight="800.0" prefWidth="1024.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.AddposteController">
    <children>
       <ComboBox fx:id="combodomaine1" layoutX="364.0" layoutY="618.0" prefHeight="33.0" prefWidth="164.0" />
       <TextField fx:id="tftitre" layoutX="364.0" layoutY="228.0" prefHeight="68.0" prefWidth="436.0" />
@@ -46,11 +46,6 @@
             <Font name="System Italic" size="36.0" />
          </font>
       </Text>
-      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="735.0" layoutY="214.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../resources/logo.png" />
-         </image>
-      </ImageView>
       <Label layoutX="241.0" layoutY="36.0" prefWidth="503.0" text="FANCY TRADE" textFill="#efefee">
          <font>
             <Font name="Monotype Corsiva" size="72.0" />

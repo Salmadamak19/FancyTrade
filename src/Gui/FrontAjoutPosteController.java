@@ -94,7 +94,7 @@ public class FrontAjoutPosteController implements Initializable {
         File selectedFile = fileChooser.showOpenDialog(this.cancelBtn.getScene().getWindow());
         if (selectedFile != null) {
             Image image = new Image(selectedFile.toURI().toString());
-            this.imgUrl.setText(selectedFile.getAbsolutePath().replace("C:\\Users\\DELL\\Desktop\\ProjetPi\\Esports-Application\\blog\\src\\Images\\", ""));
+            this.imgUrl.setText(selectedFile.getAbsolutePath().replace("C:\\git\\FancyTrade\\src\\Images\\", ""));
             this.imgShow.setImage(image);
 
         }

@@ -296,7 +296,7 @@ public class BackcommentsController implements Initializable {
 
         if (f != null) {
             imageFile = f.getAbsolutePath();
-            String newfile = imageFile.replace("C:\\Users\\DELL\\Desktop\\ProjetPi\\Esports-Application\\blog\\src\\Images", "");
+            String newfile = imageFile.replace("C:\\git\\FancyTrade\\src\\Images", "");
             tfimagep.setText(newfile);
         }
     }
