@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+        {% block stylesheets %}
+         <link rel="stylesheet" href="{{ asset('assetsfront/lib/bootstrap/dist/css/bootstrap.min.css') }}">
+         <link rel="stylesheet" href="{{ asset('assetsfront/lib/animate.css/animate.css') }}">
+         <link rel="stylesheet" href="{{ asset('assetsfront/lib/components-font-awesome/css/font-awesome.min.css') }}">
+         <link rel="stylesheet" href="{{ asset('assetsfront/lib/et-line-font/et-line-font.css') }}">
+         <link rel="stylesheet" href="{{ asset('assetsfront/lib/flexslider/flexslider.css') }}">
+         <link rel="stylesheet" href="{{ asset('assetsfront/lib/owl.carousel/dist/assets/owl.carousel.min.css') }}">
+         <link rel="stylesheet" href="{{ asset('assetsfront/lib/owl.carousel/dist/assets/owl.theme.default.min.css') }}">
+         <link rel="stylesheet" href="{{ asset('assetsfront/lib/magnific-popup/dist/magnific-popup.css') }}">
+         <link rel="stylesheet" href="{{ asset('assetsfront/css/style.css') }}">
+         <link rel="stylesheet" href="{{ asset('assetsfront/css/colors/default.css') }}">
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+            <script src="{{ asset('assetsfront/lib/jquery/dist/jquery.js') }}"></script>
+            <script src="{{ asset('assetsfront/lib/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+            <script src="{{ asset('assetsfront/lib/wow/dist/wow.js') }}"></script>
+            <script src="{{ asset('assetsfront/lib/jquery.mb.ytplayer/dist/jquery.mb.YTPlayer.js') }}"></script>
+            <script src="{{ asset('assetsfront/lib/isotope/dist/isotope.pkgd.js') }}"></script>
+            <script src="{{ asset('assetsfront/lib/imagesloaded/imagesloaded.pkgd.js') }}"></script>
+            <script src="{{ asset('assetsfront/lib/flexslider/jquery.flexslider.js') }}"></script>
+            <script src="{{ asset('assetsfront/lib/owl.carousel/dist/owl.carousel.min.js') }}"></script>
+            <script src="{{ asset('assetsfront/lib/smoothscroll.js') }}"></script>
+            <script src="{{ asset('assetsfront/lib/magnific-popup/dist/jquery.magnific-popup.js') }}"></script>
+            <script src="{{ asset('assetsfront/lib/simple-text-rotator/jquery.simple-text-rotator.min.js') }}"></script>
+              <script src="{{ asset('assetsfront/js/plugins.js') }}"></script>
+                <script src="{{ asset('assetsfront/js/main.js') }}"></script>
+        {% endblock %}
+    </head>
+    <body data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
+    <main>
+      <div class="page-loader">
+        <div class="loader">Loading...</div>
+      </div>
+      <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#custom-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand" href="{{ path('app_event_frontindex') }}">Fancy Trade</a>
+          </div>
+          <div class="collapse navbar-collapse" id="custom-collapse">
+            <ul class="nav navbar-nav navbar-right">
+<li><a href="{{ path('app_event_frontindex') }}">Home</a></li>
+<li><a href="{{ path('app_event_index') }}">Admin Panel</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div class="main">
+{% block body %}{% endblock %}
+        <div class="module-small bg-dark">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-3">
+                <div class="widget">
+                  <h5 class="widget-title font-alt">About Titan</h5>
+                  <p>The languages only differ in their grammar, their pronunciation and their most common words.</p>
+                  <p>Phone: +1 234 567 89 10</p>Fax: +1 234 567 89 10
+                  <p>Email:<a href="#">somecompany@example.com</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr class="divider-d">
+        <footer class="footer bg-dark">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-6">
+                <p class="copyright font-alt">&copy; 2017&nbsp;<a href="index.html">TitaN</a>, All Rights Reserved</p>
+              </div>
+              <div class="col-sm-6">
+                <div class="footer-social-links"><a href="#"><i class="fa fa-facebook"></i></a><a href="#"><i class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-dribbble"></i></a><a href="#"><i class="fa fa-skype"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </footer>
+        <div class="scroll-up"><a href="#totop"><i class="fa fa-angle-double-up"></i></a></div>
+      </div>
+    </main>
+    </body>
+</html>

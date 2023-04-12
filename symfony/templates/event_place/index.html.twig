@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EventPlace index{% endblock %}
+
+{% block body %}
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Home/</span> Event Places List</h4>
+
+              <!-- Basic Layout & Basic with Icons -->
+              <div class="row">
+                <!-- Basic Layout -->
+                <div class="col-xxl">
+                  <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                      <h5 class="mb-0">List</h5>
+                    </div>
+                    <div class="card-body">
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for event_place in event_places %}
+            <tr>
+                <td>{{ event_place.id }}</td>
+                <td>{{ event_place.Name }}</td>
+                <td>{{ event_place.Description }}</td>
+                <td>
+                    <a href="{{ path('app_event_place_show', {'id': event_place.id}) }}">show</a>
+                    <a href="{{ path('app_event_place_edit', {'id': event_place.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_event_place_new') }}">Create new</a>
+                            </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+{% endblock %}

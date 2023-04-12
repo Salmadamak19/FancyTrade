@@ -1,0 +1,28 @@
+{% extends 'front.html.twig' %}
+{% block body %}
+         <section class="module">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-12">
+                <ul class="filter font-alt" id="filters">
+                  <li><a class="current wow fadeInUp" href="#" data-filter="*">All</a></li>
+                  <li><a class="wow fadeInUp" href="#" data-filter=".illustration" data-wow-delay="0.2s">Illustration</a></li>
+                  <li><a class="wow fadeInUp" href="#" data-filter=".marketing" data-wow-delay="0.4s">Marketing</a></li>
+                  <li><a class="wow fadeInUp" href="#" data-filter=".photography" data-wow-delay="0.6s">Photography</a></li>
+                  <li><a class="wow fadeInUp" href="#" data-filter=".webdesign" data-wow-delay="0.6s">Web Design</a></li>
+                </ul>
+              </div>
+            </div>
+            <ul class="works-grid works-hover-w" id="works-grid">
+            {% for event in events %}
+                          <li class="work-item illustration webdesign"><a href="{{ path('app_event_frontshow', {'id': event.id}) }}">
+                  <div class="work-image"><img src="{{ asset('uploads/images/')}}{{ event.Image }}" alt="Portfolio Item"/></div>
+                  <div class="work-caption font-alt">
+                    <h3 class="work-title">{{ event.Name }}</h3>
+                    <div class="work-descr">{{ event.Description }}</div>
+                  </div></a></li>
+            {% endfor %}
+            </ul>
+          </div>
+        </section>
+{% endblock %}
