@@ -1,0 +1,122 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Postes{% endblock %}
+
+{% block contentblock %}
+<style>
+.list-container {
+  margin: 20px auto;
+  max-width: 800px;
+  background-color: #f8f8f8;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.table th,
+.table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.table th {
+  background-color: #f2f2f2;
+}
+
+.table td img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+</style>
+<center>
+    <h1>Forum</h1></center>
+   <div class="list-container">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Titre</th>
+       
+        <th>Image</th>
+   
+        <th>Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for poste in postes %}
+        <tr>
+          <td>{{ poste.id }}</td>
+          <td>{{ poste.titre }}</td>
+        
+          <td><img src="{{ asset(poste.img) }}" width="50" height="auto"></td>
+       
+          <td>{{ poste.date}}</td>
+          <td>
+            <a href="{{ path('app_poste_show', {'id': poste.id}) }}" class="btn btn-primary">Show</a>
+            <a href="{{ path('app_poste_edit', {'id': poste.id}) }}" class="btn btn-success">Edit</a>
+           <form method="post" action="{{ path('app_poste_delete', {'id': poste.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ poste.id) }}">
+    <button class="btn">Delete</button>
+</form>
+          </td>
+        </tr>
+      {% else %}
+        <tr>
+          <td colspan="7">No records found</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+ <div class="list-container" id="info" style="display: none;">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Titre</th>
+       
+        <th>Image</th>
+   
+        <th>Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for poste in postes %}
+        <tr>
+          <td>{{ poste.id }}</td>
+          <td>{{ poste.titre }}</td>
+        
+          <td><img src="{{ asset(poste.img) }}" width="50" height="auto"></td>
+       
+          <td>{{ poste.date}}</td>
+          <td>
+            <a href="{{ path('app_poste_show', {'id': poste.id}) }}" class="btn btn-primary">Show</a>
+            <a href="{{ path('app_poste_edit', {'id': poste.id}) }}" class="btn btn-success">Edit</a>
+           <form method="post" action="{{ path('app_poste_delete', {'id': poste.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ poste.id) }}">
+    <button class="btn">Delete</button>
+</form>
+          </td>
+        </tr>
+      {% else %}
+        <tr>
+          <td colspan="7">No records found</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+   <a href="{{ path('app_poste_new') }}" style="background-color: #007bff; color: #fff; padding: 10px 20px; border-radius: 5px;">Ajouter une poste </a>
+{% endblock %}
