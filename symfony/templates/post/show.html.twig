@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Post{% endblock %}
+
+{% block body %}
+    <h1>Post</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ post.id }}</td>
+            </tr>
+            <tr>
+                <th>Sujet</th>
+                <td>{{ post.sujet }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ post.description }}</td>
+            </tr>
+            <tr>
+                <th>NbrJaime</th>
+                <td>{{ post.nbrJaime }}</td>
+            </tr>
+            <tr>
+                <th>Image</th>
+                <td>{{ post.image }}</td>
+            </tr>
+            <tr>
+                <th>NomUser</th>
+                <td>{{ post.nomUser }}</td>
+            </tr>
+            <tr>
+                <th>DateP</th>
+                <td>{{ post.dateP ? post.dateP|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Communaute</th>
+                <td>{{ post.communaute }}</td>
+            </tr>
+            <tr>
+                <th>AnalysePo</th>
+                <td>{{ post.analysePo }}</td>
+            </tr>
+            <tr>
+                <th>Liked</th>
+                <td>{{ post.liked }}</td>
+            </tr>
+            <tr>
+                <th>Badlevel</th>
+                <td>{{ post.badlevel }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_post_index') }}">back to list</a>
+
+    <a href="{{ path('app_post_edit', {'id': post.id}) }}">edit</a>
+
+    {{ include('post/_delete_form.html.twig') }}
+{% endblock %}
