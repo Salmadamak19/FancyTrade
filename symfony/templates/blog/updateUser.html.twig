@@ -1,0 +1,57 @@
+
+
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div style="display: flex;align-items: center;margin-top: 5px;">
+      
+      <div class="card-body">
+      <h5 class="card-title">Update User Backend Admin</h5>
+        {{ form_start(f) }}
+        
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label" for="basic-default-name">Email</label>
+            <div class="col-sm-10">
+            {{form_widget(f._token)}}
+              {{ form_widget(f.email,{attr:{'class':'form-control'}}) }}
+            </div>
+          </div>
+          
+              
+       <div class="row mb-3">
+            <label class="col-sm-2 col-form-label" for="basic-default-name">Name</label>
+            <div class="col-sm-10">
+              {{ form_widget(f.name,{'att':{'class':'form-controle'}}) }}
+            </div>
+          </div>
+              
+            <div class="row mb-3">
+            <label class="col-sm-2 col-form-label" for="basic-default-name">Password</label>
+            <div class="col-sm-10">
+              {{ form_widget(f.password.first,{attr:{'class':'form-control'}}) }}
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label" for="basic-default-name">Confirm Password</label>
+            <div class="col-sm-10">
+              {{ form_widget(f.password.second,{attr:{'class':'form-control'}}) }}
+            </div>
+          </div>
+
+          
+
+          <div class="row justify-content-end">
+            <div class="col-sm-10">
+            {{ form_widget(f.Ajouter,{attr:{'class':'btn btn-primary'}}) }}
+              
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    {{ form_end(f) }}
+
+{% endblock %}

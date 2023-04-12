@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+
+<div class="card">
+<div>   <a href={{ path('app_User') }}> <button type="button" class="btn btn-outline-dark">ADD</button>
+</div>
+  
+  
+  <div class="table-responsive text-nowrap">
+  <h5 class="card-header">Liste des Utilisateurs</h5>
+    <table class="table table-dark">
+       <tr>
+            <th>id</th>
+            <th>Email</th>
+            <th>Name</th>
+            <th>Password</th>
+            <th>Modification</th>
+            <th>Banner</th>
+            <th>Information</th>
+
+
+        </tr>
+      </thead>
+      
+      <tbody class="table-border-bottom-0">
+        
+ {% for user in u %}
+ <tr>
+ <td>{{ user.id }} </td>
+ <td>{{ user.Email }} </td>
+ <td>{{ user.Name }} </td>
+ <td>{{ user.Password }} </td>
+ <td> 
+     <a class="btn btn-success" href="{{ path('modifUser',{'id':user.id}) }}">Modifier</a>
+</td>
+ <td> 
+     <a class="btn btn-danger" href="{{ path('supp_User',{'id':user.id}) }}">Supprimer</a>
+</td>
+<td>
+    
+
+     <form action="{{ path('app_detailUsr',{'id':user.id,'email':user.Email,'name':user.Name}) }}">
+		<button> Show Info </button></form>
+          </td>
+ </tr>
+ {% endfor %}
+ </tbody>
+
+ </div>
+ 
+{% endblock %}
