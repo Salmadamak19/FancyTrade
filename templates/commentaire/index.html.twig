@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commentaire index{% endblock %}
+
+{% block body %}
+    <h1>Commentaires</h1>
+    <div class="card">
+                    <h5 class="card-header">Comments</h5>
+                    <div class="table-responsive text-nowrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nomuser</th>
+                <th>Post_Id</th>
+                <th>Descriptionc</th>
+                <th>Datec</th>
+                {# <th>AnalyseCo</th>
+                <th>DatecTs</th> #}
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for commentaire in commentaires %}
+            <tr>
+                <td>{{ commentaire.nomuser }}</td>
+                <td>{{ commentaire.post.id }}</td>
+                <td>{{ commentaire.descriptionc }}</td>
+                <td>{{ commentaire.datec ? commentaire.datec|date('Y-m-d H:i:s') : '' }}</td>
+                {# <td>{{ commentaire.analyseCo }}</td>
+                <td>{{ commentaire.datecTs ? commentaire.datecTs|date('Y-m-d H:i:s') : '' }}</td> #}
+                {# <td>
+                    <a href="{{ path('app_commentaire_show', {'id': commentaire.id}) }}">show</a>
+                    <a href="{{ path('app_commentaire_edit', {'id': commentaire.id}) }}">edit</a>
+                </td> #}
+
+                <td>
+                              <div class="dropdown">
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                  <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                  
+                                  <a class="dropdown-item" href="{{ path('app_commentaire_edit', {'id': commentaire.id}) }}"> <i class="bx bx-edit-alt me-1"></i>edit</a>
+                                  
+                                  <a class="dropdown-item" href="{{ path('app_commentaire_show', {'id': commentaire.id}) }}"><i class="bx bx-trash me-1"></i>  show</a>
+                                </div>
+                              </div>
+                            </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+                  </div>
+
+    {# <a href="{{ path('app_commentaire_new' ,{'id': commentaires.id}) }}" class=" btn bt-primary ">Create new</a> #}
+{% endblock %}
