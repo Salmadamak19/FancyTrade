@@ -12,11 +12,9 @@
                   <h5 class="work-details-title font-alt">{{ event.Name }}</h5>
                   <p>{{ event.Description }}</p>
                   <ul>
-                    <li><strong>Client: </strong><span class="font-serif"><a href="#" target="_blank">SomeCompany</a></span>
+                    <li><strong>Client: </strong><span class="font-serif"><a href="#" target="_blank">{{ event.Organiser }}</a></span>
                     </li>
-                    <li><strong>Date: </strong><span class="font-serif"><a href="#" target="_blank">23 November, 2015</a></span>
-                    </li>
-                    <li><strong>Online: </strong><span class="font-serif"><a href="#" target="_blank">www.example.com</a></span>
+                    <li><strong>Date: </strong><span class="font-serif"><a href="#" target="_blank">{{ event.DateandTime|date('Y-m-d H:i:s') }}</a></span>
                     </li>
                   </ul>
                 </div>

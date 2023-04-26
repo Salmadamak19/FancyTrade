@@ -9,15 +9,23 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/place')]
 class EventPlaceController extends AbstractController
 {
     #[Route('/', name: 'app_event_place_index', methods: ['GET'])]
-    public function index(EventPlaceRepository $eventPlaceRepository): Response
+    public function index(EventPlaceRepository $eventPlaceRepository, PaginatorInterface $paginator, Request $request): Response
     {
+        $pagination = $paginator->paginate(
+            $eventPlaceRepository->findAll(),
+            $request->query->getInt('page', 1),
+            1
+       );
         return $this->render('event_place/index.html.twig', [
-            'event_places' => $eventPlaceRepository->findAll(),
+                    'event_places' => $pagination->getItems(),
+            'pagination' => $pagination,
+            'route' => 'app_event_index',
         ]);
     }
 
@@ -39,7 +47,31 @@ class EventPlaceController extends AbstractController
             'form' => $form,
         ]);
     }
-
+    #[Route('/place/search', name: 'app_event_place_search')]
+    public function search(Request $request, PaginatorInterface $paginator): Response
+    {
+        $query = $request->query->get('query');
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $events = $em->getRepository(EventPlace::class)
+            ->createQueryBuilder('e')
+            ->where('e.Name LIKE :query OR e.Description LIKE :query')
+            ->setParameter('query', '%'.$query.'%')
+            ->getQuery();
+        
+    
+        $pagination = $paginator->paginate(
+            $events,
+            $request->query->getInt('page', 1),
+            1
+        );
+    
+        return $this->render('event/index.html.twig', [
+            'event_places' => $pagination->getItems(),
+            'pagination' => $pagination,
+        ]);
+    }
     #[Route('/{id}', name: 'app_event_place_show', methods: ['GET'])]
     public function show(EventPlace $eventPlace): Response
     {

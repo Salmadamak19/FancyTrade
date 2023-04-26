@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'lazy.html.twig' %}
 
 {% block title %}Event index{% endblock %}
 
@@ -43,9 +43,13 @@
                 <td colspan="4">no records found</td>
             </tr>
         {% endfor %}
-        </tbody>
+        </tbody>                     
     </table>
-
+           <nav aria-label="Page navigation">
+                          <ul class="pagination">
+        {{ knp_pagination_render(pagination) }}
+                          </ul>
+                        </nav>
     <a href="{{ path('app_event_new') }}">Create new</a>
                             </div>
                   </div>
