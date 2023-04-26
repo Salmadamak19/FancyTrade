@@ -1,0 +1,135 @@
+{% extends 'front.html.twig' %}
+                        {% block body %}
+
+                            <main>
+
+
+                                        <section>
+
+
+                                            {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+                                            <div class="nicdark_margin20">
+                                                <div class="nicdark_focus nicdark_relative">
+
+
+
+
+
+                                                    <div class="nicdark_space20"></div>
+                                                    <div class="nicdark_focus nicdark_relative">
+                                                        <div class="nicdark_activity nicdark_marginleft100 nicdark_disable_marginleft_ipadpotr">
+                                                            <h4>modifier publication</h4>
+                                                        </div>
+                                                        <div class="nicdark_space20"></div>
+                                                        {{ form_errors(form.content) }}
+                                                        {{ form_widget(form.content, {'attr':{'class':'nicdark_bg_grey nicdark_border_grey   grey small subtitle', 'placeholder':'contenue'}})}}
+                                                    </div>
+
+
+
+                                                    <div class="nicdark_space20"></div>
+                                                    <div class="nicdark_focus nicdark_relative">
+                                                        <div class="nicdark_activity nicdark_marginleft100 nicdark_disable_marginleft_ipadpotr">
+                                                            <h4>User</h4>
+                                                        </div>
+                                                        <div class="nicdark_space20"></div>
+                                                         
+
+
+                                                        {{ form_errors(form.user) }}
+                                                        {{ form_widget(form.user, {'attr':{'class':'nicdark_bg_grey nicdark_border_grey   grey small subtitle', 'placeholder':'User'}})}}
+                                                    </div>
+
+                                    
+                                    <hr><hr>
+                            </main>
+
+                            <style>
+                                body {
+                                    font-family: Arial, sans-serif;
+                                    margin: 0;
+                                }
+
+                                header {
+                                    background-color: #333;
+                                    color: #fff;
+                                    padding: 1em;
+                                }
+
+                                nav ul {
+                                    list-style: none;
+                                    margin: 0;
+                                    padding: 0;
+                                }
+
+                                nav li {
+                                    display: inline-block;
+                                    margin-right: 1em;
+                                }
+
+                                nav a {
+                                    color: #fff;
+                                    text-decoration: none;
+                                }
+
+                                main {
+                                    max-width: 800px;
+                                    margin: 0 auto;
+                                    padding: 1em;
+                                }
+
+                                article {
+                                    margin-bottom: 2em;
+                                }
+
+                                section {
+                                    margin-bottom: 2em;
+                                }
+
+                                h2, h3 {
+                                    margin-top: 0;
+                                }
+
+                                #comments {
+                                    list-style: none;
+                                    margin: 0;
+                                    padding: 0;
+                                }
+
+                                .comment {
+                                    border: 1px solid #ccc;
+                                    margin-bottom: 1em;
+                                    padding: 1em;
+                                }
+
+                                .comment-author {
+                                    font-weight: bold;
+                                    margin: 0 0 0.5em 0;
+                                }
+
+                                form {
+                                    margin-top: 2em;
+                                }
+
+                                label {
+                                    display: block;
+                                    font-weight: bold;
+                                    margin-bottom: 0.5em;
+                                }
+
+                                input[type="text"], textarea {
+                                    width: 100%;
+                                    padding: 0.5em;
+                                    border: 1px solid #ccc;
+                                    margin-bottom: 1em;
+                                }
+
+                                input[type="submit"] {
+                                    background-color: #333;
+                                    color: #fff;
+                                    border: none;
+                                    padding: 0.5em 1em;
+                                    cursor: pointer;
+                                }
+                            </style>
+                        {%  endblock  %}

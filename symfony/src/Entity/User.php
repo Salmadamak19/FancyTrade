@@ -1,97 +1,117 @@
 <?php
 
 namespace App\Entity;
+
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass : UserRepository::class)]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
 class User
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id=null;
-   
+    private ?int $id = null;
 
-    #[ORM\Column(length: 200)]
-    private ?string $nom=null;
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
 
-    #[ORM\Column(length: 200)]
-    private ?string $prenom=null;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Publication::class,orphanRemoval: true)]
+    private Collection $Publication;
 
-    #[ORM\Column(length: 200)]
-    private ?string $password=null;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class,orphanRemoval: true)]
+    private Collection $Comment;
 
-    #[ORM\Column(length: 200)]
-    private ?string $mail=null;
-
-    #[ORM\Column(length: 200)]
-    private ?string $role=null;
+    public function __construct()
+    {
+        $this->Publication = new ArrayCollection();
+        $this->Comment = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getName(): ?string
     {
-        return $this->nom;
+        return $this->name;
     }
 
-    public function setNom(string $nom): self
+    public function setName(string $name): self
     {
-        $this->nom = $nom;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getPrenom(): ?string
+    /**
+     * @return Collection<int, Publication>
+     */
+    public function getPublication(): Collection
     {
-        return $this->prenom;
+        return $this->Publication;
     }
 
-    public function setPrenom(string $prenom): self
+    public function addPublication(Publication $publication): self
     {
-        $this->prenom = $prenom;
+        if (!$this->Publication->contains($publication)) {
+            $this->Publication->add($publication);
+            $publication->setUser($this);
+        }
 
         return $this;
     }
 
-    public function getPassword(): ?string
+    public function removePublication(Publication $publication): self
     {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
+        if ($this->Publication->removeElement($publication)) {
+            // set the owning side to null (unless already changed)
+            if ($publication->getUser() === $this) {
+                $publication->setUser(null);
+            }
+        }
 
         return $this;
     }
 
-    public function getMail(): ?string
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComment(): Collection
     {
-        return $this->mail;
+        return $this->Comment;
     }
 
-    public function setMail(string $mail): self
+    public function addComment(Comment $comment): self
     {
-        $this->mail = $mail;
+        if (!$this->Comment->contains($comment)) {
+            $this->Comment->add($comment);
+            $comment->setUser($this);
+        }
 
         return $this;
     }
 
-    public function getRole(): ?string
+    public function removeComment(Comment $comment): self
     {
-        return $this->role;
-    }
-
-    public function setRole(string $role): self
-    {
-        $this->role = $role;
+        if ($this->Comment->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getUser() === $this) {
+                $comment->setUser(null);
+            }
+        }
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
 
 
 }
