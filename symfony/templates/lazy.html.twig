@@ -130,6 +130,35 @@
                 </li>
               </ul>
             </li>
+                        <li class="menu-item">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-layout"></i>
+                <div data-i18n="Layouts">Reclamation</div>
+              </a>
+
+              <ul class="menu-sub">
+                <li class="menu-item">
+                  <a href="{{ path('app_reclamation_index') }}" class="menu-link">
+                    <div data-i18n="Without menu">Reclamation List</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="{{ path('app_reclamation_new') }}" class="menu-link">
+                    <div data-i18n="Without navbar">Create Reclamation</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="{{ path('app_reclamation_category_index') }}" class="menu-link">
+                    <div data-i18n="Container">Event Reclamation Category</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="{{ path('app_reclamation_category_new') }}" class="menu-link">
+                    <div data-i18n="Fluid">Create Reclamation Category</div>
+                  </a>
+                </li>
+              </ul>
+            </li>
           </ul>
         </aside>
 
@@ -145,27 +174,7 @@
                 <i class="bx bx-menu bx-sm"></i>
               </a>
             </div>
-
-  <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-    <!-- Search -->
-    <div class="navbar-nav align-items-center">
-        <form action="{{ app.request.get('_route') starts with 'app_event_place' ? path('app_event_place_search') :  path('app_event_search') }}" method="GET" class="form-inline">
-            <div class="input-group">
-                <input
-                    type="text"
-                    class="form-control border-0 shadow-none"
-                    placeholder="Search..."
-                    aria-label="Search..."
-                    name="query"
-                />
-                <button class="btn btn-outline-secondary" type="submit">
-                    <i class="bx bx-search fs-4 lh-0"></i>
-                </button>
-            </div>
-        </form>
-    </div>
-    <!-- /Search -->
-  </div>
+{% block search %}{% endblock %}
           </nav>
 
           <!-- Content wrapper -->

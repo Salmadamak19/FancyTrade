@@ -1,10 +1,10 @@
 {% extends 'lazy.html.twig' %}
 
-{% block title %}Edit EventPlace{% endblock %}
+{% block title %}New ReclamationCategory{% endblock %}
 
 {% block body %}
             <div class="container-xxl flex-grow-1 container-p-y">
-              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Home/</span>{{ event_place.Name }}</h4>
+              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Home/</span> Add Reclamation Category</h4>
 
               <!-- Basic Layout & Basic with Icons -->
               <div class="row">
@@ -12,16 +12,14 @@
                 <div class="col-xxl">
                   <div class="card mb-4">
                     <div class="card-header d-flex align-items-center justify-content-between">
-                      <h5 class="mb-0">{{ event_place.Name }} Info</h5>
+                      <h5 class="mb-0">ReclamationCategory</h5>
                     </div>
                     <div class="card-body">
 
-    {{ include('event_place/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('reclamation_category/_form.html.twig') }}
 
-    <a href="{{ path('app_event_place_index') }}">back to list</a>
-
-    {{ include('event_place/_delete_form.html.twig') }}
-                                </div>
+    <a href="{{ path('app_reclamation_category_index') }}">back to list</a>
+                            </div>
                   </div>
                 </div>
               </div>

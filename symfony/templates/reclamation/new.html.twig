@@ -1,10 +1,10 @@
 {% extends 'lazy.html.twig' %}
 
-{% block title %}New Event{% endblock %}
+{% block title %}New Reclamation{% endblock %}
 
 {% block body %}
-            <div class="container-xxl flex-grow-1 container-p-y">
-              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Home/</span>Event </h4>
+                <div class="container-xxl flex-grow-1 container-p-y">
+              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Home/</span> Add Reclamation</h4>
 
               <!-- Basic Layout & Basic with Icons -->
               <div class="row">
@@ -12,17 +12,16 @@
                 <div class="col-xxl">
                   <div class="card mb-4">
                     <div class="card-header d-flex align-items-center justify-content-between">
-                      <h5 class="mb-0">Add Event</h5>
+                      <h5 class="mb-0">Reclamation</h5>
                     </div>
                     <div class="card-body">
-    {{ include('event/_form.html.twig') }}
 
-    <a href="{{ path('app_event_index') }}">back to list</a>
-                        </div>
+    {{ include('reclamation/_form.html.twig') }}
+
+    <a href="{{ path('app_reclamation_index') }}">back to list</a>
+                            </div>
                   </div>
                 </div>
               </div>
             </div>
-
-
 {% endblock %}

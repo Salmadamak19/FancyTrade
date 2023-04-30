@@ -12,6 +12,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Knp\Component\Pager\PaginatorInterface;
+use App\Entity\Reclamation;
+use App\Form\ReclamationType;
+use Doctrine\ORM\Mapping\Id;
 
 #[Route('/event')]
 class EventController extends AbstractController
@@ -22,7 +25,7 @@ class EventController extends AbstractController
         $pagination = $paginator->paginate(
             $eventRepository->findAll(),
             $request->query->getInt('page', 1),
-            1
+            2
        );
        
        return $this->render('event/index.html.twig', [
@@ -46,6 +49,31 @@ class EventController extends AbstractController
         ]);
     }
     #[Route('/new', name: 'app_event_new', methods: ['GET', 'POST'])]
+    /**
+ * @Route("/post/{id}", name="post_show")
+ */
+#[Route('/front', name: 'app_event_frontindex', methods: ['GET'])]
+public function report(Event $post, Request $request)
+{
+    // ...
+
+    // Create the link to the Reclamation form
+    $reclamation = new Reclamation();
+    $reclamation->setTarget($post.id);
+    $reclamation->setType('inappropriate');
+    $reclamationForm = $this->createForm(ReclamationType::class, $reclamation, [
+        'action' => $this->generateUrl('reclamation_new'),
+        'method' => 'POST',
+    ]);
+    $reclamationFormView = $reclamationForm->createView();
+
+    // ...
+
+    return $this->render('post/show.html.twig', [
+        'post' => $post,
+        'reclamationForm' => $reclamationFormView,
+    ]);
+}
 public function new(Request $request, EventRepository $eventRepository, SluggerInterface $slugger): Response
 {
     $event = new Event();
@@ -63,7 +91,7 @@ public function new(Request $request, EventRepository $eventRepository, SluggerI
         'form' => $form,
     ]);
 }
-#[Route('/event/search', name: 'app_event_search')]
+#[Route('/search', name: 'app_event_search')]
 public function search(Request $request, PaginatorInterface $paginator): Response
 {
     $query = $request->query->get('query');

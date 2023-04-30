@@ -1,6 +1,6 @@
 {% extends 'lazy.html.twig' %}
 
-{% block title %}EventPlace index{% endblock %}
+{% block title %}ReclamationCategory index{% endblock %}
 {% block search %}
   <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
     <!-- Search -->
@@ -24,8 +24,8 @@
   </div>
 {% endblock %}
 {% block body %}
-            <div class="container-xxl flex-grow-1 container-p-y">
-              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Home/</span> Event Places List</h4>
+               <div class="container-xxl flex-grow-1 container-p-y">
+              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Home/</span> Reclamation Category List</h4>
 
               <!-- Basic Layout & Basic with Icons -->
               <div class="row">
@@ -41,25 +41,23 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Name</th>
-                <th>Description</th>
+                <th>Nom</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for event_place in event_places %}
+        {% for reclamation_category in reclamation_categories %}
             <tr>
-                <td>{{ event_place.id }}</td>
-                <td>{{ event_place.Name }}</td>
-                <td>{{ event_place.Description }}</td>
+                <td>{{ reclamation_category.id }}</td>
+                <td>{{ reclamation_category.Nom }}</td>
                 <td>
-                    <a href="{{ path('app_event_place_show', {'id': event_place.id}) }}">show</a>
-                    <a href="{{ path('app_event_place_edit', {'id': event_place.id}) }}">edit</a>
+                    <a href="{{ path('app_reclamation_category_show', {'id': reclamation_category.id}) }}">show</a>
+                    <a href="{{ path('app_reclamation_category_edit', {'id': reclamation_category.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="4">no records found</td>
+                <td colspan="3">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
@@ -69,8 +67,8 @@
         {{ knp_pagination_render(pagination) }}
                           </ul>
                         </nav>
-    <a href="{{ path('app_event_place_new') }}">Create new</a>
-                            </div>
+    <a href="{{ path('app_reclamation_category_new') }}">Create new</a>
+                                </div>
                   </div>
                 </div>
               </div>

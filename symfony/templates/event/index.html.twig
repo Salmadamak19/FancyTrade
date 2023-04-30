@@ -1,7 +1,28 @@
 {% extends 'lazy.html.twig' %}
 
 {% block title %}Event index{% endblock %}
-
+{% block search %}
+  <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+    <!-- Search -->
+    <div class="navbar-nav align-items-center">
+        <form action="search" method="GET" class="form-inline">
+            <div class="input-group">
+                <input
+                    type="text"
+                    class="form-control border-0 shadow-none"
+                    placeholder="Search..."
+                    aria-label="Search..."
+                    name="query"
+                />
+                <button class="btn btn-outline-secondary" type="submit">
+                    <i class="bx bx-search fs-4 lh-0"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+    <!-- /Search -->
+  </div>
+{% endblock %}
 {% block body %}
             <div class="container-xxl flex-grow-1 container-p-y">
               <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Home/</span> Event List</h4>

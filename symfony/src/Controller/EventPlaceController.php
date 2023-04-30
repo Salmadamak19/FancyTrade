@@ -20,7 +20,7 @@ class EventPlaceController extends AbstractController
         $pagination = $paginator->paginate(
             $eventPlaceRepository->findAll(),
             $request->query->getInt('page', 1),
-            1
+            2
        );
         return $this->render('event_place/index.html.twig', [
                     'event_places' => $pagination->getItems(),
@@ -47,7 +47,7 @@ class EventPlaceController extends AbstractController
             'form' => $form,
         ]);
     }
-    #[Route('/place/search', name: 'app_event_place_search')]
+    #[Route('/search', name: 'app_event_place_search')]
     public function search(Request $request, PaginatorInterface $paginator): Response
     {
         $query = $request->query->get('query');
