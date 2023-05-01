@@ -1,0 +1,80 @@
+{% extends 'lazy.html.twig' %}
+
+{% block title %}Event index{% endblock %}
+{% block search %}
+  <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+    <!-- Search -->
+    <div class="navbar-nav align-items-center">
+        <form action="search" method="GET" class="form-inline">
+            <div class="input-group">
+                <input
+                    type="text"
+                    class="form-control border-0 shadow-none"
+                    placeholder="Search..."
+                    aria-label="Search..."
+                    name="query"
+                />
+                <button class="btn btn-outline-secondary" type="submit">
+                    <i class="bx bx-search fs-4 lh-0"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+    <!-- /Search -->
+  </div>
+{% endblock %}
+{% block body %}
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Home/</span> Event List</h4>
+
+              <!-- Basic Layout & Basic with Icons -->
+              <div class="row">
+                <!-- Basic Layout -->
+                <div class="col-xxl">
+                  <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                      <h5 class="mb-0">List</h5>
+                    </div>
+                    <div class="card-body">
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Place</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for event in events %}
+            <tr>
+                <td>{{ event.id }}</td>
+                <td>{{ event.Name }}</td>
+                <td>{{ event.Description }}</td>
+                <td><a href="{{ path('app_event_place_show', {'id': event.Place.id}) }}">{{ event.Place.Name }}</a></td>
+                <td>
+                    <a href="{{ path('app_event_show', {'id': event.id}) }}">show</a>
+                    <a href="{{ path('app_event_edit', {'id': event.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>                     
+    </table>
+           <nav aria-label="Page navigation">
+                          <ul class="pagination">
+        {{ knp_pagination_render(pagination) }}
+                          </ul>
+                        </nav>
+    <a href="{{ path('app_event_new') }}">Create new</a>
+                            </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+{% endblock %}

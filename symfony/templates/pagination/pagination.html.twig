@@ -1,0 +1,34 @@
+{% if pagination.totalItemCount > 0 %}
+    <nav>
+        <ul class="pagination justify-content-center">
+            {% if pagination.currentPageNumber > 1 %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ path(route, query|merge({page: pagination.previousPageNumber})) }}">
+                        <i class="fas fa-angle-left"></i>
+                    </a>
+                </li>
+            {% endif %}
+
+            {% set paginationData = pagination.getPaginationData() %}
+            {% for page in paginationData.pagesInRange %}
+                {% if page != pagination.currentPageNumber %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ path(route, query|merge({page: page})) }}">{{ page }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item active" aria-current="page">
+                        <span class="page-link">{{ page }}</span>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if pagination.currentPageNumber < pagination.pageCount %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ path(route, query|merge({page: pagination.nextPageNumber})) }}">
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}
