@@ -13,8 +13,6 @@ class PublicationType extends AbstractType
     {
         $builder
             ->add('content')
-
-            ->add('user')
         ;
     }
 

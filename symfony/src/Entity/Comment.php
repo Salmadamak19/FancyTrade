@@ -26,7 +26,8 @@ class Comment
     #[ORM\ManyToOne(inversedBy: 'Comment')]
     private ?Publication $publication = null;
 
-    #[ORM\ManyToOne(inversedBy: 'Comment')]
+    #[ORM\ManyToOne]
+#[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id_user')]
     private ?User $user = null;
 
     public function getId(): ?int

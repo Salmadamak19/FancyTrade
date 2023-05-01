@@ -52,8 +52,10 @@ class Event
     message:"The date must be after the current date and time")]
     private ?\DateTimeInterface $DateandTime = null;
 
-    #[ORM\Column(length: 255, nullable: true )]
-    private ?string $User = null;
+    
+    #[ORM\ManyToOne]
+#[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id_user')]
+private ?User $user = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Organiser is required.')]
@@ -133,14 +135,14 @@ class Event
         return $this;
     }
 
-    public function getUser(): ?string
+    public function getUser(): ?User
     {
-        return $this->User;
+        return $this->user;
     }
 
-    public function setUser(string $User): self
+    public function setUser(?User $user): self
     {
-        $this->User = $User;
+        $this->user = $user;
 
         return $this;
     }

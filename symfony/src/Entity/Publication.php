@@ -32,7 +32,8 @@ class Publication
     #[ORM\OneToMany(mappedBy: 'publication', targetEntity: Comment::class,orphanRemoval: true)]
     private Collection $Comment;
 
-    #[ORM\ManyToOne(inversedBy: 'Publication')]
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id_user')]
     private ?User $user = null;
 
     public function __construct()

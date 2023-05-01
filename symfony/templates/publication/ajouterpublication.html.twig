@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'lazy.html.twig' %}
 
 
 
@@ -27,10 +27,6 @@
                                       <div class="nicdark_margin20">
                                           <div class="nicdark_focus nicdark_relative">
 
-
-
-
-
                                               <div class="nicdark_space20"></div>
                                               <div class="nicdark_focus nicdark_relative">
                                                   <div class="nicdark_activity nicdark_marginleft100 nicdark_disable_marginleft_ipadpotr">
@@ -40,30 +36,6 @@
                                                   {{ form_errors(form.content) }}
                                                   {{ form_widget(form.content, {'attr':{'class':'nicdark_bg_grey nicdark_border_grey   grey small subtitle', 'placeholder':'content'}})}}
                                               </div>
-
-
-
-                                              <div class="nicdark_space20"></div>
-                                              <div class="nicdark_focus nicdark_relative">
-                                                  <div class="nicdark_activity nicdark_marginleft100 nicdark_disable_marginleft_ipadpotr">
-                                                      <h4>User</h4>
-                                                  </div>
-                                                  <div class="nicdark_space20"></div>
-
-
-                                                  {{ form_errors(form.user) }}
-                                                  {{ form_widget(form.user, {'attr':{'class':'nicdark_bg_grey nicdark_border_grey   grey small subtitle', 'placeholder':'User'}})}}
-                                              </div>
-
-
-
-
-
-
-
-
-
-
                                               <div class="nicdark_space20"></div>
                                               {#  <button type="submit" class="nicdark_mpopup_ajax nicdark_btn nicdark_bg_blue medium nicdark_outline  white nicdark_press" >Ajouter</button>#}
                                           </div>

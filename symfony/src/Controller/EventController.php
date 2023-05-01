@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\Reclamation;
 use App\Form\ReclamationType;
@@ -50,9 +51,11 @@ class EventController extends AbstractController
     }
     #[Route('/new', name: 'app_event_new', methods: ['GET', 'POST'])]
 
-public function new(Request $request, EventRepository $eventRepository, SluggerInterface $slugger): Response
+public function new(Request $request, EventRepository $eventRepository, SluggerInterface $slugger,TokenStorageInterface $tokenStorage): Response
 {
+    $user = $tokenStorage->getToken()->getUser();
     $event = new Event();
+    $event->setUser($user);
     $form = $this->createForm(EventType::class, $event);
     $form->handleRequest($request);
 

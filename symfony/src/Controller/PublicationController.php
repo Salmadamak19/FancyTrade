@@ -17,6 +17,9 @@ use Dompdf\Options;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+
 class PublicationController extends AbstractController
 {
     #[Route('/publication', name: 'app_publication')]
@@ -28,15 +31,16 @@ class PublicationController extends AbstractController
     }
     #[Route("/afficherpublication",name :"afficherpublication")]
 
-    public function Affiche(EntityManagerInterface $em,Request $request,PublicationRepository $repository,CommentRepository $commentRepository,PaginatorInterface $paginator){
+    public function Affiche(EntityManagerInterface $em,Request $request,PublicationRepository $repository,CommentRepository $commentRepository,PaginatorInterface $paginator,TokenStorageInterface $tokenStorage){
         $pub = $repository->findOneBy(["id" => $request->get("id")]);
-
+        $user = $tokenStorage->getToken()->getUser();
 
         $Comment= new Comment();
         $Comment->setPublication($pub);
 
         $form2= $this->createForm(CommentType::class,$Comment);
         $Comment->setDate(new \DateTimeImmutable());
+        $Comment->setUser($user);
         $form2->handleRequest($request);
 
         if($form2->isSubmitted() && $form2->isValid()){
@@ -49,6 +53,7 @@ class PublicationController extends AbstractController
         $publication= new Publication();
         $form= $this->createForm(PublicationType::class,$publication);
         $publication->setDate(new \DateTimeImmutable());
+        $publication->setUser($user);
         $form->add('Ajouter',SubmitType::class);
         $form->handleRequest($request);
 
@@ -96,10 +101,13 @@ class PublicationController extends AbstractController
 
     #[Route("/ajouterpublication",name:"ajouterpublication")]
 
-    public function ajouterpublication(EntityManagerInterface $em,Request $request ){
+    public function ajouterpublication(EntityManagerInterface $em,Request $request,TokenStorageInterface $tokenStorage ){
+        $user = $tokenStorage->getToken()->getUser();
+
         $publication= new Publication();
         $form= $this->createForm(PublicationType::class,$publication);
         $publication->setDate(new \DateTimeImmutable());
+        $publication->setUser($user);
         $form->add('Ajouter',SubmitType::class);
         $form->handleRequest($request);
 

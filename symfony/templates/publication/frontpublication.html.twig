@@ -23,19 +23,6 @@
 
 
 
-                                        <div class="nicdark_space20"></div>
-                                        <div class="nicdark_focus nicdark_relative">
-                                            <div class="nicdark_activity nicdark_marginleft100 nicdark_disable_marginleft_ipadpotr">
-                                                <h4>User</h4>
-                                            </div>
-                                            <div class="nicdark_space20"></div>
-
-
-                                            {{ form_errors(form.user) }}
-                                            {{ form_widget(form.user, {'attr':{'class':'nicdark_bg_grey nicdark_border_grey   grey small subtitle', 'placeholder':'User'}})}}
-                                        </div>
-
-
 
 
                                         <div class="nicdark_space20"></div>
@@ -46,7 +33,7 @@
                                 {% for i in tablepublication %}
 
                                 <article>
-                                    <h3>Publiee par  {{ i.user  }} </h3>
+                                    <h3>Publiee par  {{ i.user.nom  }} </h3>
                                     <h1> {{ i.content  }}</h1>
                                     <h6>   {{(i.date).format('d/m/Y')}} </h6>
                                 </article>
@@ -61,7 +48,7 @@
                                     <ul id="comments">
                                         <li>
                                             <div class="comment">
-                                                <p class="comment-author">by   {{ j.user }}</p>
+                                                <p class="comment-author">by   {{ j.user.nom}}</p>
                                                 <p class="comment-text">  {{ j.content }}</p>
                                                 <h6>   {{(j.date).format('d/m/Y')}} </h6>
 
