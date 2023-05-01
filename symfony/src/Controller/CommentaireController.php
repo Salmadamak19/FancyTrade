@@ -18,22 +18,23 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CommentaireController extends AbstractController
 {
-     /**
+/**
      * @Route("/", name="app_commentaire_index", methods={"GET"})
-     */
-    public function index(CommentaireRepository $commentaireRepository): Response
+     */    public function index(CommentaireRepository $commentaireRepository): Response
     {
         return $this->render('commentaire/index.html.twig', [
             'commentaires' => $commentaireRepository->findAll(),
         ]);
     }
 
-    /**
-     * @Route("/new", name="app_commentaire_new", methods={"GET", "POST"})
-     */
-    public function new(Request $request, CommentaireRepository $commentaireRepository): Response
+/**
+     * @Route("/{id}/newback", name="app_commentaire_new", methods={"GET", "POST"})
+     */ 
+    public function new(Request $request, CommentaireRepository $commentaireRepository, PostRepository $rep,$id): Response
     {
+        $post= $rep->find($id);
         $commentaire = new Commentaire();
+        $commentaire->setPost($post);
         $commentaire->setDatec(new \DateTime());
         $commentaire->setNomUser("current_user");
 
@@ -44,7 +45,7 @@ class CommentaireController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $commentaireRepository->add($commentaire, true);
-            return $this->redirectToRoute('app_commentaire_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_comment_index', ['id'=>$id], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('commentaire/new.html.twig', [
@@ -64,7 +65,7 @@ class CommentaireController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/new", name="app_commentaire_post", methods={"GET","POST"})
+     * @Route("/{id}/new", name="app_post_showcomment", methods={"GET", "POST"})
      */
     public function commentpost(Request $request, CommentaireRepository $commentaireRepository, PostRepository $rep, $id): Response
     {
@@ -92,7 +93,7 @@ class CommentaireController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/editfront", name="app_commentaire_editfront", methods={"GET","POST"})
+     * @Route("/{id}/editfront", name="app_commentaire_editfront", methods={"GET", "POST"})
      */
     public function editfront(Request $request, Commentaire $commentaire, CommentaireRepository $commentaireRepository, PostRepository $rep): Response
     {
@@ -113,7 +114,7 @@ class CommentaireController extends AbstractController
     }
 
 
-     /**
+    /**
      * @Route("/{id}/edit", name="app_commentaire_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Commentaire $commentaire, CommentaireRepository $commentaireRepository): Response
@@ -133,8 +134,8 @@ class CommentaireController extends AbstractController
         ]);
     }
 
-/**
-     * @Route("/{id}/remove", name="app_commentaire_remove", methods={"GET"})
+    /**
+     * @Route("/{id}/Remove", name="app_commentaire_remove", methods={"GET"})
      */
     public function Remove($id,CommentaireRepository $rep){
 

@@ -10,7 +10,6 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Nomuser</th>
                 <th>Post_Id</th>
                 <th>Descriptionc</th>
@@ -23,7 +22,6 @@
         <tbody>
         {% for commentaire in commentaires %}
             <tr>
-                <td>{{ commentaire.id }}</td>
                 <td>{{ commentaire.nomuser }}</td>
                 <td>{{ commentaire.post.id }}</td>
                 <td>{{ commentaire.descriptionc }}</td>
@@ -59,5 +57,5 @@
     </div>
                   </div>
 
-    <a href="{{ path('app_commentaire_new') }}" class=" btn bt-primary ">Create new</a>
+    {# <a href="{{ path('app_commentaire_new' ,{'id': commentaires.id}) }}" class=" btn bt-primary ">Create new</a> #}
 {% endblock %}

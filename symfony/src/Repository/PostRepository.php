@@ -39,6 +39,40 @@ class PostRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAll(): array
+{
+    return $this->createQueryBuilder('p')
+        ->orderBy('p.dateP', 'DESC')
+        ->getQuery()
+        ->getResult();
+}
+
+
+    public function findPostbyname($name)
+    {
+        return $this->createQueryBuilder('post')
+            ->where('post.sujet LIKE :sujet OR post.description LIKE :sujet')
+            ->setParameter('sujet','%'.$name.'%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function trie_decroissant_sujet()
+    {
+        return $this->createQueryBuilder('post')
+            ->orderBy('post.sujet','DESC')
+            ->getQuery()
+            ->getResult();
+    }
+    public function trie_decroissant_date()
+    {
+        return $this->createQueryBuilder('post')
+            ->orderBy('post.dateP','DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
 //    /**
 //     * @return Post[] Returns an array of Post objects
 //     */

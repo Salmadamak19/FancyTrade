@@ -2,14 +2,15 @@
 
 {% block body %}
     <h1>Posts</h1>
-
+<div class="btn btn-warning btn-circle"><a class="Comment"  href="{{ path('app_post_sujet') }}">Trier par sujet</a></div>
+            <div class="btn btn-warning btn-circle"><a class="Comment"  href="{{ path('app_post_date') }}">Trier par date</a></div>
                 <div class="card">
                     <h5 class="card-header">Posts</h5>
                     <div class="table-responsive text-nowrap">
                       <table class="table">
                         <thead>
                           <tr>
-                          <th>NomUser</th>
+                            <th>NomUser</th>
                             <th>Sujet</th>
                             <th>Description</th>
                             <th>NbrJ'aime</th>
@@ -47,7 +48,7 @@
                                 </button>
                                 <div class="dropdown-menu">
                                   
-                                  <a class="dropdown-item" href="{{ path('app_post_edit', {'id': post.id}) }}"> <i class="bx bx-edit-alt me-1"></i>edit</a>
+                                  <a class="dropdown-item" href="{{ path('app_post_showcomments', {'id': post.id}) }}"> <i class="bx bx-edit-alt me-1"></i>show Comments</a>
                                   
                                   <a class="dropdown-item" href="{{ path('app_post_show', {'id': post.id}) }}"><i class="bx bx-trash me-1"></i>  show</a>
                                 </div>
