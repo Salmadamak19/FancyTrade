@@ -12,7 +12,7 @@ class EchangesController extends AbstractController
     public function index(): Response
     {
         return $this->render('echanges/index.html.twig', [
-            'controller_name' => 'EchangesController',
+            //'controller_name' => 'EchangesController',
         ]);
     }
 }

@@ -2,51 +2,92 @@
 
 namespace App\Entity;
 
+
 use App\Repository\UserRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: UserRepository::class)]
+/**
+ * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\Table(name="user")
+ * @UniqueEntity(fields={"email"}, message="This email address is already in use.")
+ */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(name="id_user", type="integer")
+     */
+    private int $id;
 
-    #[ORM\Column(length: 180, unique: true)]
-    #[Assert\NotBlank(message: "email field is empty")]
-    #[Assert\Email( message: 'The email {{ value }} is not a valid email.')]   
-     private ?string $email = null;
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank(message="email field is empty")
+     * @Assert\Email( message="The email {{ value }} is not a valid email.")
+     */
+    private string $email;
 
-    #[ORM\Column]
-    private array $roles = [];
-
-    #[ORM\Column(length: 180)]
-    #[Assert\NotBlank(message: "name field is empty")]
-    #[Assert\Length(
-    min: 4,
-    minMessage: "name must be mor than 4",)]
-    private ?string $name = null;
-
+    /**
+     * @ORM\Column(type="string")
+     */
+    private string $roles;
 
     /**
      * @var string The hashed password
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="password field is empty")
      */
-    #[ORM\Column]
-    #[Assert\Length(min: 4,
-    minMessage: "password must be mor than 4",)]
+    private string $password;
 
-    private ?string $password = null;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom", type="string", length=20, nullable=false)
+     * @Assert\NotBlank(message="name field is empty")
+     */
+    private string $nom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="prenom", type="string", length=20, nullable=false)
+     * @Assert\NotBlank(message="prenom field is empty")
+     */
+    private string $prenom;
+
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="date_naiss", type="date", nullable=false)
+     * @Assert\NotBlank(message="date field is empty")
+     */
+    private DateTime $dateNaiss;
+
+    /**
+     * @ORM\Column(name="enabled", type="boolean", options={"default":"1"})
+     */
+    private bool $enabled;
+
+    /**
+     * @ORM\Column(name="token", type="string", nullable="true")
+     */
+    private ?string $token;
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
-
-    public function getEmail(): ?string
+    /**
+     * @deprecated since Symfony 5.3, use getUserIdentifier instead
+     */
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -65,15 +106,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
-    }
-
-    /**
-     * @deprecated since Symfony 5.3, use getUserIdentifier instead
-     */
-    public function getUsername(): string
-    {
-        return (string) $this->email;
+        return $this->email;
     }
 
     /**
@@ -81,14 +114,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
 
-        return array_unique($roles);
+        return array($this->roles);
     }
 
-    public function setRoles(array $roles): self
+    public function setRoles(string $roles): self
     {
         $this->roles = $roles;
 
@@ -100,32 +130,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getPassword(): string
     {
-        return (string)$this->password;
+        return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(?string $password): self
     {
         $this->password = $password;
 
         return $this;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-    
-    /**
-     * @param mixed $name 
-     */
-    public function setName($name): void
-    {
-         $this->name = $name;
-    }
-    
 
     /**
      * Returning a salt is only needed, if you are not using a modern
@@ -146,4 +159,92 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+
+    /**
+     * @return string
+     */
+    public function getNom(): string
+    {
+        return $this->nom;
+    }
+
+    /**
+     * @param string $nom
+     */
+    public function setNom(string $nom): void
+    {
+        $this->nom = $nom;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrenom(): string
+    {
+        return $this->prenom;
+    }
+
+    /**
+     * @param string $prenom
+     */
+    public function setPrenom(string $prenom): void
+    {
+        $this->prenom = $prenom;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getDateNaiss(): DateTime
+    {
+        return $this->dateNaiss;
+    }
+
+    /**
+     * @param DateTime $dateNaiss
+     */
+    public function setDateNaiss(DateTime $dateNaiss): void
+    {
+        $this->dateNaiss = $dateNaiss;
+    }
+
+
+    public function getUsername(): string
+    {
+        return (string) $this->email;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * @param bool $enabled
+     */
+    public function setEnabled(bool $enabled): void
+    {
+        $this->enabled = $enabled;
+    }
+
+    /**
+     * @return string
+     */
+    public function getToken(): string
+    {
+        return $this->token;
+    }
+
+    /**
+     * @param string $token
+     */
+    public function setToken(?string $token): void
+    {
+        $this->token = $token;
+    }
+
+
 }

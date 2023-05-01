@@ -12,7 +12,7 @@ class ForumController extends AbstractController
     public function index(): Response
     {
         return $this->render('forum/index.html.twig', [
-            'controller_name' => 'ForumController',
+            //'controller_name' => 'ForumController',
         ]);
     }
 }
