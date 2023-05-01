@@ -1,0 +1,4 @@
+{{ form_start(form,{'attr': {'autocomplete': 'off','novalidate': 'novalidate'}}) }}
+    {{ form_widget(form) }}
+<div class="row align-center" ><button class="btn">{{ button_label|default('Save') }}</button></div>
+{{ form_end(form) }}
