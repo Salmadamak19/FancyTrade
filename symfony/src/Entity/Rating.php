@@ -42,5 +42,46 @@ class Rating
      */
     private $rating;
 
+    public function getIdRating(): ?int
+    {
+        return $this->idRating;
+    }
+
+    public function getIdPost(): ?int
+    {
+        return $this->idPost;
+    }
+
+    public function setIdPost(int $idPost): self
+    {
+        $this->idPost = $idPost;
+
+        return $this;
+    }
+
+    public function getIdUser(): ?int
+    {
+        return $this->idUser;
+    }
+
+    public function setIdUser(int $idUser): self
+    {
+        $this->idUser = $idUser;
+
+        return $this;
+    }
+
+    public function getRating(): ?float
+    {
+        return $this->rating;
+    }
+
+    public function setRating(float $rating): self
+    {
+        $this->rating = $rating;
+
+        return $this;
+    }
+
 
 }

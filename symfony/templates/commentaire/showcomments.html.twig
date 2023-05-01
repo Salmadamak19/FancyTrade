@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Commentaire{% endblock %}
+{% block stylesheets %}
+
+<link rel="icon" type="image/x-icon" href="{{asset('../assets/img/favicon/favicon.ico')}}" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="{{asset('https://fonts.googleapis.com')}}" />
+    <link rel="preconnect" href="{{asset('https://fonts.gstatic.com')}}" crossorigin />
+    <link
+      href="{{asset('https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap')}}"
+      rel="stylesheet"
+    />
+
+    <!-- Icons. Uncomment required icon fonts -->
+    <link rel="stylesheet" href="{{asset('../assets/vendor/fonts/boxicons.css')}}" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="{{asset('../assets/vendor/css/core.css')}}" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{{asset('../assets/vendor/css/theme-default.css')}}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{{asset('../assets/css/demo.css')}}" />
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="{{asset('../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css')}}" />
+
+    <link rel="stylesheet" href="{{asset('../assets/vendor/libs/apex-charts/apex-charts.css')}}" />
+
+{% endblock %}
+
+
+{% block body %}
+    <h1>Commentaires</h1>
+    <div class="card">
+                    <h5 class="card-header">Comments</h5>
+                    <div class="table-responsive text-nowrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nomuser</th>
+                <th>Descriptionc</th>
+                <th>Datec</th>
+                {# <th>AnalyseCo</th>
+                <th>DatecTs</th> #}
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for var in post.commentaires %}
+            <tr>
+                <td>{{ var.nomuser }}</td>
+                <td>{{ var.descriptionc }}</td>
+                <td>{{ var.datec ? var.datec|date('Y-m-d H:i:s') : '' }}</td>
+                {# <td>{{ commentaire.analyseCo }}</td>
+                <td>{{ commentaire.datecTs ? commentaire.datecTs|date('Y-m-d H:i:s') : '' }}</td> #}
+                {# <td>
+                    <a href="{{ path('app_commentaire_show', {'id': commentaire.id}) }}">show</a>
+                    <a href="{{ path('app_commentaire_edit', {'id': commentaire.id}) }}">edit</a>
+                </td> #}
+
+                <td>
+                                
+                                  
+                                  <a href="{{ path('app_commentaire_edit', {'id': var.id}) }}"> <i class="bx bx-edit-alt me-1"></i>edit</a>
+                                  
+                                  <a href="{{ path('app_commentaire_show', {'id': var.id}) }}"><i class="bx bx-trash me-1"></i>  show</a>
+                                
+                            </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">Pas de commentaires pour ce poste</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+                  </div>
+
+    <a href="{{ path('app_commentaire_new',{'id': post.id} ) }}" class=" btn bt-primary ">Create new</a>
+{% endblock %}

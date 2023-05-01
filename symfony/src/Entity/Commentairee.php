@@ -55,5 +55,58 @@ class Commentairee
      */
     private $idPoste;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getIdUser(): ?User
+    {
+        return $this->idUser;
+    }
+
+    public function setIdUser(?User $idUser): self
+    {
+        $this->idUser = $idUser;
+
+        return $this;
+    }
+
+    public function getIdPoste(): ?Poste
+    {
+        return $this->idPoste;
+    }
+
+    public function setIdPoste(?Poste $idPoste): self
+    {
+        $this->idPoste = $idPoste;
+
+        return $this;
+    }
+
 
 }
