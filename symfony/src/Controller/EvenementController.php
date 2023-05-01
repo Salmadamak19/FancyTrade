@@ -12,7 +12,7 @@ class EvenementController extends AbstractController
     public function index(): Response
     {
         return $this->render('evenement/index.html.twig', [
-            'controller_name' => 'EvenementController',
+           // 'controller_name' => 'EvenementController',
         ]);
     }
 }

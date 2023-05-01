@@ -9,7 +9,7 @@
  _ email: matteo@open-lab.com                                                                                                                       _
  _ site: http://pupunzi.com                                                                                                                         _
  _       http://open-lab.com                                                                                                                        _
- _ blog: http://pupunzi.open-lab.com                                                                                                                _
+ _ users: http://pupunzi.open-lab.com                                                                                                                _
  _ Q&A:  http://jquery.pupunzi.com                                                                                                                  _
  _                                                                                                                                                  _
  _ Licences: MIT, GPL                                                                                                                               _
@@ -2009,7 +2009,7 @@ var getYTPVideoID = function( url ) {
  *  Open lab srl, Firenze - Italy
  *  email: matteo@open-lab.com
  *  site: 	http://pupunzi.com
- *  blog:	http://pupunzi.open-lab.com
+ *  users:	http://pupunzi.open-lab.com
  * 	http://open-lab.com
  *
  *  Licences: MIT, GPL
@@ -2032,7 +2032,7 @@ function uncamel(e){return e.replace(/([A-Z])/g,function(e){return"-"+e.toLowerC
  _ email: matteo@open-lab.com                                                                                                                       _
  _ site: http://pupunzi.com                                                                                                                         _
  _       http://open-lab.com                                                                                                                        _
- _ blog: http://pupunzi.open-lab.com                                                                                                                _
+ _ users: http://pupunzi.open-lab.com                                                                                                                _
  _ Q&A:  http://jquery.pupunzi.com                                                                                                                  _
  _                                                                                                                                                  _
  _ Licences: MIT, GPL                                                                                                                               _
@@ -2054,7 +2054,7 @@ var nAgt=navigator.userAgent;if(!jQuery.browser){jQuery.browser={},jQuery.browse
  _ email: matteo@open-lab.com                                                                                                                       _
  _ site: http://pupunzi.com                                                                                                                         _
  _       http://open-lab.com                                                                                                                        _
- _ blog: http://pupunzi.open-lab.com                                                                                                                _
+ _ users: http://pupunzi.open-lab.com                                                                                                                _
  _ Q&A:  http://jquery.pupunzi.com                                                                                                                  _
  _                                                                                                                                                  _
  _ Licences: MIT, GPL                                                                                                                               _
@@ -2082,7 +2082,7 @@ var nAgt=navigator.userAgent;if(!jQuery.browser){jQuery.browser={},jQuery.browse
  _ email: matteo@open-lab.com                                                                                                                       _
  _ site: http://pupunzi.com                                                                                                                         _
  _       http://open-lab.com                                                                                                                        _
- _ blog: http://pupunzi.open-lab.com                                                                                                                _
+ _ users: http://pupunzi.open-lab.com                                                                                                                _
  _ Q&A:  http://jquery.pupunzi.com                                                                                                                  _
  _                                                                                                                                                  _
  _ Licences: MIT, GPL                                                                                                                               _
