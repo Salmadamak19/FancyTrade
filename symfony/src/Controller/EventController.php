@@ -49,31 +49,7 @@ class EventController extends AbstractController
         ]);
     }
     #[Route('/new', name: 'app_event_new', methods: ['GET', 'POST'])]
-    /**
- * @Route("/post/{id}", name="post_show")
- */
-#[Route('/front', name: 'app_event_frontindex', methods: ['GET'])]
-public function report(Event $post, Request $request)
-{
-    // ...
 
-    // Create the link to the Reclamation form
-    $reclamation = new Reclamation();
-    $reclamation->setTarget($post.id);
-    $reclamation->setType('inappropriate');
-    $reclamationForm = $this->createForm(ReclamationType::class, $reclamation, [
-        'action' => $this->generateUrl('reclamation_new'),
-        'method' => 'POST',
-    ]);
-    $reclamationFormView = $reclamationForm->createView();
-
-    // ...
-
-    return $this->render('post/show.html.twig', [
-        'post' => $post,
-        'reclamationForm' => $reclamationFormView,
-    ]);
-}
 public function new(Request $request, EventRepository $eventRepository, SluggerInterface $slugger): Response
 {
     $event = new Event();
