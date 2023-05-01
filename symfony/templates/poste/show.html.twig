@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Poste{% endblock %}
+
+{% block contentblock %}
+   <style>
+    .post-container{
+        height: auto;
+        width: 600px;
+        border: 2px black solid;
+        border-radius: 15px;
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+    }
+
+    .post-header{
+        height: auto;
+        width: auto;
+        display: flex;
+    }
+
+    .post-content{
+        height: auto;
+        width: auto;
+    }
+</style>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        console.log("test");
+    </script>
+    <script>
+    console.log("test");
+        console.log("somethng");
+        $(document).ready(function() {
+            console.log("ready");
+            $("#rep-btn").unbind().on("click", function(){
+                console.log("click");
+                $.ajax({
+                url: '/commentaire/new',
+                type: 'POST',
+                data:{
+                    'id-poste' : {{ poste.id }},
+                    'comm-content' : $("#cc").val()
+                },        
+                success: function(result){
+                    $("#your-commentaire").append(result);
+                    console.log("success");
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                    alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                    }       
+                });
+            });
+        });
+        
+    </script>
+    <center>
+    <h1>Detail du poste </h1>
+    </center>
+    <div class="post-container" id="{{ poste.id }}" style="margin-top:200px;">
+        <div class="post-header">
+            <img src="{{ asset('default.png')}}" style=" height: auto; width: 70px;">
+            <div style="margin-left: 5%;">
+                <div>Username</div>
+                <div><b>{{ poste.titre }}</b></div>
+            </div>
+        </div>
+        <div class="post-content">
+            <div>{{ poste.description }}</div>
+            <img src="{{ asset(poste.img) }}" width="300" height="auto" style="">
+        </div>
+        <div class="post-commentaires">
+            <div style="width=600px; height: 3px; color:gray;"></div>
+            <div class="comment-container">
+                <div class="comm-container">
+                    <div class="comment-form">
+                        <input id="cc" type="textarea" cols="180" rows="2" placeholder="What do you think...">
+                        <div class="btn" id="rep-btn" style="border-radius: 15px; background-color: purple;">Comment</div>
+                    </div>
+                    <div id="your-commentaire" style="display:flex;flex-direction:column; height:auto; width:600px;">
+                    </div>
+                    {% for c in commentaires %}
+                        <div class="comment" style="display: flex; background-color:gray; border-radius: 15px; margin-bot: 50px;">
+                            <img src="{{ asset('default.png') }}" style="height:40px; width:auto; border-radius:20px;">
+                            <div style="display:flex; flex-direction:column;">
+                                <div>Username</div>
+                                <div>{{ c.description }}</div>
+                                <div>{{ c.date|date('Y-m-d') }}</div>
+                                <form method="post" action="{{ path('app_commentaire_delete', {'id': c.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ c.id) }}">
+                                <button class="btn">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

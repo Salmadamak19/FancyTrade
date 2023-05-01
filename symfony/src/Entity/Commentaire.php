@@ -1,77 +1,85 @@
 <?php
 
 namespace App\Entity;
-
+use App\Repository\CommentaireRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Commentaire
- *
- * @ORM\Table(name="commentaire", indexes={@ORM\Index(name="IDX_67F068BC4B89032C", columns={"post_id"})})
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass : CommentaireRepository::class)]
 class Commentaire
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id=null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nomuser", type="string", length=255, nullable=false)
-     */
-    private $nomuser;
+    #[ORM\Column(length: 500)]
+    private ?string $description=null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="imagec", type="string", length=255, nullable=true)
-     */
-    private $imagec;
+    #[ORM\Column(length: 100)]
+    private  $date=null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="descriptionc", type="string", length=255, nullable=false)
-     */
-    private $descriptionc;
+    #[ORM\ManyToOne(targetEntity: Poste::class)]
+    #[ORM\JoinColumn(name: 'id_poste', referencedColumnName: 'id')]
+    private $idPoste;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="datec", type="string", length=50, nullable=false, options={"default"="CURRENT_TIMESTAMP"})
-     */
-    private $datec = 'CURRENT_TIMESTAMP';
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'id_user', referencedColumnName: 'id')]
+    private $idUser;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="analyse_co", type="string", length=255, nullable=true)
-     */
-    private $analyseCo;
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="datec_ts", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
-     */
-    private $datecTs = 'CURRENT_TIMESTAMP';
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
 
-    /**
-     * @var \Post
-     *
-     * @ORM\ManyToOne(targetEntity="Post")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="post_id", referencedColumnName="id")
-     * })
-     */
-    private $post;
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getDate(): ?string
+    {
+        return $this->date;
+    }
+
+    public function setDate(?string $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getIdPoste(): ?Poste
+    {
+        return $this->idPoste;
+    }
+
+    public function setIdPoste(?Poste $idPoste): self
+    {
+        $this->idPoste = $idPoste;
+
+        return $this;
+    }
+
+    public function getIdUser(): ?User
+    {
+        return $this->idUser;
+    }
+
+    public function setIdUser(?User $idUser): self
+    {
+        $this->idUser = $idUser;
+
+        return $this;
+    }
+
 
 
 }
