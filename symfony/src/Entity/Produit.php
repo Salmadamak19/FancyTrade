@@ -42,46 +42,5 @@ class Produit
      */
     private $valeur;
 
-    public function getIdProduit(): ?int
-    {
-        return $this->idProduit;
-    }
-
-    public function getIdUser(): ?int
-    {
-        return $this->idUser;
-    }
-
-    public function setIdUser(int $idUser): self
-    {
-        $this->idUser = $idUser;
-
-        return $this;
-    }
-
-    public function getCategorie(): ?string
-    {
-        return $this->categorie;
-    }
-
-    public function setCategorie(string $categorie): self
-    {
-        $this->categorie = $categorie;
-
-        return $this;
-    }
-
-    public function getValeur(): ?int
-    {
-        return $this->valeur;
-    }
-
-    public function setValeur(int $valeur): self
-    {
-        $this->valeur = $valeur;
-
-        return $this;
-    }
-
 
 }

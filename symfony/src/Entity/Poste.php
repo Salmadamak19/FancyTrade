@@ -1,70 +1,42 @@
 <?php
 
 namespace App\Entity;
-
+use App\Repository\PosteRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Poste
- *
- * @ORM\Table(name="poste", indexes={@ORM\Index(name="fk_id_user", columns={"id_user"})})
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass : PosteRepository::class)]
 class Poste
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    
+    private ?int $id=null;
+    
+    #[Assert\NotBlank(message : "veuillez entrez Un titre valides")]
+    #[ORM\Column(length : 200)]
+    private ?string $titre=null;
+    
+    #[Assert\Length(min:10)]
+    #[Assert\NotBlank(message : "veuillez entrez Une description valides")]
+    #[ORM\Column(length : 500)]
+    private ?string $description=null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="titre", type="string", length=255, nullable=false)
-     */
-    private $titre;
+    #[ORM\Column(length : 250)]
+    private ?string $img=null;
+    #[Assert\NotBlank(message : "veuillez choisir un domaine")]
+   
+    #[ORM\Column(length : 250)]
+    private ?string $domaine=null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="string", length=255, nullable=false)
-     */
-    private $description;
+    #[ORM\Column(length: '250')]
+    private ?string $date=null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="img", type="string", length=255, nullable=false)
-     */
-    private $img;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="categorie", type="string", length=255, nullable=false)
-     */
-    private $categorie;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="date", type="date", nullable=false)
-     */
-    private $date;
-
-    /**
-     * @var \Utilisateur
-     *
-     * @ORM\ManyToOne(targetEntity="Utilisateur")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_user", referencedColumnName="id")
-     * })
-     */
-    private $idUser;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'id_user', referencedColumnName: 'id')]
+    private ?User $idUser=null;
 
     public function getId(): ?int
     {
@@ -107,36 +79,36 @@ class Poste
         return $this;
     }
 
-    public function getCategorie(): ?string
+    public function getDomaine(): ?string
     {
-        return $this->categorie;
+        return $this->domaine;
     }
 
-    public function setCategorie(string $categorie): self
+    public function setDomaine(string $domaine): self
     {
-        $this->categorie = $categorie;
+        $this->domaine = $domaine;
 
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDate(): ?string
     {
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setDate(string $date): self
     {
         $this->date = $date;
 
         return $this;
     }
 
-    public function getIdUser(): ?Utilisateur
+    public function getIdUser(): ?User
     {
         return $this->idUser;
     }
 
-    public function setIdUser(?Utilisateur $idUser): self
+    public function setIdUser(?User $idUser): self
     {
         $this->idUser = $idUser;
 

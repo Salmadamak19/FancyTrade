@@ -1,38 +1,4 @@
-{% block body %}
-
-
-{{ form_start(form,{'attr':{'novalidate':'novalidate'}}) }}
-        <form class="forms-sample">
-
-            <div class="form-group">
-                {{ form_label(form.nomUser, 'nomUser', ) }}
-                {{ form_widget(form.nomUser, {'attr': {'class': 'form-control','placeholder': 'nomUser'}}) }}
-                <span class="text-danger" >{{ form_errors(form.nomUser,{'attr': {'class':'text-danger'}}) }}</span>
-            </div>
-
-            <div class="form-group">
-                {{ form_label(form.descriptionc, 'descriptionc', ) }}
-                {{ form_widget(form.descriptionc, {'attr': {'class': 'form-control','placeholder': 'descriptionc'}}) }}
-                <span class="text-danger" >{{ form_errors(form.descriptionc,{'attr': {'class':'text-danger'}}) }}</span>
-            </div>
-            <div class="form-group">
-                {{ form_label(form.post, 'post', ) }}
-                {{ form_widget(form.post, {'attr': {'class': 'form-control','placeholder': 'post'}}) }}
-                <span class="text-danger" >{{ form_errors(form.post,{'attr': {'class':'text-danger'}}) }}</span>
-            </div>
-            
-
-            
-            
-            
-            <div class="input-group col-md-6 mt-4">
-                <button class="form-control btn btn-primary mr-2">{{ button_label|default('Save') }}</button>
-
-            </div>
-            
-
-            {{ form_end(form) }}
-        </form>
-
-
-{% endblock %} 
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

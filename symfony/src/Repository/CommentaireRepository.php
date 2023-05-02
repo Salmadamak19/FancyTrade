@@ -21,7 +21,7 @@ class CommentaireRepository extends ServiceEntityRepository
         parent::__construct($registry, Commentaire::class);
     }
 
-    public function add(Commentaire $entity, bool $flush = false): void
+    public function save(Commentaire $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -37,6 +37,25 @@ class CommentaireRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+    public function findOneById($Email): ?Commentaire
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.idPoste = :id')
+            ->setParameter('id', $Email)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+    public function allcomments($value): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.idPoste = :id')
+            ->setParameter('id', $value)
+           
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
 //    /**
