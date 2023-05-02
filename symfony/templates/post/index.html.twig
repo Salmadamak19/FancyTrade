@@ -1,7 +1,65 @@
 {% extends 'base.html.twig' %}
+
 {% block body %}
+    <h1>Posts</h1>
+<div class="btn btn-warning btn-circle"><a class="Comment"  href="{{ path('app_post_sujet') }}">Trier par sujet</a></div>
+            <div class="btn btn-warning btn-circle"><a class="Comment"  href="{{ path('app_post_date') }}">Trier par date</a></div>
+                <div class="card">
+                    <h5 class="card-header">Posts</h5>
+                    <div class="table-responsive text-nowrap">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>NomUser</th>
+                            <th>Sujet</th>
+                            <th>Description</th>
+                            <th>NbrJ'aime</th>
+                            <th>Image</th>
+                            <th>dateP</th>
+                            <th>communaute</th>
+                            {# <th>analysePo</th>
+                            <th>liked</th>
+                            <th>badlevel</th> #}
+                          </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                            {% for post in posts %}
+                          <tr>
+                          <td>{{ post.nomuser }}</td>
+                            <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{ post.sujet }}</strong></td>
+                            <td>{{ post.description }}</td>
+                            <td>
+                              {{ post.nbrjaime}}
+                            </td>
+                            <td><img src="{{asset('uploads/'~ post.image)}}" height="180"  class="user_pic rounded img-raised" alt="User"> </td>
+                            <td><span class="badge bg-label-primary me-1">{{ post.dateP ? post.dateP|date('Y-m-d H:i:s') : '' }}</span></td>
+                            <td>{{ post.communaute }}</td>
+                            {# <td>{{ post.analysePo }}</td>
 
- <titre> A BIENTOT POST NCHLH </titre>
+                            <td>{{ post.liked }}</td>
+                            <td>{{ post.badlevel }}</td> #}
 
-{% endblock %}
+                            
 
+                            <td>
+                              <div class="dropdown">
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                  <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                  
+                                  <a class="dropdown-item" href="{{ path('app_post_showcomments', {'id': post.id}) }}"> <i class="bx bx-edit-alt me-1"></i>show Comments</a>
+                                  
+                                  <a class="dropdown-item" href="{{ path('app_post_show', {'id': post.id}) }}"><i class="bx bx-trash me-1"></i>  show</a>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+
+                          {% endfor %}
+                          
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                {% endblock %}

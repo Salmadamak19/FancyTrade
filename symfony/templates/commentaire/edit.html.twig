@@ -1,13 +1,74 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Edit Commentaire{% endblock %}
+{% block stylesheets %}
 
+<link rel="icon" type="image/x-icon" href="{{asset('../assets/img/favicon/favicon.ico')}}" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="{{asset('https://fonts.googleapis.com')}}" />
+    <link rel="preconnect" href="{{asset('https://fonts.gstatic.com')}}" crossorigin />
+    <link
+      href="{{asset('https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap')}}"
+      rel="stylesheet"
+    />
+
+    <!-- Icons. Uncomment required icon fonts -->
+    <link rel="stylesheet" href="{{asset('../assets/vendor/fonts/boxicons.css')}}" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="{{asset('../assets/vendor/css/core.css')}}" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{{asset('../assets/vendor/css/theme-default.css')}}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{{asset('../assets/css/demo.css')}}" />
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="{{asset('../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css')}}" />
+
+    <link rel="stylesheet" href="{{asset('../assets/vendor/libs/apex-charts/apex-charts.css')}}" />
+
+{% endblock %}
 {% block body %}
     <h1>Edit Commentaire</h1>
 
-    {{ include('commentaire/_form.html.twig', {'button_label': 'Update'}) }}
+    {# {{ include('commentaire/_form.html.twig', {'button_label': 'Update'}) }} #}
 
-    <a href="{{ path('app_commentaire_index') }}">back to list</a>
+    {{ form_start(form,{'attr':{'novalidate':'novalidate'}}) }}
+        <form class="forms-sample">
 
-    {{ include('commentaire/_delete_form.html.twig') }}
+            <div class="form-group">
+                {{ form_label(form.nomUser, 'nomUser', ) }}
+                {{ form_widget(form.nomUser, {'attr': {'class': 'form-control','placeholder': 'nomUser'}}) }}
+                <span class="text-danger" >{{ form_errors(form.nomUser,{'attr': {'class':'text-danger'}}) }}</span>
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.descriptionc, 'Description du commentaire', ) }}
+                {{ form_widget(form.descriptionc, {'attr': {'class': 'form-control','placeholder': 'descriptionc'}}) }}
+                <span class="text-danger" >{{ form_errors(form.descriptionc,{'attr': {'class':'text-danger'}}) }}</span>
+            </div>
+            <div class="form-group" hidden>
+                {{ form_label(form.post, 'post' ) }}
+                {{ form_widget(form.post, {'attr': {'class': 'form-control','placeholder': 'post'}}) }}
+                <span class="text-danger" >{{ form_errors(form.post,{'attr': {'class':'text-danger'}}) }}</span>
+            </div>
+            
+
+            
+            
+            
+            <div class="input-group col-md-6 mt-4" >
+                <button class="form-control btn btn-primary mr-2">{{ button_label|default('Save') }}</button>
+
+            </div>
+            
+
+            {{ form_end(form) }}
+        </form>
+
+
+
+
+    <a href="{{ path('app_commentaire_index') }}" style="margin-left:1140px;">back to list</a>
+
+    {# {{ include('commentaire_delete_form/.html.twig') }} #}
 {% endblock %}

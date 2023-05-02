@@ -1,85 +1,182 @@
 <?php
 
 namespace App\Entity;
-use App\Repository\CommentaireRepository;
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass : CommentaireRepository::class)]
+use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CommentaireRepository;
+use Symfony\Component\Validator\Constraints as Assert ;
+
+
+/**
+ * Commentaire
+ *
+ * @ORM\Table(name="commentaire", indexes={@ORM\Index(name="IDX_67F068BC4B89032C", columns={"post_id"})})
+ * @ORM\Entity(repositoryClass= CommentaireRepository::class)
+ */ 
+
+
 class Commentaire
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id=null;
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
 
-    #[ORM\Column(length: 500)]
-    private ?string $description=null;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nomuser", type="string", length=255, nullable=false)
+     */
+    private $nomuser;
 
-    #[ORM\Column(length: 100)]
-    private  $date=null;
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="imagec", type="string", length=255, nullable=true, options={"default"="NULL"})
+     */
+    private $imagec = 'NULL';
 
-    #[ORM\ManyToOne(targetEntity: Poste::class)]
-    #[ORM\JoinColumn(name: 'id_poste', referencedColumnName: 'id')]
-    private $idPoste;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descriptionc", type="string", length=255, nullable=false)
+     * @Assert\Length(min=3)    
+     * @Assert\NotNull 
+     */
+    private $descriptionc;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'id_user', referencedColumnName: 'id')]
-    private $idUser;
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="datec", type="datetime", nullable=false, options={"default"="current_timestamp()"})
+     */
+    private $datec = null;
+
+    
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="analyse_co", type="string", length=255, nullable=true, options={"default"="NULL"})
+     */
+    private $analyseCo = 'NULL';
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="datec_ts", type="datetime", nullable=true, options={"default"="current_timestamp()"})
+     */
+    private $datecTs ;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="Commentaires")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $post;
+
+    // /**
+    //  * @var \Post
+    //  *
+    //  * @ORM\ManyToOne(targetEntity="Post")
+    //  * @ORM\JoinColumns({
+    //  *   @ORM\JoinColumn(name="post_id", referencedColumnName="id")
+    //  * })
+    //  */
+    // private $post;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getDescription(): ?string
+    public function getNomuser(): ?string
     {
-        return $this->description;
+        return $this->nomuser;
     }
 
-    public function setDescription(string $description): self
+    public function setNomuser(string $nomuser): self
     {
-        $this->description = $description;
+        $this->nomuser = $nomuser;
 
         return $this;
     }
 
-    public function getDate(): ?string
+    public function getImagec(): ?string
     {
-        return $this->date;
+        return $this->imagec;
     }
 
-    public function setDate(?string $date): self
+    public function setImagec(?string $imagec): self
     {
-        $this->date = $date;
+        $this->imagec = $imagec;
 
         return $this;
     }
 
-    public function getIdPoste(): ?Poste
+    public function getDescriptionc(): ?string
     {
-        return $this->idPoste;
+        return $this->descriptionc;
     }
 
-    public function setIdPoste(?Poste $idPoste): self
+    public function setDescriptionc(string $descriptionc): self
     {
-        $this->idPoste = $idPoste;
+        $this->descriptionc = $descriptionc;
 
         return $this;
     }
 
-    public function getIdUser(): ?User
+    public function getDatec(): ?\DateTimeInterface
     {
-        return $this->idUser;
+        return $this->datec;
     }
 
-    public function setIdUser(?User $idUser): self
+    public function setDatec(\DateTimeInterface $datec): self
     {
-        $this->idUser = $idUser;
+        $this->datec = $datec;
 
         return $this;
     }
 
+
+    public function getAnalyseCo(): ?string
+    {
+        return $this->analyseCo;
+    }
+
+    public function setAnalyseCo(?string $analyseCo): self
+    {
+        $this->analyseCo = $analyseCo;
+
+        return $this;
+    }
+
+    public function getDatecTs(): ?\DateTimeInterface
+    {
+        return $this->datecTs;
+    }
+
+    public function setDatecTs(\DateTimeInterface $datecTs): self
+    {
+        $this->datecTs = $datecTs;
+
+        return $this;
+    }
+
+    public function getPost(): ?Post
+    {
+        return $this->post;
+    }
+
+    public function setPost(?Post $post): self
+    {
+        $this->post = $post;
+
+        return $this;
+    }
 
 
 }
