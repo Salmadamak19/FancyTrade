@@ -18,7 +18,7 @@ use App\Repository\UserRepository;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use function PHPUnit\Framework\isEmpty;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class AdminController extends AbstractController
 {
     private EntityManagerInterface $em;
@@ -33,6 +33,7 @@ class AdminController extends AbstractController
 
 
     #[Route('/users', name: 'app_user')]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(PaginatorInterface $paginator,Request $request): Response
     {
        $user = $this->em->getRepository(User::class)->findAll();
@@ -48,6 +49,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/addUser', name: 'app_User')]
+    #[IsGranted('ROLE_ADMIN')]
     public function addUser(UserRepository $r, UserPasswordHasherInterface $password_encoder, EntityManagerInterface $em, Request $request)
 
     {
@@ -73,6 +75,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/removeUser/{id}', name: 'supp_User')]
+    #[IsGranted('ROLE_ADMIN')]
     public function suppressionUser($id, UserRepository $r, ManagerRegistry $doctrine): Response
     {
         $user = $r->find($id);
@@ -86,6 +89,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/modifUser/{id}', name: 'modifUser')]
+    #[IsGranted('ROLE_ADMIN')]
     public function modifUserr($id, UserRepository $r, Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = $this->em->getRepository(User::class)->find($id);
@@ -112,6 +116,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/admin', name: 'app_admin')]
+    #[IsGranted('ROLE_ADMIN')]
     public function indexAdmin(): Response
     {
         // $user = $this->getDoctrine()->getManager()->getRepository(User::class)->findAll();
@@ -129,8 +134,9 @@ class AdminController extends AbstractController
     }
 
     
-
+    
     #[Route('/ban/{id}', name: 'app_admin_banuser')]
+    #[IsGranted('ROLE_ADMIN')]
     public function banUser(int $id,UserRepository $r){
         $user = $r->find($id);
         if ($user != null ){
@@ -141,6 +147,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/detailUsr/{id}/{email}/{name}', name: 'app_detailUsr')]
+    #[IsGranted('ROLE_ADMIN')]
     public function detailFormation($id, $email, $name): Response
     {
         return $this->render('/users/detailUsr.html.twig', [
@@ -148,6 +155,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/profilAD', name: 'profilAD')]
+    #[IsGranted('ROLE_ADMIN')]
     public function profilAD(UserRepository $r, ManagerRegistry $doctrine, Request $request): Response
     {
         $user = $this->getUser();

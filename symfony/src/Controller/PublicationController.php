@@ -19,10 +19,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class PublicationController extends AbstractController
 {
     #[Route('/publication', name: 'app_publication')]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(): Response
     {
         return $this->render('publication/index.html.twig', [
@@ -83,7 +84,7 @@ class PublicationController extends AbstractController
     }
 
     #[Route("/afficherpublicationback",name :"afficherpublicationback")]
-
+    #[IsGranted('ROLE_ADMIN')]
     public function AfficheBack(Request $request,PublicationRepository $repository,CommentRepository $commentRepository,PaginatorInterface $paginator){
         $tablepublication=$repository->listPubByDate();
 
@@ -100,7 +101,7 @@ class PublicationController extends AbstractController
     }
 
     #[Route("/ajouterpublication",name:"ajouterpublication")]
-
+    #[IsGranted('ROLE_ADMIN')]
     public function ajouterpublication(EntityManagerInterface $em,Request $request,TokenStorageInterface $tokenStorage ){
         $user = $tokenStorage->getToken()->getUser();
 
@@ -125,7 +126,7 @@ class PublicationController extends AbstractController
 
 
     #[Route("/ajouterpublication2",name:"ajouterpublication2")]
-
+    #[IsGranted('ROLE_ADMIN')]
     public function ajouterpublication2(EntityManagerInterface $em,Request $request ){
         $publication= new Publication();
         $form= $this->createForm(PublicationType::class,$publication);
@@ -155,7 +156,7 @@ class PublicationController extends AbstractController
     }
 
     #[Route("/supprimerpublicationback/{id}",name:"supprimerpublicationback")]
-
+    #[IsGranted('ROLE_ADMIN')]
     public function delete2($id,EntityManagerInterface $em ,PublicationRepository $repository){
         $rec=$repository->find($id);
         $em->remove($rec);
@@ -237,7 +238,7 @@ class PublicationController extends AbstractController
 
 
     #[Route("/statpublication",name:"statpublication")]
-
+    #[IsGranted('ROLE_ADMIN')]
     public function statAction(PublicationRepository $test)
     {
 

@@ -1,0 +1,72 @@
+{% extends 'front.html.twig' %}
+
+{% block title %}Echange{% endblock %}
+
+{% block body %}
+
+    <div class="main">
+        <section class="module">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 mb-sm-40"><a class="gallery" href="{{ asset('uploads/images/') }}{{ echange.produitRequest.image }}"><img src="{{ asset('uploads/images/') }}{{ echange.produitRequest.image }}" alt="Single Product Image"/></a>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h1 class="product-title font-alt">{{ echange.produitRequest.categorie }}</h1>
+                            </div>
+                        </div>
+                        <div class="row mb-20">
+                            <div class="col-sm-12">
+                                <div class="price font-alt"><span class="amount">{{ echange.produitRequest.valeur }} TND</span></div>
+                            </div>
+                        </div>
+                        <div class="row mb-20">
+                            <div class="col-sm-12">
+                                <div class="description">
+                                    <p>{{ echange.produitRequest.user.name }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <h1 class="module-title font-alt">Echange</h1>
+                    </div>
+                </div>
+                <hr class="divider-w pt-20">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-striped table-border checkout-table">
+                            <tbody>
+                            <tr>
+                                <th class="hidden-xs">Image</th>
+                                <th>Categorie</th>
+                                <th class="hidden-xs">Valeur</th>
+                                <th>Action</th>
+                            </tr>
+                            {% for monproduit in Mesproduits %}
+
+                            <tr>
+                                <td class="hidden-xs"><a href="#"><img src="{{ asset('uploads/images/') }}{{ monproduit.image }}" alt="Accessories Pack"/></a></td>
+                                <td>
+                                    <h5 class="product-title font-alt">{{ monproduit.categorie }}</h5>
+                                </td>
+                                <td class="hidden-xs">
+                                    <h5 class="product-title font-alt">{{ monproduit.valeur }} TND</h5>
+                                </td>
+                                <td class="pr-remove"><a href="{{ path('app_echange_editt', {'id': monproduit.id,'idech':echange.id}) }}" class="btn btn-warning">Echanger</a></td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr class="divider-w">
+            </div>
+        </section>
+    </div>
+{% endblock %}

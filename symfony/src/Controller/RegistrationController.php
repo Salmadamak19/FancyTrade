@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class RegistrationController extends AbstractController
 {
 

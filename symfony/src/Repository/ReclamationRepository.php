@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Reclamation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Twilio\Rest\Client;
 
 /**
  * @extends ServiceEntityRepository<Reclamation>
@@ -29,6 +30,27 @@ class ReclamationRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public  function sms(){
+        // Your Account SID and Auth Token from twilio.com/console
+                $sid = 'AC5aac697f35d95e78ea11ce9308ce4c2c';
+                $auth_token = '27b2702d0bdf43f2a0c9a275376dfeb2';
+        // In production, these should be environment variables. E.g.:
+        // $auth_token = $_ENV["TWILIO_AUTH_TOKEN"]
+        // A Twilio number you own with SMS capabilities
+                $twilio_number = "+16205071855";
+        
+                $client = new Client($sid, $auth_token);
+                $client->messages->create(
+                // the number you'd like to send the message to
+                    '+21699505836',
+                    [
+                        // A Twilio phone number you purchased at twilio.com/console
+                        'from' => '+16205071855',
+                        // the body of the text message you'd like to send
+                        'body' => 'novelle reclamation et envoyée  '
+                    ]
+                );
+            }
 
     public function remove(Reclamation $entity, bool $flush = false): void
     {

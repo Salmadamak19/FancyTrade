@@ -13,14 +13,17 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use App\Entity\Reclamation;
-use App\Form\ReclamationType;
-use Doctrine\ORM\Mapping\Id;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
+
 
 #[Route('/event')]
 class EventController extends AbstractController
 {
+    
     #[Route('/', name: 'app_event_index', methods: ['GET'])]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function index(EventRepository $eventRepository, PaginatorInterface $paginator, Request $request): Response
     {
         $pagination = $paginator->paginate(
@@ -50,8 +53,8 @@ class EventController extends AbstractController
         ]);
     }
     #[Route('/new', name: 'app_event_new', methods: ['GET', 'POST'])]
-
-public function new(Request $request, EventRepository $eventRepository, SluggerInterface $slugger,TokenStorageInterface $tokenStorage): Response
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+public function new(Request $request, EventRepository $eventRepository, SluggerInterface $slugger,TokenStorageInterface $tokenStorage,AuthorizationCheckerInterface $authChecker): Response
 {
     $user = $tokenStorage->getToken()->getUser();
     $event = new Event();
@@ -71,6 +74,7 @@ public function new(Request $request, EventRepository $eventRepository, SluggerI
     ]);
 }
 #[Route('/search', name: 'app_event_search')]
+#[IsGranted('IS_AUTHENTICATED_FULLY')]
 public function search(Request $request, PaginatorInterface $paginator): Response
 {
     $query = $request->query->get('query');
@@ -98,6 +102,7 @@ public function search(Request $request, PaginatorInterface $paginator): Respons
 
 
     #[Route('/{id}', name: 'app_event_show', methods: ['GET'])]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function show(Event $event): Response
     {
         return $this->render('event/show.html.twig', [
@@ -105,6 +110,7 @@ public function search(Request $request, PaginatorInterface $paginator): Respons
         ]);
     }
     #[Route('/{id}/show', name: 'app_event_frontshow', methods: ['GET'])]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function frontshow(Event $event): Response
     {
         return $this->render('event/frontshow.html.twig', [
@@ -113,6 +119,7 @@ public function search(Request $request, PaginatorInterface $paginator): Respons
     }
 
     #[Route('/{id}/edit', name: 'app_event_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function edit(Request $request, Event $event, EventRepository $eventRepository, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(EventType::class, $event);
@@ -150,6 +157,7 @@ public function search(Request $request, PaginatorInterface $paginator): Respons
     
 
     #[Route('/{id}', name: 'app_event_delete', methods: ['POST'])]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function delete(Request $request, Event $event, EventRepository $eventRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$event->getId(), $request->request->get('_token'))) {

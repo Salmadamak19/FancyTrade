@@ -1,0 +1,56 @@
+{% extends 'lazy.html.twig' %}
+
+{% block title %}Echange{% endblock %}
+
+{% block body %}
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Proprio</th>
+            <th>Categorie</th>
+            <th>Valeur</th>
+            <th>Images</th>
+            <th>Statut</th>
+            <th>Proprio</th>
+            <th>Categorie</th>
+            <th>Valeur</th>
+            <th>Images</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for echange in echanges %}
+            <tr>
+                <td>{{ echange.Produit.user.nom }}</td>
+                <td>{{ echange.Produit.categorie }}</td>
+                <td>{{ echange.Produit.valeur }}</td>
+                <td>
+                    <img width="100" height="100" src="{{ asset('uploads/images/') }}{{ echange.Produit.image }}" >
+                </td>
+                <td>
+                    {% if( echange.statut  == "En Attente") %}
+                        <button class="btn btn-warning">{{ echange.statut }}</button>
+                    {% elseif( echange.statut  == "Approuvée") %}
+                        <button class="btn btn-success">{{ echange.statut }}</button>
+                    {% else %}
+                        <button class="btn btn-danger">{{ echange.statut }}</button>
+                    {%  endif%}
+
+                </td>
+                <td>{{ echange.produitRequest.user.nom }}</td>
+                <td>{{ echange.produitRequest.categorie }}</td>
+                <td>{{ echange.produitRequest.valeur }}</td>
+                <td>
+                    <img width="100" height="100" src="{{ asset('uploads/images/') }}{{ echange.produitRequest.image }}" >
+                </td>
+
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

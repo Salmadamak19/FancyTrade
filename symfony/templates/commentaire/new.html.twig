@@ -1,0 +1,31 @@
+{% extends 'lazy.html.twig' %}
+
+{% block title %}New Commentaire{% endblock %}
+
+{% block body %}
+    <h1>Create new Commentaire</h1>
+
+    {{ form_start(form,{'attr':{'novalidate':'novalidate'}}) }}
+        <form class="forms-sample">
+
+            <div class="form-group">
+                {{ form_label(form.descriptionc, 'Description du commentaire', ) }}
+                {{ form_widget(form.descriptionc, {'attr': {'class': 'form-control','placeholder': 'descriptionc'}}) }}
+                <span class="text-danger" >{{ form_errors(form.descriptionc,{'attr': {'class':'text-danger'}}) }}</span>
+            </div>
+            
+
+            
+            
+            
+            <div class="input-group col-md-6 mt-4" >
+                <button class="form-control btn btn-primary mr-2">{{ button_label|default('Save') }}</button>
+
+            </div>
+            
+
+            {{ form_end(form) }}
+        </form>
+
+    <a href="{{ path('app_commentaire_index') }}">back to list</a>
+{% endblock %}

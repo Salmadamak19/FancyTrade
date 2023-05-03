@@ -3,18 +3,7 @@
 {% block title %}Reclamation{% endblock %}
 
 {% block body %}
-            <div class="container-xxl flex-grow-1 container-p-y">
-              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Home/</span>{{ reclamation.object }}</h4>
-
-              <!-- Basic Layout & Basic with Icons -->
-              <div class="row">
-                <!-- Basic Layout -->
-                <div class="col-xxl">
-                  <div class="card mb-4">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                      <h5 class="mb-0">{{ reclamation.object }} Info</h5>
-                    </div>
-                    <div class="card-body">
+    <h1>Reclamation</h1>
 
     <table class="table">
         <tbody>
@@ -23,16 +12,16 @@
                 <td>{{ reclamation.id }}</td>
             </tr>
             <tr>
-                <th>Object</th>
-                <td>{{ reclamation.object }}</td>
+                <th>Message</th>
+                <td>{{ reclamation.message }}</td>
             </tr>
             <tr>
-                <th>Contenu</th>
-                <td>{{ reclamation.contenu }}</td>
+                <th>Created_at</th>
+                <td>{{ reclamation.createdAt ? reclamation.createdAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
-                        <tr>
-                <th>Type</th>
-                <td>{{ reclamation.type }}</td>
+            <tr>
+                <th>Status</th>
+                <td>{{ reclamation.status ? 'Yes' : 'No' }}</td>
             </tr>
         </tbody>
     </table>
@@ -42,9 +31,4 @@
     <a href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}">edit</a>
 
     {{ include('reclamation/_delete_form.html.twig') }}
-                                </div>
-                  </div>
-                </div>
-              </div>
-            </div>
 {% endblock %}

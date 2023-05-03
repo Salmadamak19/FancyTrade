@@ -3,25 +3,30 @@
 {% block title %}Event{% endblock %}
 
 {% block body %}
-        <section class="module">
-          <div class="container">
-            <div class="row">
-              <div class="col-sm-6 col-md-8 col-lg-8"><img src="{{ asset('uploads/images/')}}{{ event.Image }}" alt="Title of Image"/></div>
-              <div class="col-sm-6 col-md-4 col-lg-4">
-                <div class="work-details">
-                  <h5 class="work-details-title font-alt">{{ event.Name }}</h5>
-                  <p>{{ event.Description }}</p>
-                  <ul>
-                    <li><strong>Client: </strong><span class="font-serif"><a href="#" target="_blank">{{ event.Organiser }}</a></span>
-                    </li>
-                    <li><strong>Date: </strong><span class="font-serif"><a href="#" target="_blank">{{ event.DateandTime|date('Y-m-d H:i:s') }}</a></span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+<section class="module">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6 col-md-8 col-lg-8"><img src="{{ asset('uploads/images/')}}{{ event.Image }}" alt="Title of Image"/></div>
+      <div class="col-sm-6 col-md-4 col-lg-4">
+        <div class="work-details">
+          <h5 class="work-details-title font-alt">{{ event.Name }}</h5>
+          <p>{{ event.Description }}</p>
+          <ul>
+            <li><strong>Client: </strong><span class="font-serif"><a href="#" target="_blank">{{ event.Organiser }}</a></span>
+            </li>
+            <li><strong>Date: </strong><span class="font-serif"><a href="#" target="_blank">{{ event.DateandTime|date('Y-m-d H:i:s') }}</a></span>
+            </li>
+          </ul>
+          <form action="{{ path('create_reclamation_event') }}" method="POST">
+            <input type="hidden" name="event" value="{{ event.id }}">
+            <button type="submit" class="btn btn-primary">Create Reclamation</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
     <a href="{{ path('app_event_frontindex') }}">back to list</a>
 {% endblock %}

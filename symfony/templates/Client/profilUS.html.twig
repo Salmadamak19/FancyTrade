@@ -25,7 +25,12 @@
             <div class="mb-3 col-md-6">
               <label for="email" class="form-label">Name</label>
               
-              {{ form_widget(f.name,{attr:{'class':'form-control'}}) }}
+              {{ form_widget(f.nom,{attr:{'class':'form-control'}}) }}
+            </div>
+                        <div class="mb-3 col-md-6">
+              <label for="email" class="form-label">prenom</label>
+              
+              {{ form_widget(f.prenom,{attr:{'class':'form-control'}}) }}
             </div>
 
             <div class="mb-3 col-md-6">
@@ -34,24 +39,25 @@
               {{ form_widget(f.email,{attr:{'class':'form-control'}}) }}
             </div>
             
-            <label class="col-sm-2 col-form-label" for="basic-default-name">Password</label>
-            <div class="col-sm-10">
+            
+            <div class="mb-3 col-md-6">
+            <label class="form-label" for="basic-default-name">Password</label>
               {{ form_widget(f.password.first,{attr:{'class':'form-control'}}) }}
               {{ form_errors(f.password.first,{attr:{'class':'text-danger'}}) }}
             </div>
             
             
             
-            <div class="row mb-6">
-            <label class="col-sm-2 col-form-label" for="basic-default-name">Confirm Password</label>
-            <div class="col-sm-10">
+            <div class="mb-3 col-md-6">
+            <label class="form-label" for="basic-default-name">Confirm Password</label>
+           
               {{ form_widget(f.password.second,{attr:{'class':'form-control'}}) }}
             </div>
                 
           </div>
             
 
-        </form>
+
       </div>
       <!-- /Account -->
     </div>

@@ -6,13 +6,19 @@ use App\Entity\Publication;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
+use Vich\UploaderBundle\Form\Type\VichFileType;
 class PublicationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('content')
+            ->add('imageFile', VichFileType::class, [
+                'label' => 'Image',
+                'required' => false,
+                'allow_delete' => true,
+                'download_uri' => false,
+            ])
         ;
     }
 

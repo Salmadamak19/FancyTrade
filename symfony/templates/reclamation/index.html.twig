@@ -1,78 +1,46 @@
 {% extends 'lazy.html.twig' %}
 
 {% block title %}Reclamation index{% endblock %}
-{% block search %}
-  <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-    <!-- Search -->
-    <div class="navbar-nav align-items-center">
-        <form action="search" method="GET" class="form-inline">
-            <div class="input-group">
-                <input
-                    type="text"
-                    class="form-control border-0 shadow-none"
-                    placeholder="Search..."
-                    aria-label="Search..."
-                    name="query"
-                />
-                <button class="btn btn-outline-secondary" type="submit">
-                    <i class="bx bx-search fs-4 lh-0"></i>
-                </button>
-            </div>
-        </form>
-    </div>
-    <!-- /Search -->
-  </div>
-{% endblock %}
+
 {% block body %}
-            <div class="container-xxl flex-grow-1 container-p-y">
-              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Home/</span> Reclamation List</h4>
+    <center><h1>Liste des Reclamations</h1></center>
+    <center><a class="btn btn-border-d" href="{{ path('app_reclamation_new') }}">Create new</a></center>
+    <center><a class="btn btn-border-d" href="{{ path('PDF_Reclamation') }}">PDF</a></center>
 
-              <!-- Basic Layout & Basic with Icons -->
-              <div class="row">
-                <!-- Basic Layout -->
-                <div class="col-xxl">
-                  <div class="card mb-4">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                      <h5 class="mb-0">List</h5>
-                    </div>
-                    <div class="card-body">
-
-    <table class="table">
+    <table class="table table-hover">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Object</th>
+                <th>#</th>
+                <th>Utilisateur</th>
                 <th>Contenu</th>
-                <th>actions</th>
+                <th>Date De Creation</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
+        {% set i=1 %}
         {% for reclamation in reclamations %}
-            <tr>
-                <td>{{ reclamation.id }}</td>
-                <td>{{ reclamation.object }}</td>
-                <td>{{ reclamation.contenu }}</td>
-                <td>
-                    <a href="{{ path('app_reclamation_show', {'id': reclamation.id}) }}">show</a>
-                    <a href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}">edit</a>
-                </td>
+            <tr style="cursor: pointer" data-rec-id="{{ reclamation.id }}">
+                <td>{{ i }}</td>
+                {% set i = i + 1 %}
+                <td>{{ reclamation.user.email }}</td>
+                <td>{{ reclamation.message }}</td>
+                <td>{{ reclamation.createdAt ? reclamation.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ reclamation.status ? 'Repondu' : 'En cours' }}</td>
+
             </tr>
         {% else %}
             <tr>
-                <td colspan="4">no records found</td>
+                <td colspan="5">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-           <nav aria-label="Page navigation">
-                          <ul class="pagination">
-        {{ knp_pagination_render(pagination) }}
-                          </ul>
-                        </nav>
-    <a href="{{ path('app_reclamation_new') }}">Create new</a>
-                            </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+    <script>
+        document.querySelectorAll('[data-rec-id]').forEach(element => {
+            element.addEventListener('click', ()=>{
+                window.location.href = element.getAttribute('data-rec-id')
+            })
+        })
+    </script>
 {% endblock %}

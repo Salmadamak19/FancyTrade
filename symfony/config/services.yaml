@@ -5,6 +5,10 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
  event_images_directory: '%kernel.project_dir%/public/uploads/images'
+ publication_images_directory: '%kernel.project_dir%/public/uploads/images'
+ post_image: '%kernel.project_dir%/public/uploads'
+ images_directory: '%kernel.project_dir%/public/uploads/images'
+ brochures_directory: '%kernel.project_dir%/public/uploads'
 services:
     
     # default configuration for services in *this* file

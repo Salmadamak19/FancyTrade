@@ -1,0 +1,47 @@
+{% extends 'front.html.twig' %}
+
+
+
+    {% block body  %}
+
+
+    <section class="module">
+          <div class="container">
+            <div class="post">
+
+            
+                
+{{ form_start(form,{'attr':{'novalidate':'novalidate'}}) }}
+        <form class="forms-sample">
+
+
+            <div class="input-group col-md-6 mt-4 mb-4">
+                {{ form_label(form.descriptionc, 'Description du commentaire', ) }}
+                {{ form_widget(form.descriptionc, {'attr': {'class': 'form-control','placeholder': 'Description du commentaire '}}) }}
+                <span class="text-danger" >{{ form_errors(form.descriptionc,{'attr': {'class':'text-danger'}}) }}</span>
+            </div>
+            <div class="form-group" hidden>
+                {{ form_label(form.post, 'post', ) }}
+                {{ form_widget(form.post, {'attr': {'class': 'form-control','placeholder': 'post'}}) }}
+                <span class="text-danger" >{{ form_errors(form.post,{'attr': {'class':'text-danger'}}) }}</span>
+            </div>
+            
+
+            
+            
+            
+            <div class="input-group col-md-6 mt-4">
+                <button class="form-control btn btn-primary mr-2">{{ button_label|default('Save') }}</button>
+
+            </div>
+            
+
+            {{ form_end(form) }}
+        </form>
+            </div>
+        </div>
+    </section>
+
+
+
+    {% endblock %}

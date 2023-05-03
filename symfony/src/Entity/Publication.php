@@ -7,9 +7,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[ORM\Entity(repositoryClass: PublicationRepository::class)]
+#[Vich\Uploadable]
 class Publication
 {
     #[ORM\Id]
@@ -31,6 +33,13 @@ class Publication
 
     #[ORM\OneToMany(mappedBy: 'publication', targetEntity: Comment::class,orphanRemoval: true)]
     private Collection $Comment;
+
+    #[ORM\Column(length: 255)]
+    private ?string $Image = null;
+
+      #[Vich\UploadableField(mapping:"publication_image", fileNameProperty:"image")]
+      #[Assert\NotNull]
+    private $imageFile;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id_user')]
@@ -69,7 +78,26 @@ class Publication
 
         return $this;
     }
+    public function setImageFile(?File $imageFile): void
+    {
+        $this->imageFile = $imageFile;
+    }
 
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+    public function getImage(): ?string
+    {
+        return $this->Image;
+    }
+
+    public function setImage(string $Image): self
+    {
+        $this->Image = $Image;
+
+        return $this;
+    }
     /**
      * @return Collection<int, Comment>
      */

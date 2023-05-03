@@ -1,0 +1,32 @@
+{% extends 'front.html.twig' %}
+
+{% block title %}Produits{% endblock %}
+
+{% block body %}
+
+    <section class="module-small">
+        <div class="container">
+            <div class="row multi-columns-row">
+                {% for produit in produits %}
+                <div class="col-sm-6 col-md-4 col-lg-4">
+                    <div class="shop-item">
+                        <div class="shop-item-image"><img src="{{ asset('uploads/images/') }}{{ produit.image }}" alt="Accessories Pack"/>
+                            <div class="shop-item-detail"><a class="btn btn-round btn-b" href="{{ path('app_echange', {'id': produit.id}) }}"><span class="icon-basket">Echanger</span></a></div>
+                        </div>
+                            <h4 class="shop-item-title font-alt"><a href="#">{{ produit.categorie }}</a></h4> {{ produit.valeur }}TND
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="pagination font-alt"><a href="#"><i class="fa fa-angle-left"></i></a><a class="active" href="#">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#"><i class="fa fa-angle-right"></i></a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <a href="{{ path('app_produit_new') }}">Create new</a>
+{% endblock %}

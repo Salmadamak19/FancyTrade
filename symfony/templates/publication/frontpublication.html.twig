@@ -33,10 +33,18 @@
                                 {% for i in tablepublication %}
 
                                 <article>
-                                    <h3>Publiee par  {{ i.user.nom  }} </h3>
-                                    <h1> {{ i.content  }}</h1>
-                                    <h6>   {{(i.date).format('d/m/Y')}} </h6>
-                                </article>
+    <h3>Publiee par {{ i.user.nom }}</h3>
+    {% if i.image %}
+        <img src="{{ asset('uploads/images/')}}{{ i.Image }}" alt="{{ i.image }}"/>
+    {% endif %}
+    <h1>{{ i.content }}</h1>
+    <h6>{{ i.date|date('d/m/Y') }}</h6>
+</article>
+
+                                          <form action="{{ path('create_reclamation_post') }}" method="POST">
+            <input type="hidden" name="post" value="{{ i.id }}">
+            <button type="submit" class="btn btn-primary">Create Reclamation</button>
+          </form>
                                 <a type="button" href="{{ path('modifierpublication', {'id': i.id}) }}" class="btn btn-rounded btn-outline-warning">Modifier</a>
                                 <section>
                                 

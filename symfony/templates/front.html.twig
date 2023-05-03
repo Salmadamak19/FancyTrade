@@ -49,12 +49,29 @@
           </div>
           <div class="collapse navbar-collapse" id="custom-collapse">
             <ul class="nav navbar-nav navbar-right">
-<li><a href="{{ path('app_event_frontindex') }}">Home</a></li>
-<li><a href="{{ path('afficherpublication') }}">Posts</a></li>
-<li><a href="{{ path('app_reclamation_index') }}">Reclamation</a></li>
-<li><a href="{{ path('app_event_index') }}">Admin Panel</a></li>
-<li><a href="{{ path('app_login') }}">login</a></li>
-<li><a href="{{ path('app_logout') }}">logout</a></li>
+<li><a href="{{ path('afficherpublication') }}">Home</a></li>
+<li><a href="{{ path('app_event_frontindex') }}">Events</a></li>
+<li><a href="{{ path('app_post_front') }}">Forum</a></li>
+              <li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown">Echange</a>
+                <ul class="dropdown-menu">
+                  <li><a href="{{ path('app_echange_myechanges') }}">Mes Echanges</a></li>
+                  <li><a href="{{ path('app_produit_myproducts') }}">Mes Produits</a></li>
+                </ul>
+              </li>
+              <li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown">Option</a>
+                <ul class="dropdown-menu">
+                <li><a href="{{ path('app_event_index') }}">Profile</a></li>
+                  {% if is_granted('ROLE_ADMIN') %}
+    <li><a href="{{ path('app_event_index') }}">Admin Panel</a></li>
+{% endif %}
+{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+    <li><a href="{{ path('app_logout') }}">logout</a></li>
+{% else %}
+    <li><a href="{{ path('app_login') }}">login</a></li>
+{% endif %}
+
+                </ul>
+              </li>
             </ul>
           </div>
         </div>

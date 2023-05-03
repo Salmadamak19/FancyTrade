@@ -1,0 +1,98 @@
+<h1 class="align-center">Bienvenue dans votre application  </h1>
+
+<p>Voila la liste de tout les reclamations en attente </p>
+<table class="table" border="5" >
+    <thead>
+    <tr>
+            <th>Id</th>
+                <th>Date</th>
+                <th>Type</th>
+                <th>message</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for reclamation in reclamations %}
+{% if reclamation.status == "En attente" %}
+        <tr>
+            <td>{{ reclamation.id }}</td>
+                <td>{{ reclamation.createdAt ? reclamation.createdAt|date('Y-m-d') : '' }}</td>
+                <td>{{ reclamation.category.nom }}</td>
+                <td>{{ reclamation.message }}</td>
+            </tr>
+         {% endif %}
+    {% else %}
+        <tr>
+            <td colspan="8">no records found</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<br>
+<br>
+<br>
+<br>
+
+
+<p>Voila la liste de tout les reclamations en cours </p>
+<table class="table" border="5" >
+    <thead>
+    <tr>
+            <th>Id</th>
+                <th>Date</th>
+                <th>Type</th>
+                <th>message</th>
+               
+    </tr>
+    </thead>
+    <tbody>
+    {% for reclamation in reclamations %}
+{% if reclamation.status == 0 %}
+        <tr>
+            <td>{{ reclamation.id }}</td>
+                <td>{{ reclamation.createdAt ? reclamation.createdAt|date('Y-m-d') : '' }}</td>
+                <td>{{ reclamation.category.nom }}</td>
+                <td>{{ reclamation.message }}</td>
+              
+            </tr>
+         {% endif %}
+    {% else %}
+        <tr>
+            <td colspan="8">no records found</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<br>
+<br>
+<br>
+<br>
+<p>Voila la liste de tout les reclamations confirmées </p>
+<table class="table" border="5" >
+    <thead>
+    <tr>
+            <th>Id</th>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Objet</th>
+                <th>message</th>
+      
+    </tr>
+    </thead>
+    <tbody>
+    {% for reclamation in reclamations %}
+{% if reclamation.status == "confirmé" %}
+        <tr>
+            <td>{{ reclamation.id }}</td>
+                <td>{{ reclamation.createdAt ? reclamation.createdAt|date('Y-m-d') : '' }}</td>
+                <td>{{ reclamation.category.nom }}</td>
+                <td>{{ reclamation.message }}</td>
+            </tr>
+         {% endif %}
+    {% else %}
+        <tr>
+            <td colspan="8">no records found</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

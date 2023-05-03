@@ -10,11 +10,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 #[Route('/place')]
 class EventPlaceController extends AbstractController
 {
     #[Route('/', name: 'app_event_place_index', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(EventPlaceRepository $eventPlaceRepository, PaginatorInterface $paginator, Request $request): Response
     {
         $pagination = $paginator->paginate(
@@ -30,6 +31,7 @@ class EventPlaceController extends AbstractController
     }
 
     #[Route('/new', name: 'app_event_place_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, EventPlaceRepository $eventPlaceRepository): Response
     {
         $eventPlace = new EventPlace();
@@ -48,6 +50,7 @@ class EventPlaceController extends AbstractController
         ]);
     }
     #[Route('/search', name: 'app_event_place_search')]
+    #[IsGranted('ROLE_ADMIN')]
     public function search(Request $request, PaginatorInterface $paginator): Response
     {
         $query = $request->query->get('query');
@@ -73,6 +76,7 @@ class EventPlaceController extends AbstractController
         ]);
     }
     #[Route('/{id}', name: 'app_event_place_show', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function show(EventPlace $eventPlace): Response
     {
         return $this->render('event_place/show.html.twig', [
@@ -81,6 +85,7 @@ class EventPlaceController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_event_place_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, EventPlace $eventPlace, EventPlaceRepository $eventPlaceRepository): Response
     {
         $form = $this->createForm(EventPlaceType::class, $eventPlace);
@@ -99,6 +104,7 @@ class EventPlaceController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_event_place_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, EventPlace $eventPlace, EventPlaceRepository $eventPlaceRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$eventPlace->getId(), $request->request->get('_token'))) {
