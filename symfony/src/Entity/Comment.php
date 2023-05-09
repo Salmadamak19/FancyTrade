@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
-class Comment
+class Comment implements \JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -81,5 +81,26 @@ class Comment
         $this->user = $user;
 
         return $this;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array(
+            'id' => $this->id,
+            'publication' => $this->publication,
+            'user' => $this->user,
+            'content' => $this->content,
+            'date' => $this->date->format("d-m-Y")
+
+        );
+    }
+
+    public function constructor($publication, $user, $content, $date)
+    {
+        $this->publication = $publication;
+        $this->user = $user;
+        $this->content = $content;
+        $this->date = $date;
+
     }
 }

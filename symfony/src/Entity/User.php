@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: "user")]
 #[UniqueEntity(fields: ["email"], message: "This email address is already in use.")]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, \JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -160,7 +160,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -195,5 +195,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->token = $token;
     }
 
+    public function jsonSerialize(): array
+    {
+        return array(
+            'id' => $this->id,
+            'email' => $this->email,
+            'roles' => $this->roles,
+            'password' => $this->password,
+            'nom' => $this->nom,
+            'prenom' => $this->prenom,
+            'dateNaiss' => $this->dateNaiss->format("d-m-Y")
+
+        );
+    }
+
+    public function constructor($email, $roles, $password, $nom, $prenom, $dateNaiss)
+    {
+        $this->email = $email;
+        $this->roles = $roles;
+        $this->password = $password;
+        $this->nom = $nom;
+        $this->prenom = $prenom;
+        $this->dateNaiss = $dateNaiss;
+        $this->enabled = true;
+    }
+
+    public function constructorForEdit($email, $roles, $nom, $prenom, $dateNaiss)
+    {
+        $this->email = $email;
+        $this->roles = $roles;
+        $this->nom = $nom;
+        $this->prenom = $prenom;
+        $this->dateNaiss = $dateNaiss;
+        $this->enabled = true;
+    }
 
 }

@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert ;
 
  #[ORM\Table(name: "commentaire")]
  #[ORM\Entity(repositoryClass: CommentaireRepository::class)]
-class Commentaire
+class Commentaire implements \JsonSerializable
 {
     #[ORM\Column(name: "id", type: "integer", nullable: false)]
     #[ORM\Id]
@@ -149,4 +149,29 @@ private ?User $user = null;
     }
 
 
+     public function jsonSerialize(): array
+     {
+         return array(
+             'id' => $this->id,
+             'user' => $this->user,
+             'post' => $this->post,
+             'image' => $this->imagec,
+             'description' => $this->descriptionc,
+             'date' => $this->datec->format("d-m-Y"),
+             'analyse' => $this->analyseCo,
+             'datecTs' => $this->datecTs->format("d-m-Y")
+
+         );
+     }
+
+     public function constructor($user, $post, $image, $description, $date, $analyse, $datecTs)
+     {
+         $this->user = $user;
+         $this->post = $post;
+         $this->imagec = $image;
+         $this->descriptionc = $description;
+         $this->datec = $date;
+         $this->analyseCo = $analyse;
+         $this->datecTs = $datecTs;
+     }
 }

@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[ORM\Entity(repositoryClass: PublicationRepository::class)]
 #[Vich\Uploadable]
-class Publication
+class Publication implements \JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -142,6 +142,27 @@ class Publication
     public function __toString()
     {
         return $this->getContent();
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array(
+            'id' => $this->id,
+            'user' => $this->user,
+            'content' => $this->content,
+            'date' => $this->date->format("d-m-Y"),
+            'image' => $this->Image
+
+        );
+    }
+
+    public function constructor($user, $content, $date, $image)
+    {
+        $this->user = $user;
+        $this->content = $content;
+        $this->date = $date;
+        $this->Image = $image;
+
     }
 
 }

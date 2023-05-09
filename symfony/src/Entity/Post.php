@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: "post")]
 #[ORM\Entity(repositoryClass: PostRepository::class)]
-class Post
+class Post implements \JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "IDENTITY")]
@@ -208,5 +208,37 @@ private ?User $user = null;
         return $this;
     }
 
+    public function jsonSerialize(): array
+    {
+        return array(
+            'id' => $this->id,
+            'user' => $this->user,
+            'sujet' => $this->sujet,
+            'description' => $this->description,
+            'nbrJaime' => $this->nbrJaime,
+            'image' => $this->image,
+            'date' => $this->dateP->format("d-m-Y"),
+            'communaute' => $this->communaute,
+            'analyse' => $this->analysePo,
+            'liked' => $this->liked,
+            'badlevel' => $this->badlevel
+
+        );
+    }
+
+    public function constructor($user, $sujet, $description, $nbrJaime, $image, $date, $communaute, $analyse, $liked, $badlevel)
+    {
+        $this->user = $user;
+        $this->sujet = $sujet;
+        $this->description = $description;
+        $this->nbrJaime = $nbrJaime;
+        $this->image = $image;
+        $this->dateP = $date;
+        $this->communaute = $communaute;
+        $this->analysePo = $analyse;
+        $this->liked = $liked;
+        $this->badlevel = $badlevel;
+
+    }
 
 }

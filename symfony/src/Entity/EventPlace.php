@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EventPlaceRepository::class)]
-class EventPlace
+class EventPlace implements \JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -62,4 +62,18 @@ class EventPlace
 
         return $this;
     }
+    public function jsonSerialize(): array
+    {
+        return array(
+            'id' => $this->id,
+            'name' => $this->Name,
+            'description' => $this->Description
+        );
+    }
+    public function construct($Name, $Description)
+{
+    $this->Name = $Name;
+    $this->Description = $Description;
+}
+
 }

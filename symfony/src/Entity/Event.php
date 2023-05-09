@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 #[Vich\Uploadable]
-class Event
+class Event implements \JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -60,7 +60,19 @@ private ?User $user = null;
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Organiser is required.')]
     private ?string $Organiser = null;
-
+    public function jsonSerialize(): array
+    {
+        return array(
+            'id' => $this->id,
+            'name' => $this->Name,
+            'dateAndTime' => $this->DateandTime,
+            'description' => $this->Description,
+            'place' => $this->Place,
+            'image' => $this->Image,
+            'user' => $this->user,
+            'organiser' => $this->Organiser
+        );
+    }
     public function getId(): ?int
     {
         return $this->id;
