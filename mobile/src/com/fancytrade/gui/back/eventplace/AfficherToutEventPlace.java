@@ -1,18 +1,14 @@
 package com.fancytrade.gui.back.eventplace;
 
 
-import com.codename1.components.ImageViewer;
 import com.codename1.ui.*;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
 import com.fancytrade.entities.EventPlace;
-import com.fancytrade.entities.Post;
 import com.fancytrade.services.EventPlaceService;
-import com.fancytrade.services.PostService;
 import com.fancytrade.utils.Statics;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -22,7 +18,7 @@ public class AfficherToutEventPlace extends Form {
 
     Resources theme = UIManager.initFirstTheme("/theme");
 
-    public static Post currentPost = null;
+    public static EventPlace currentEventPlace = null;
 
 
     PickerComponent sortPicker;

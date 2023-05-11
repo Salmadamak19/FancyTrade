@@ -3,18 +3,32 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/services/EventService.java</file>
-            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/gui/back/user/AjouterUser.java</file>
-            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/gui/front/event/AfficherToutEvent.java</file>
-            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/gui/front/post/AjouterPost.java</file>
-            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/entities/EventPlace.java</file>
-            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/gui/front/publication/AfficherToutPublication.java</file>
+            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/gui/front/publication/ModifierPublication.java</file>
+            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytade/gui/front/reclamation/AccueilFront.java</file>
+            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/gui/uikit/SideMenuBaseForm.java</file>
+            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/services/CommentService.java</file>
             <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/utils/Statics.java</file>
+            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/gui/back/reclamation/AnimalsCategory/Manage.java</file>
+            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytade/gui/front/reclamation/AnimalsCategory/Manage.java</file>
+            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytade/gui/front/reclamation/Animals/Manage.java</file>
+            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/gui/back/reclamation/AnimalsCategory/ShowAll.java</file>
+            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/services/EventService.java</file>
+            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/gui/front/event/AfficherToutEvent.java</file>
+            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/gui/front/event/ModifierEvent.java</file>
+            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/gui/back/reclamation/AccueilBack.java</file>
+            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/gui/back/AccueilBack.java</file>
+            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/gui/back/reclamation/Animals/Manage.java</file>
+            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/entities/ReclamationCategory.java</file>
+            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytade/gui/front/reclamation/Animals/ShowAll.java</file>
+            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/gui/front/publication/AfficherToutPublication.java</file>
+            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/services/AnimalsCategoryService.java</file>
             <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/entities/Event.java</file>
-            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/gui/front/post/AfficherToutPost.java</file>
             <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/entities/Publication.java</file>
-            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/entities/Post.java</file>
-            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/gui/back/event/AfficherToutEvent.java</file>
+            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/entities/EventPlace.java</file>
+            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytade/gui/front/reclamation/AnimalsCategory/ShowAll.java</file>
+            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/gui/front/event/AjouterEvent.java</file>
+            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/services/ReclamationsService.java</file>
+            <file>file:/C:/Users/ousso/Downloads/Compressed/fancytrade-codenameone-integre-v2/fancytrade/src/com/fancytrade/gui/back/reclamation/Animals/ShowAll.java</file>
         </group>
     </open-files>
 </project-private>

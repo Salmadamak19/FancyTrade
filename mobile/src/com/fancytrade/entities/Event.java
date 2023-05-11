@@ -10,7 +10,7 @@ import com.fancytrade.utils.DateUtils;
 import com.fancytrade.utils.Statics;
 import java.util.Date;
 
-public class Event {
+public class Event implements Comparable<Event>  {
     private Integer id;
     private String name;
     private String description;
@@ -23,6 +23,36 @@ public class Event {
     
     public Event() {
         // Empty constructor
+    }
+
+    public Event(Integer id, String name, String description, EventPlace place, String image, Date dateAndTime, User user, String organiser) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.place = place;
+        this.image = image;
+        this.dateAndTime = dateAndTime;
+        this.user = user;
+        this.organiser = organiser;
+    }
+
+    public Event(String name, String description, EventPlace place, String image, User user, String organiser) {
+        this.name = name;
+        this.description = description;
+        this.place = place;
+        this.image = image;
+        this.user = user;
+        this.organiser = organiser;
+    }
+
+    public Event(String name, String description, EventPlace place, String image, Date dateAndTime, User user, String organiser) {
+        this.name = name;
+        this.description = description;
+        this.place = place;
+        this.image = image;
+        this.dateAndTime = dateAndTime;
+        this.user = user;
+        this.organiser = organiser;
     }
 
     public Event(Integer id, String name, String description, EventPlace place, String image, Date dateAndTime, User user, String organiser, byte[] imageFile) {
@@ -120,6 +150,7 @@ public class Event {
     public byte[] getImageFile() {
         return imageFile;
     }
+    @Override
     public int compareTo(Event event) {
     switch (Statics.compareVar) {
         case "Name":

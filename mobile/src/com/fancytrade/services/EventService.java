@@ -143,7 +143,7 @@ private Date parseDate(String dateAndTime) throws ParseException {
         cr.addArgumentNoEncoding("description", event.getDescription());
         cr.addArgumentNoEncoding("place", String.valueOf(event.getPlace().getId()));
         cr.addArgumentNoEncoding("image", event.getImage());
-        cr.addArgumentNoEncoding("dateAndTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(event.getDateAndTime()));
+        cr.addArgumentNoEncoding("dateandtime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(event.getDateAndTime()));
         cr.addArgumentNoEncoding("user", String.valueOf(event.getUser().getId()));
         cr.addArgumentNoEncoding("organiser", event.getOrganiser());
 
@@ -186,7 +186,7 @@ private Date parseDate(String dateAndTime) throws ParseException {
         cr.addArgumentNoEncoding("description", event.getDescription());
         cr.addArgumentNoEncoding("place", String.valueOf(event.getPlace().getId()));
         cr.addArgumentNoEncoding("image", event.getImage());
-        cr.addArgumentNoEncoding("dateAndTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(event.getDateAndTime()));
+        cr.addArgumentNoEncoding("dateandtime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(event.getDateAndTime()));
         cr.addArgumentNoEncoding("user", String.valueOf(event.getUser().getId()));
         cr.addArgumentNoEncoding("organiser", event.getOrganiser());
 

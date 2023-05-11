@@ -42,15 +42,18 @@ public class EventPlace implements Comparable<EventPlace> {
     public void setDescription(String description) {
         this.description = description;
     }
-
     @Override
+    public String toString() {
+        return name;
+    }
+ /*   @Override
     public String toString() {
         return "EventPlace{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';
-    }
+    }*/
 
     @Override
     public int compareTo(EventPlace eventPlace) {

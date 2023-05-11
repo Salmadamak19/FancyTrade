@@ -2,6 +2,7 @@ package com.fancytrade.utils;
 
 public class Statics {
     public static final String BASE_URL = "http://localhost/fancytrade/public/index.php/mobile";
+    public static final String BASE_URLf = "http://localhost/fancytrade/public/index.php/";
 
     public static final String PUBLICATION_IMAGE_URL = "http://localhost/fancytrade/public/index.php/mobile/publication/image/";
 

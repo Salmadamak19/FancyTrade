@@ -44,7 +44,8 @@ public class AccueilBack extends Form {
                 makePostsButton(),
                 makeCommentairesButton(),
                 makeEventButton(),
-                makeEventPlaceButton()
+                makeEventPlaceButton(),
+                makeReclamationButton()
         );
 
         this.add(menuContainer);
@@ -96,7 +97,14 @@ public class AccueilBack extends Form {
         Button button = new Button("Event ");
         button.setUIID("buttonMenu");
         button.setMaterialIcon(FontImage.MATERIAL_MESSAGE);
-       // button.addActionListener(action -> new com.fancytrade.gui.back.event.AfficherToutEvent(this).show());
+        button.addActionListener(action -> new com.fancytrade.gui.back.event.AfficherToutEvent(this).show());
+        return button;
+    }
+                                private Button makeReclamationButton() {
+        Button button = new Button("Reclamation ");
+        button.setUIID("buttonMenu");
+        button.setMaterialIcon(FontImage.MATERIAL_MESSAGE);
+        button.addActionListener(action -> new com.fancytrade.gui.back.reclamation.AccueilBack().show());
         return button;
     }
 

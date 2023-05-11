@@ -30,6 +30,7 @@ import com.fancytrade.gui.front.commentaire.AfficherToutCommentaire;
 import com.fancytrade.gui.front.post.AfficherToutPost;
 import com.fancytrade.gui.front.event.AfficherToutEvent;
 import com.fancytrade.gui.front.publication.AfficherToutPublication;
+import com.fancytrade.gui.front.reclamation.AccueilFront;
 import com.fancytrade.gui.front.user.MyProfile;
 
 /**
@@ -88,6 +89,7 @@ public abstract class SideMenuBaseForm extends Form {
         tb.addMaterialCommandToSideMenu("Publications", FontImage.MATERIAL_POST_ADD, e -> new AfficherToutPublication(res).show());
         tb.addMaterialCommandToSideMenu("Comments", FontImage.MATERIAL_COMMENT, e -> new AfficherToutComment(res).show());
         tb.addMaterialCommandToSideMenu("Events", FontImage.MATERIAL_POST_ADD, e -> new AfficherToutEvent(res).show());
+        tb.addMaterialCommandToSideMenu("Reclamation", FontImage.MATERIAL_POST_ADD, e -> new AccueilFront().show());
         tb.addMaterialCommandToSideMenu("Logout", FontImage.MATERIAL_EXIT_TO_APP, e -> new LoginForm(res).show());
     }
 }

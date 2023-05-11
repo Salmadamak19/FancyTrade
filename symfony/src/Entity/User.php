@@ -40,7 +40,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \JsonSe
     #[Assert\NotBlank(message: "prenom field is empty")]
     private string $prenom;
 
-    #[ORM\Column(name: "date_naiss", type: "date", nullable: false)]
+    #[ORM\Column(name: "date_naiss", type: "date", nullable: true)]
     #[Assert\NotBlank(message: "date field is empty")]
     private DateTime $dateNaiss;
 
